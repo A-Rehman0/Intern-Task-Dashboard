@@ -138,7 +138,7 @@ df = df.dropna(subset=['Date'])
 today = pd.Timestamp.now(tz="Asia/Kolkata").date()
 
 df['Date'] = df['Date'].dt.tz_localize(None)
-# df = df[df['Date'].dt.date <= today]        
+df = df[df['Date'].dt.date <= today]        
 df = df.sort_values("Date")
 
 
