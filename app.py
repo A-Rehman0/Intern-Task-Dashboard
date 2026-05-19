@@ -115,10 +115,10 @@ st.markdown("""
 
 # ---------------- LOAD DATA ----------------
 try:
-    df1 = pd.read_csv("https://docs.google.com/spreadsheets/d/1zPkZg6lNEnHDySAIHUBAB8xFbZ7dM7MKN-mlSV8AKnY/export?format=csv")
-    df2 = pd.read_csv("https://docs.google.com/spreadsheets/d/1wutMpP4n_6cFW2V2FnQKef5DQ_cfgUG3yZXE6hwNXCA/export?format=csv")
+    df = pd.read_csv("https://docs.google.com/spreadsheets/d/1zPkZg6lNEnHDySAIHUBAB8xFbZ7dM7MKN-mlSV8AKnY/export?format=csv")
+    # df2 = pd.read_csv("https://docs.google.com/spreadsheets/d/1wutMpP4n_6cFW2V2FnQKef5DQ_cfgUG3yZXE6hwNXCA/export?format=csv")
 
-    df = pd.concat([df1, df2], ignore_index=True)
+    # df = pd.concat([df1, df2], ignore_index=True)
 
 except:
     st.error("Error loading file")
