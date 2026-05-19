@@ -214,8 +214,8 @@ c1, c2 = st.columns(2)
 
 with c1:
     st.link_button(
-        "📊 Open Data Sheet",
-        "https://docs.google.com/spreadsheets/d/1xBU0rUJXPmt1ZGupM7kt3Rmp2ViMQQ2tPRaxdD_IRGk/edit?usp=sharing"
+        "📊 Open Your Data Sheet",
+        "###"
     )
 
 with c2:
