@@ -294,6 +294,7 @@ intern_links = {
     "AT": "https://docs.google.com/spreadsheets/d/xxxxx",
     "Rahul": "https://docs.google.com/spreadsheets/d/yyyyy",
     "Harshada Magar": "https://docs.google.com/spreadsheets/d/14m3yRqwbPmHpWmgYxP9RnudDsHPgA3ki0vKeZLUyYwU/edit?usp=sharing",
+    "Sreeja M":"https://docs.google.com/spreadsheets/d/1xOBQkgZMIYjQuHNTttOW1CTLn86j4fRzS7znODu0WHE/edit?usp=sharing",
 }
 
 # ---------------- GET SELECTED INTERN LINK ----------------
