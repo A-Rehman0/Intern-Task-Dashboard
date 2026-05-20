@@ -143,17 +143,76 @@ df = df.sort_values("Date")
 
 
 # ---------------- FILTER CARD ----------------
-st.markdown('<div class="section">🔍 Filters</div>', unsafe_allow_html=True)
+st.markdown("""
+<style>
 
+/* ---------- SECTION HEADER ---------- */
+.section {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 14px;
+    padding-bottom: 8   px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* ---------- LABEL ---------- */
+label {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+}
+
+/* ---------- SELECTBOX ---------- */
+div[data-baseweb="select"] > div {
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    min-height: 48px !important;
+    box-shadow: none !important;
+    transition: all 0.2s ease !important;
+
+    font-size: 20px !important;   /* change size here */
+    font-weight: 600 !important;  /* optional */
+    font-family: 'Fira Code', monospace;
+}
+/* ---------- HOVER ---------- */
+div[data-baseweb="select"] > div:hover {
+    border-color: #9ca3af !important;
+}
+
+/* ---------- FOCUS ---------- */
+div[data-baseweb="select"]:focus-within > div {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12) !important;
+}
+
+/* ---------- TEXT ---------- */
+div[data-baseweb="select"] span {
+    color: #111827 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ---------- FILTER HEADER ----------
+st.markdown(
+    '<div class="section">Filters</div>',
+    unsafe_allow_html=True
+)
+
+# ---------- FILTERS ----------
 f1, f2 = st.columns([2, 2])
 
 with f1:
     intern = st.selectbox(
-    "Select Intern",
-    sorted(df['Intern Name'].unique(), reverse=True)
-)
+        "Select Intern",
+        sorted(df['Intern Name'].unique(), reverse=True)
+    )
 
-
+# ---------- FILTERED DATA ----------
 intern_df = df[df['Intern Name'] == intern].sort_values(
     by='Intern Name',
     ascending=False
@@ -206,23 +265,116 @@ result = intern_df[intern_df['Date'].dt.date == selected_date]
 if not result.empty:
     st.dataframe(result, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
+
 else:
-    st.warning("No tasks found")
+    st.markdown("""
+    <div style="
+        background: linear-gradient(135deg, #f59e0b, #fbbf24);
+        padding: 14px;
+        border-radius: 12px;
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
+    ">
+        ⚠️ No tasks found
+    </div>
+    """, unsafe_allow_html=True)
+    st.markdown("")
+
+
+
+# ---------------- FOOTER ----------------
+# ---------------- CLEAN INTERN NAMES ----------------
+df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
+
+# ---------------- INTERN SHEET LINKS ----------------
+intern_links = {
+    "AT": "https://docs.google.com/spreadsheets/d/xxxxx",
+    "Rahul": "https://docs.google.com/spreadsheets/d/yyyyy",
+    "Harshada Magar": "https://docs.google.com/spreadsheets/d/14m3yRqwbPmHpWmgYxP9RnudDsHPgA3ki0vKeZLUyYwU/edit?usp=sharing",
+}
+
+# ---------------- GET SELECTED INTERN LINK ----------------
+sheet_link = intern_links.get(intern.strip())
 
 # ---------------- FOOTER ----------------
 c1, c2 = st.columns(2)
 
 with c1:
-    st.link_button(
-        "📊 Open Your Data Sheet",
-        "###"
-    )
+    if sheet_link:
+        st.link_button(
+            "📊 Open Your Data Sheet",
+            sheet_link,
+            use_container_width=True
+        )
+
+        st.markdown("""
+        <style> 
+        div.stLinkButton > a {
+            background-color: #2563eb !important;
+            color: white !important;
+            border-radius: 12px !important;
+            padding: 12px 20px !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            border: none !important;
+            text-align: center !important;
+        }
+
+        div.stLinkButton > a:hover {
+            background-color: #1d4ed8 !important;
+            color: white !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown("""
+            <div style="
+                background-color:#ff4b4b;
+                padding:15px;
+                border-radius:10px;
+                color:white;
+                font-weight:bold;
+                text-align:center;
+            ">
+            ⚠️ Spreadsheet Not Submitted
+            </div>
+            """, unsafe_allow_html=True)
+        
+    st.markdown("")
 
 with c2:
     st.link_button(
-        "📝 Mark Attendance",
-        "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform"
-    )
+    "📝 Mark Attendance",
+    "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform",
+    use_container_width=True
+)
+    
+
+st.markdown("""
+<style>
+div.stLinkButton > a {
+    background: linear-gradient(135deg, #16a34a, #22c55e) !important;
+    color: white !important;
+    border-radius: 14px !important;
+    padding: 14px 22px !important;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    border: none !important;
+    text-align: center !important;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
+    transition: all 0.3s ease !important;
+}
+
+div.stLinkButton > a:hover {
+    background: linear-gradient(135deg, #15803d, #16a34a) !important;
+    transform: translateY(-2px) !important;
+    color: white !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # ---------------- NOTES ----------------
 st.markdown("""
