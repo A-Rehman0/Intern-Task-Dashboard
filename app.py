@@ -295,6 +295,7 @@ intern_links = {
     "Rahul": "https://docs.google.com/spreadsheets/d/yyyyy",
     "Harshada Magar": "https://docs.google.com/spreadsheets/d/14m3yRqwbPmHpWmgYxP9RnudDsHPgA3ki0vKeZLUyYwU/edit?usp=sharing",
     "Sreeja M":"https://docs.google.com/spreadsheets/d/1xOBQkgZMIYjQuHNTttOW1CTLn86j4fRzS7znODu0WHE/edit?usp=sharing",
+    "Devatha Siri":"https://docs.google.com/spreadsheets/d/1saAd0onz12WhMpnCckIqy2tHdVXHst7SvK7y-Ep0gyM/edit?hl=id&gid=0#gid=0",
 }
 
 # ---------------- GET SELECTED INTERN LINK ----------------
