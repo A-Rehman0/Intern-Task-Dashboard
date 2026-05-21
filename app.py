@@ -101,6 +101,7 @@ st.markdown("""
     padding: 6px;
 }
             
+
             
 </style>
 """, unsafe_allow_html=True)
@@ -143,6 +144,16 @@ df = df.sort_values("Date")
 
 
 # ---------------- FILTER CARD ----------------
+intern_links = {
+    "AT": "https://docs.google.com/spreadsheets/d/xxxxx",
+    "Rahul": "https://docs.google.com/spreadsheets/d/yyyyy",
+    "Harshada Magar": "https://docs.google.com/spreadsheets/d/14m3yRqwbPmHpWmgYxP9RnudDsHPgA3ki0vKeZLUyYwU/edit?usp=sharing",
+    "Sreeja M":"https://docs.google.com/spreadsheets/d/1xOBQkgZMIYjQuHNTttOW1CTLn86j4fRzS7znODu0WHE/edit?usp=sharing",
+    "Devatha Siri":"https://docs.google.com/spreadsheets/d/1saAd0onz12WhMpnCckIqy2tHdVXHst7SvK7y-Ep0gyM/edit?hl=id&gid=0#gid=0",
+    "H. Lahari":"https://docs.google.com/spreadsheets/d/19Ugy_pFKaPZgzKjEiHHhMmBvKFx-Mjf1ixnbOe0QfA4/edit?gid=0#gid=0",
+}
+# ---------------- FILTER CARD ----------------
+
 st.markdown("""
 <style>
 
@@ -218,6 +229,31 @@ intern_df = df[df['Intern Name'] == intern].sort_values(
     ascending=False
 )
 
+sheet_task_count = 0
+
+sheet_url = intern_links.get(intern.strip())
+
+if sheet_url and "xxxxx" not in sheet_url and "yyyyy" not in sheet_url:
+
+    try:
+        # Extract Sheet ID
+        sheet_id = sheet_url.split("/d/")[1].split("/")[0]
+
+        # CSV Export URL
+        csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+
+        # Read Sheet Data
+        intern_sheet_df = pd.read_csv(csv_url)
+
+        # Count rows/tasks
+        sheet_task_count = len(intern_sheet_df)
+
+    except:
+        sheet_task_count = 0
+
+
+
+
 # ---------------- DATE ----------------
 default_date = today
 
@@ -227,7 +263,7 @@ with f2:
 # ---------------- KPI SECTION ----------------
 st.markdown('<div class="section">📊 Overview</div>', unsafe_allow_html=True)
 
-k1, k2, k3 = st.columns(3)
+k1, k2, k3 ,k4= st.columns(4)
 
 task_count = len(intern_df)
 today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
@@ -254,6 +290,14 @@ with k3:
     <div class="kpi">
         <h1>{active_days}</h1>
         <p>Active Days</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+with k4:
+    st.markdown(f"""
+    <div class="kpi">
+        <h1>{sheet_task_count}</h1>
+        <p>Total Clubs Collected</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -290,14 +334,7 @@ else:
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
 
 # ---------------- INTERN SHEET LINKS ----------------
-intern_links = {
-    "AT": "https://docs.google.com/spreadsheets/d/xxxxx",
-    "Rahul": "https://docs.google.com/spreadsheets/d/yyyyy",
-    "Harshada Magar": "https://docs.google.com/spreadsheets/d/14m3yRqwbPmHpWmgYxP9RnudDsHPgA3ki0vKeZLUyYwU/edit?usp=sharing",
-    "Sreeja M":"https://docs.google.com/spreadsheets/d/1xOBQkgZMIYjQuHNTttOW1CTLn86j4fRzS7znODu0WHE/edit?usp=sharing",
-    "Devatha Siri":"https://docs.google.com/spreadsheets/d/1saAd0onz12WhMpnCckIqy2tHdVXHst7SvK7y-Ep0gyM/edit?hl=id&gid=0#gid=0",
-    "H. Lahari":"https://docs.google.com/spreadsheets/d/19Ugy_pFKaPZgzKjEiHHhMmBvKFx-Mjf1ixnbOe0QfA4/edit?gid=0#gid=0",
-}
+
 
 # ---------------- GET SELECTED INTERN LINK ----------------
 sheet_link = intern_links.get(intern.strip())
@@ -378,6 +415,41 @@ div.stLinkButton > a:hover {
 }
 </style>
 """, unsafe_allow_html=True)
+# ---------------- Dropdown ----------------
+
+
+# ---------------- INTERN SHEET DATA ----------------
+
+sheet_url = intern_links.get(intern.strip())
+
+if sheet_url and "xxxxx" not in sheet_url and "yyyyy" not in sheet_url:
+
+    try:
+        # Extract Sheet ID
+        sheet_id = sheet_url.split("/d/")[1].split("/")[0]
+
+        # CSV Export URL
+        csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+
+        # Read Sheet Data
+        intern_sheet_df = pd.read_csv(csv_url)
+
+        with st.expander(f"📄 {intern} Sheet Data"):
+
+            st.dataframe(
+                intern_sheet_df,
+                use_container_width=True
+            )
+
+    except:
+        st.error("Unable to load selected intern sheet")
+
+else:
+    st.warning("No valid sheet link available")
+
+
+
+
 
 # ---------------- NOTES ----------------
 st.markdown("""
@@ -385,3 +457,4 @@ st.markdown("""
 ✔ After completing tasks, report to Team Leader &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp; ✔ Share updates in communication group for HR tracking
 </div>
 """, unsafe_allow_html=True)
+
