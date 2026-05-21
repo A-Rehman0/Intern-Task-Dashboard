@@ -285,7 +285,7 @@ with k2:
     </div>
     """, unsafe_allow_html=True)
 
-with k3:
+with k4:
     st.markdown(f"""
     <div class="kpi">
         <h1>{active_days}</h1>
@@ -293,7 +293,7 @@ with k3:
     </div>
     """, unsafe_allow_html=True)
 
-with k4:
+with k3:
     st.markdown(f"""
     <div class="kpi">
         <h1>{sheet_task_count}</h1>
