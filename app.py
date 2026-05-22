@@ -434,6 +434,8 @@ if sheet_url and "xxxxx" not in sheet_url and "yyyyy" not in sheet_url:
         # Read Sheet Data
         intern_sheet_df = pd.read_csv(csv_url)
 
+        st.markdown("#### View Your Collected Data (Click your name 👇)")
+
         with st.expander(f"📄 {intern} Sheet Data"):
 
             st.dataframe(
