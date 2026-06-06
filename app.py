@@ -5,7 +5,7 @@ from datetime import datetime
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="Blue Planet Dashboard", layout="wide")
-
+st.set_page_config(layout="wide")
 # ---------------- CSS ----------------
 st.markdown("""
 <style>
@@ -416,6 +416,28 @@ div.stLinkButton > a:hover {
 </style>
 """, unsafe_allow_html=True)
 # ---------------- Dropdown ----------------
+# import pandas as pd
+# import streamlit as st
+
+sheet_url = intern_links.get(intern.strip())
+if not sheet_url:
+    st.error("Please enter a valid Google Sheet URL.")
+    st.stop()
+
+try:
+    sheet_id = sheet_url.split("/d/")[1].split("/")[0]
+    csv_url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv"
+
+    intern_sheet_df = pd.read_csv(csv_url)
+
+    # st.markdown("#### View Your Collected Data (Click your name 👇)")
+
+    # with st.expander(f"📄 {intern} Sheet Data"):
+    #     st.dataframe(intern_sheet_df, use_container_width=True)
+
+except Exception as e:
+    st.error("Failed to load sheet data.")
+    st.exception(e)
 
 
 # ---------------- INTERN SHEET DATA ----------------
@@ -449,9 +471,104 @@ if sheet_url and "xxxxx" not in sheet_url and "yyyyy" not in sheet_url:
 else:
     st.warning("No valid sheet link available")
 
+value = intern_df[intern_df['Date'].dt.date == selected_date]['Institute Name'].dropna().iloc[0]
+prompt_df = pd.DataFrame([[value]], columns=["Institute Name"])
+filtered = intern_df[intern_df['Date'].dt.date == selected_date]['Institute Name'].dropna()
 
+with st.expander("Prompt Builder"):
+    col1, col2, col3, col4, col5 = st.columns(5)
 
+    cols = [col1, col2, col3, col4, col5]
 
+    for i, inst in enumerate(filtered):
+        col = cols[i % 5]
+
+        with col:
+            if st.button(inst, key=f"btn_{i}"):
+                 prompt = f"""You are a web research agent with live browsing access.
+Your ONLY job: find every student club, committee, cell,
+association, and organization at {inst} and output a table.
+
+NO explanations. NO excuses. NO asking for more info.
+If a field is not found, leave it blank. Start the table immediately.
+
+════════════════════════════════
+STEP 1 — SEARCH (do this silently)
+════════════════════════════════
+Search the web for ALL of the following one by one:
+- "{inst} student clubs"
+- "{inst} student organizations"
+- "{inst} technical clubs"
+- "{inst} cultural clubs"
+- "{inst} NSS NCC"
+- "{inst} IEEE ISTE CSI ACM chapter"
+- "{inst} entrepreneurship cell innovation cell"
+- "{inst} coding club robotics club"
+- "{inst} dance music drama club"
+- "{inst} photography literary club"
+- "{inst} placement committee student council"
+- "{inst} women development cell"
+- "{inst} environment club"
+- "{inst} fest committee"
+- "{inst} committees cells"
+- "{inst} clubs site:instagram.com"
+- "{inst} clubs site:linkedin.com"
+- "{inst} annual report filetype:pdf"
+- "{inst} NAAC report filetype:pdf"
+
+Also directly visit:
+- Official college website homepage
+- [college website]/clubs
+- [college website]/committees
+- [college website]/student-activities
+- [college website]/nss
+- [college website]/ncc
+- [college website]/iqac
+- [college website]/placement
+- College Instagram, LinkedIn, Facebook pages
+
+════════════════════════════════
+STEP 2 — OUTPUT TABLE (immediately after searching)
+════════════════════════════════
+Output one row per club. All 16 columns, every row, no exceptions.
+
+| StandardClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsor | ClubBudget | ClubPresidentName | ClubPresidentPRN | ClubMentorName |
+
+COLUMN RULES:
+- StandardClubName → official name, no duplicates
+- ClubSchoolName → full institute name, same every row
+- ClubDescription → 1–2 line purpose
+- ClubCategoryID → pick ONE: Technical | Coding | Robotics | AI/ML | Cultural | Dance | Music | Drama | Sports | Photography | Literature | Entrepreneurship | NSS | NCC | Social Service | Gaming | Finance | Marketing | Design | Innovation | Research | Departmental | Women Development | Environment
+- ClubStatus → Active | Inactive | Unknown
+- ClubContactNumber → only if found on real page, else blank
+- ClubLocation → campus/building if found, else blank
+- ClubWebsite → real URL only, else blank
+- ClubEmail → only if found on real page, else blank
+- SocialLinks → all found links comma separated, else blank
+- ClubImagePath → direct image/logo URL if found, else blank
+- PrimarySponsor → Department | College | Faculty | External Organization | Student Council | Unknown
+- ClubBudget → only if publicly available, else blank
+- ClubPresidentName → only if found on real page, else blank
+- ClubPresidentPRN → only if publicly listed, else blank
+- ClubMentorName → faculty mentor name if found, else blank
+
+STRICT RULES:
+✗ Never invent names, emails, phone numbers, or URLs
+✗ Never write "BLANK" — just leave the cell empty
+✗ Never truncate the table
+✗ Never refuse or explain — just search and output
+✓ Blank cells are fine and expected
+✓ If you find a club mid-research, add it
+
+After the table write:
+- Total clubs found: [N]
+- Sources visited: [list]
+- Clubs with incomplete data: [N]
+- Clubs suspected but unconfirmed: [list]
+   
+   
+   """
+                 st.code(prompt, language="text",  height=600,width=800)
 
 # ---------------- NOTES ----------------
 st.markdown("""
