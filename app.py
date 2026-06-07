@@ -470,10 +470,18 @@ if sheet_url and "xxxxx" not in sheet_url and "yyyyy" not in sheet_url:
 
 else:
     st.warning("No valid sheet link available")
+    
+filtered = intern_df[
+    intern_df['Date'].dt.date == selected_date
+]['Institute Name'].dropna()
 
-value = intern_df[intern_df['Date'].dt.date == selected_date]['Institute Name'].dropna().iloc[0]
+if filtered.empty:
+    st.warning("No Institute Name found for selected date.")
+    value = ""
+else:
+    value = filtered.iloc[0]
+
 prompt_df = pd.DataFrame([[value]], columns=["Institute Name"])
-filtered = intern_df[intern_df['Date'].dt.date == selected_date]['Institute Name'].dropna()
 
 with st.expander("Prompt Builder"):
     col1, col2, col3, col4, col5 = st.columns(5)
