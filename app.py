@@ -12,7 +12,7 @@ st.markdown("""
 .block-container{padding:0 2rem 3rem !important;margin-top:0 !important;background:#eef3fb;max-width:100% !important;}
 
 .topbar{
-    background:linear-gradient(135deg, #0F172A, #334155) !important;
+    background:linear-gradient(135deg, #0C4A6E, #06B6D4) !important;
     padding:14px 28px;
     display:flex;
     align-items:center;
@@ -20,7 +20,7 @@ st.markdown("""
     margin-bottom:24px;
     border-radius:0 0 14px 14px;
 }
-.topbar h2{margin:0;font-size:30px;font-weight:800;color:#fff;}
+.topbar h2{margin:0;font-size:33px;font-weight:800;color:#fff;}
 .topbar p{margin:2px 0 0;font-size:12px;color:#90caf9;text-transform:uppercase;letter-spacing:.05em;}
 .topbar-badge{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
 
@@ -55,7 +55,7 @@ div[data-baseweb="select"]:focus-within>div{border-color:#0d47a1 !important;box-
 # ── TOPBAR ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="topbar">
-    <span class="topbar-icon">🌍</span>
+    <span class="topbar-icon"></span>
     <div><h2>Blue Planet Infosolutions Pvt. Ltd.</h2><p>Intern Task Dashboard</p></div>
    
 </div>
