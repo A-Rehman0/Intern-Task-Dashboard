@@ -207,9 +207,11 @@ with st.expander("Click an institute to generate a research prompt"):
         st.warning("No institute names found for the selected date.")
     else:
         cols = st.columns(min(len(institutes), 5))
-        for i, inst in enumerate(institutes):
-            with cols[i % 5]:
-                if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
+        for i, inst in enumerate(filtered):
+        col = cols[i % 5]
+
+        with col:
+            if st.button(inst, key=f"btn_{i}"):
                     prompt = f"""You are a web research agent with live browsing access.
 Your ONLY job: find every student club, committee, cell,
 association, and organization at {inst} and output a table.
