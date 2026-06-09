@@ -209,8 +209,8 @@ with st.expander("Prompt Builder"):
     for i, inst in enumerate(filtered):
            col = cols[i % 5]
 
-        with col:
-            if st.button(inst, key=f"btn_{i}"):
+            with col:
+                if st.button(inst, key=f"btn_{i}"):
                     prompt = f"""You are a web research agent with live browsing access.
 Your ONLY job: find every student club, committee, cell,
 association, and organization at {inst} and output a table.
