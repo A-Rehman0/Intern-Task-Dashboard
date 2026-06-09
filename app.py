@@ -206,7 +206,7 @@ with st.expander("Prompt Builder"):
     col1, col2, col3, col4, col5 = st.columns(5)
 
     cols = [col1, col2, col3, col4, col5]
-        for i, inst in enumerate(filtered):
+    for i, inst in enumerate(filtered):
            col = cols[i % 5]
 
         with col:
