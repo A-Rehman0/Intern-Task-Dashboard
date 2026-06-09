@@ -202,15 +202,14 @@ st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html
 
 institutes = day_result['Institute Name'].dropna().unique().tolist() if not day_result.empty else []
 
-with st.expander("Prompt Builder"):
-    col1, col2, col3, col4, col5 = st.columns(5)
-
-    cols = [col1, col2, col3, col4, col5]
-    for i, inst in enumerate(filtered):
-           col = cols[i % 5]
-
-            with col:
-                if st.button(inst, key=f"btn_{i}"):
+with st.expander("Click an institute to generate a research prompt"):
+    if not institutes:
+        st.warning("No institute names found for the selected date.")
+    else:
+        cols = st.columns(min(len(institutes), 5))
+        for i, inst in enumerate(institutes):
+            with cols[i % 5]:
+                if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
                     prompt = f"""You are a web research agent with live browsing access.
 Your ONLY job: find every student club, committee, cell,
 association, and organization at {inst} and output a table.
