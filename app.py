@@ -202,11 +202,10 @@ st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html
 
 institutes = day_result['Institute Name'].dropna().unique().tolist() if not day_result.empty else []
 
-with st.expander("Click an institute to generate a research prompt"):
-    if not institutes:
-        st.warning("No institute names found for the selected date.")
-    else:
-        cols = st.columns(min(len(institutes), 5))
+with st.expander("Prompt Builder"):
+    col1, col2, col3, col4, col5 = st.columns(5)
+
+    cols = [col1, col2, col3, col4, col5]
         for i, inst in enumerate(filtered):
         col = cols[i % 5]
 
