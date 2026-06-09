@@ -207,7 +207,7 @@ with st.expander("Prompt Builder"):
 
     cols = [col1, col2, col3, col4, col5]
         for i, inst in enumerate(filtered):
-        col = cols[i % 5]
+           col = cols[i % 5]
 
         with col:
             if st.button(inst, key=f"btn_{i}"):
