@@ -230,59 +230,83 @@ with st.expander("Click an institute to generate a research prompt"):
                     prompt = f"""You are a web research agent with live browsing access.
 Your ONLY job: find every student club, committee, cell,
 association, and organization at {inst} and output a table.
-
 NO explanations. NO excuses. NO asking for more info.
 If a field is not found, leave it blank. Start the table immediately.
-
 ════════════════════════════════
 STEP 1 — SEARCH (do this silently)
 ════════════════════════════════
 Search the web for ALL of the following one by one:
-- "{inst} student clubs"
-- "{inst} student organizations"
-- "{inst} technical clubs"
-- "{inst} cultural clubs"
-- "{inst} NSS NCC"
-- "{inst} IEEE ISTE CSI ACM chapter"
-- "{inst} entrepreneurship cell innovation cell"
-- "{inst} coding club robotics club"
-- "{inst} dance music drama club"
-- "{inst} photography literary club"
-- "{inst} placement committee student council"
-- "{inst} women development cell"
-- "{inst} environment club"
-- "{inst} fest committee"
-- "{inst} committees cells"
-- "{inst} clubs site:instagram.com"
-- "{inst} clubs site:linkedin.com"
-- "{inst} annual report filetype:pdf"
-- "{inst} NAAC report filetype:pdf"
 
+"{inst} student clubs"
+"{inst} student organizations"
+"{inst} technical clubs"
+"{inst} cultural clubs"
+"{inst} NSS NCC"
+"{inst} IEEE ISTE CSI ACM chapter"
+"{inst} entrepreneurship cell innovation cell"
+"{inst} coding club robotics club"
+"{inst} dance music drama club"
+"{inst} photography literary club"
+"{inst} placement committee student council"
+"{inst} women development cell"
+"{inst} environment club"
+"{inst} fest committee"
+"{inst} committees cells"
+"{inst} clubs site:instagram.com"
+"{inst} clubs site:linkedin.com"
+"{inst} annual report filetype:pdf"
+"{inst} NAAC report filetype:pdf"
 Also directly visit:
-- Official college website homepage
-- [college website]/clubs
-- [college website]/committees
-- [college website]/student-activities
-- [college website]/nss
-- [college website]/ncc
-
+Official college website homepage
+[college website]/clubs
+[college website]/committees
+[college website]/student-activities
+[college website]/nss
+[college website]/ncc
 ════════════════════════════════
 STEP 2 — OUTPUT TABLE (immediately after searching)
 ════════════════════════════════
-Output one row per club. All 16 columns, every row, no exceptions.
+Output one row per club. All 25 columns, every row, no exceptions.
 
-| StandardClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsor | ClubBudget | ClubPresidentName | ClubPresidentPRN | ClubMentorName |
+| GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
+COLUMN RULES:
+
+GroupMemberID → always set to 6
+SchoolID → leave blank
+ClubID → leave blank
+SchoolClubID → generate a short unique code per club (e.g. INST001, INST002…)
+ClubName → official full name of the club
+ClubSchoolName → common short name or abbreviation
+ClubDescription → one sentence describing the club's purpose
+ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
+ClubStatus → Active (default unless known otherwise)
+ClubContactNumber → only if found; never invent
+ClubLocation → college name and address
+ClubWebsite → only if found; never invent
+ClubEmail → only if found; never invent
+SocialLinks → only if found; never invent
+ClubImagePath → leave blank
+PrimarySponsorID → leave blank
+PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
+ClubBudget → leave blank
+ClubPresidentID → leave blank
+ClubPresidentName → only if found; never invent
+ClubPresidentPRN → only if found; never invent
+ClubMentorID → leave blank
+ClubMentorName → only if found; never invent
+DataCollectedByID → leave blank
+DataCollectedByName → leave blank
 
 STRICT RULES:
 ✗ Never invent names, emails, phone numbers, or URLs
 ✗ Never write "BLANK" — just leave the cell empty
 ✗ Never truncate the table
 ✓ Blank cells are fine and expected
-
 After the table write:
-- Total clubs found: [N]
-- Sources visited: [list]
-- Clubs with incomplete data: [N]
+
+Total clubs found: [N]
+Sources visited: [list]
+Clubs with incomplete data: [N]
 """
                     st.code(prompt, language="text")
 
