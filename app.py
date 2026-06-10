@@ -81,7 +81,7 @@ df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
 df = df.dropna(subset=['Date'])
 
 today = pd.Timestamp.now(tz="Asia/Kolkata").date()
-df['Date'] = df['Date'].dt.tz_localize(None)
+df['Date'] = df['Date'].dt.tz_localize(None).str[:10]
 df = df[df['Date'].dt.date <= today].sort_values("Date")
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
 
