@@ -124,6 +124,23 @@ with f2:
 
 intern_df = df[df['Intern Name'] == intern].sort_values('Date')
 
+# ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
+if is_valid_link(intern_links.get(intern.strip(), "")):
+    csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
+    if csv_url:
+        try:
+            _idf = pd.read_csv(csv_url)
+            _idf['SchoolID'] = _idf['SchoolID'].astype(str).str.strip()
+            clubs_count = _idf.groupby('SchoolID').size().reset_index(name='Clubs Collected')
+            intern_df = intern_df.copy()
+            intern_df['SchoolID'] = intern_df['SchoolID'].astype(str).str.strip()
+            intern_df = intern_df.merge(clubs_count, on='SchoolID', how='left')
+            intern_df['Clubs Collected'] = intern_df['Clubs Collected'].fillna(0).astype(int)
+        except Exception:
+            intern_df['Clubs Collected'] = 0
+else:
+    intern_df['Clubs Collected'] = 0
+
 
 # ── CLUB COUNT ───────────────────────────────────────────────────────────────
 sheet_task_count = 0
@@ -152,7 +169,7 @@ with k1:
 with k2:
     st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
 with k3:
-    st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Clubs Collected</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
 with k4:
     st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
 
