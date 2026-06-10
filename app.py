@@ -217,14 +217,13 @@ if is_valid_link(sheet_url):
 # ── PROMPT BUILDER ───────────────────────────────────────────────────────────
 st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
 
-institutes = day_result['Institute Name'].dropna().unique().tolist() if not day_result.empty else []
-
+institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
 with st.expander("Click an institute to generate a research prompt"):
     if not institutes:
         st.warning("No institute names found for the selected date.")
     else:
         cols = st.columns(min(len(institutes), 5))
-        for i, inst in enumerate(institutes):
+        for i, (inst, school_id) in enumerate(institutes):
             with cols[i % 5]:
                 if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
                     prompt = f"""You are a web research agent with live browsing access.
@@ -272,7 +271,7 @@ Output one row per club. All 25 columns, every row, no exceptions.
 COLUMN RULES:
 
 GroupMemberID → always set to 6
-SchoolID → leave blank
+SchoolID → always set to {school_id}
 ClubID → leave blank
 SchoolClubID → generate a short unique code per club (e.g. INST001, INST002…)
 ClubName → official full name of the club
@@ -290,12 +289,12 @@ PrimarySponsorID → leave blank
 PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
 ClubBudget → leave blank
 ClubPresidentID → leave blank
-ClubPresidentName → only if found; never invent
+ClubPresidentName → only if fou nd; never invent
 ClubPresidentPRN → only if found; never invent
 ClubMentorID → leave blank
 ClubMentorName → only if found; never invent
 DataCollectedByID → leave blank
-DataCollectedByName → leave blank
+DataCollectedByName → always set to {intern}
 
 STRICT RULES:
 ✗ Never invent names, emails, phone numbers, or URLs
