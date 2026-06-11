@@ -118,7 +118,7 @@ f1, f2 = st.columns([2, 2])
 with f1:
     intern = st.selectbox(
         "Select Intern",
-        sorted(df['Intern Name'].unique(), reverse=True),
+        sorted(df['Intern Name'].unique()),
         label_visibility="visible"
     )
 
