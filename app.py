@@ -96,7 +96,7 @@ intern_links = {
     "H. Lahari":      "https://docs.google.com/spreadsheets/d/19Ugy_pFKaPZgzKjEiHHhMmBvKFx-Mjf1ixnbOe0QfA4/edit?gid=0#gid=0",
     "Nasiya": "https://docs.google.com/spreadsheets/d/1kPQSAkEn07XLkSlWXmWTkvuFKdZWWKrwi8f5Yy1_aPA/edit?usp=sharing",
     "Zahid": "https://docs.google.com/spreadsheets/d/1YZ9R8FcRStXW-VaCP0_D7Zkrqhsj7dYt12E86mFWCmI/edit?usp=sharing",
-    "Swetha":"https://docs.google.com/spreadsheets/d/18ag8k7BkwsAXOdjt7E1NfBVLPfUgVu4i9X4WXxp5V1Y/edit?usp=sharing",
+    "Swetha":"https://docs.google.com/spreadsheets/d/1D5nWF-vhN155aZkPfYu2wXGetA4PAdwnjPvpRC5Pom4/edit?usp=sharing",
 }
 
 def is_valid_link(url):
