@@ -97,6 +97,7 @@ intern_links = {
     "Nasiya": "https://docs.google.com/spreadsheets/d/1kPQSAkEn07XLkSlWXmWTkvuFKdZWWKrwi8f5Yy1_aPA/edit?usp=sharing",
     "Zahid": "https://docs.google.com/spreadsheets/d/1YZ9R8FcRStXW-VaCP0_D7Zkrqhsj7dYt12E86mFWCmI/edit?usp=sharing",
     "Swetha":"https://docs.google.com/spreadsheets/d/1D5nWF-vhN155aZkPfYu2wXGetA4PAdwnjPvpRC5Pom4/edit?usp=sharing",
+    "Riya":"https://docs.google.com/spreadsheets/d/1BmGbpYnwOlw6Vjx0voFa4WzIVHvC_-tC5cmuLCXfzck/edit?usp=sharing"
 }
 
 def is_valid_link(url):
