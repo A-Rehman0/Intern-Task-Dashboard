@@ -186,7 +186,7 @@ day_result = intern_df[intern_df['Date'].dt.date == selected_date]
 
 if not day_result.empty:
     display_result = day_result.copy()
-    display_result['Date'] = display_result['Date'].dt.strftime('%d-%mm-%Y')
+    display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
     st.dataframe(display_result, use_container_width=True, hide_index=True)
 else:
     st.markdown(
