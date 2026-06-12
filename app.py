@@ -48,7 +48,7 @@ div[data-baseweb="select"]:focus-within>div{border-color:#0d47a1 !important;box-
 .no-sheet{background:#fce4ec;border:1.5px solid #f48fb1;color:#880e4f;padding:13px 18px;border-radius:10px;font-weight:700;text-align:center;}
 .empty-state{background:#fff8e1;border:1.5px solid #ffe082;color:#bf360c;padding:14px;border-radius:10px;font-weight:700;text-align:center;}
 .footer-note{margin-top:20px;padding:11px 16px;border-radius:10px;background:#dce8f9;color:#0d47a1;font-size:12px;font-weight:600;display:flex;gap:20px;}
-[data-testid="stExpander"]{border:1.5px solid #b0c8f0 !important;border-radius:10px !important;}</style>
+[data-testid="stExpander"]{border:1.5px solid #0d47a1 !important;border-radius:10px !important;}</style>
 """, unsafe_allow_html=True)
 
 
