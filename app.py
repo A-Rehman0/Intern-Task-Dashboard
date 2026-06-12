@@ -322,7 +322,7 @@ ClubPresidentPRN → only if found; never invent
 ClubMentorID → leave blank
 ClubMentorName → only if found; never invent
 DataCollectedByID → leave blank
-DataCollectedByName → always set to {Intern}
+DataCollectedByName → always set to {intern}
 
 STRICT RULES:
 
