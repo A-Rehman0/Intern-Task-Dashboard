@@ -281,15 +281,15 @@ STEP 2 — OUTPUT TABLE (immediately after searching)
 
 ════════════════════════════════
 
-Output one row per club. All 25 columns, every row, no exceptions.
+Output one row per club. Exactly 25 columns in this exact order, every row, no exceptions:
 
 | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
-COLUMN RULES:
+COLUMN RULES (follow column positions strictly — do NOT shift values between columns):
 
-GroupMemberID → always set to 6
-SchoolID → always set to {school_id}
-ClubID → leave blank
-SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
+Column 1 — GroupMemberID → always set to 6
+Column 2 — SchoolID → always set to {school_id}
+Column 3 — ClubID → leave blank
+Column 4 — SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
 
 INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
 
@@ -300,29 +300,27 @@ Examples:
 → "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
 
 → "Indian Institute of Technology Bombay" → IITB001, IITB002…
-
-→ "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
-ClubName → official full name of the club
-ClubSchoolName → common short name or abbreviation
-ClubDescription → one sentence describing the club's purpose
-ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
-ClubStatus → Active (default unless known otherwise)
-ClubContactNumber → only if found; never invent
-ClubLocation → college name and address
-ClubWebsite → only if found; never invent
-ClubEmail → only if found; never invent
-SocialLinks → only if found; never invent
-ClubImagePath → leave blank
-PrimarySponsorID → leave blank
-PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
-ClubBudget → leave blank
-ClubPresidentID → leave blank
-ClubPresidentName → only if found; never invent
-ClubPresidentPRN → only if found; never invent
-ClubMentorID → leave blank
-ClubMentorName → only if found; never invent
-DataCollectedByID → leave blank
-DataCollectedByName → always set to {intern}
+Column 5 — ClubName → official full name of the club
+Column 6 — ClubSchoolName → common short name or abbreviation
+Column 7 — ClubDescription → one sentence describing the club's purpose
+Column 8 — ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
+Column 9 — ClubStatus → Active (default unless known otherwise)
+Column 10 — ClubContactNumber → only if found; never invent
+Column 11 — ClubLocation → college name and address
+Column 12 — ClubWebsite → only if found; never invent
+Column 13 — ClubEmail → only if found; never invent
+Column 14 — SocialLinks → only if found; never invent
+Column 15 — ClubImagePath → leave blank
+Column 16 — PrimarySponsorID → leave blank
+Column 17 — PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
+Column 18 — ClubBudget → leave blank
+Column 19 — ClubPresidentID → leave blank
+Column 20 — ClubPresidentName → only if found; never invent
+Column 21 — ClubPresidentPRN → only if found; never invent
+Column 22 — ClubMentorID → leave blank
+Column 23 — ClubMentorName → only if found; never invent
+Column 24 — DataCollectedByID → leave blank
+Column 25 — DataCollectedByName → always set to {Intern} — THIS MUST GO IN COLUMN 25 ONLY, NOT IN COLUMN 24
 
 STRICT RULES:
 
@@ -332,7 +330,11 @@ STRICT RULES:
 
 ✗ Never truncate the table
 
+✗ Never shift column values — every column must match its number above exactly
+
 ✓ Blank cells are fine and expected
+
+✓ Always output exactly 25 pipe-separated values per row
 After the table write:
 
 Total clubs found: [N]
