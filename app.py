@@ -84,6 +84,7 @@ today = pd.Timestamp.now(tz="Asia/Kolkata").date()
 df['Date'] = df['Date'].dt.tz_localize(None)
 df = df[df['Date'].dt.date <= today].sort_values("Date")
 df['Day'] = df['Date'].dt.strftime('%A')
+df['Date'] = df['Date'].dt.date
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
 
 
