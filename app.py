@@ -340,6 +340,7 @@ Total clubs found: [N]
 Sources visited: [list]
 Clubs with incomplete data: [N]
 """
+                    st.success("✅ Prompt ready — use the copy button (top-right of box below)")
                     st.code(prompt, language="text")
 
 
