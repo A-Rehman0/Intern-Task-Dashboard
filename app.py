@@ -289,7 +289,7 @@ Header (copy exactly):
 | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
 Example row (notice column 24 is empty, column 25 has the intern name):
 
-| 6 | {school_id} | | CCET001 | Club Name | Short Name | Description | Technical | Active | | College Address | | | | | | Sponsor | | | | | | Mentor | | {Intern} |
+| 6 | {school_id} | | CCET001 | Club Name | Short Name | Description | Technical | Active | | College Address | | | | | | Sponsor | | | | | | Mentor | | {intern} |
 COLUMN RULES:
 
 Col 1 — GroupMemberID → 6
@@ -316,7 +316,7 @@ Col 21 — ClubPresidentPRN → only if found; else (empty)
 Col 22 — ClubMentorID → (empty)
 Col 23 — ClubMentorName → only if found; else (empty)
 Col 24 — DataCollectedByID → (empty) ← ALWAYS EMPTY, NO VALUE HERE
-Col 25 — DataCollectedByName → {Intern} ← ALWAYS HERE, NEVER IN COL 24
+Col 25 — DataCollectedByName → {intern} ← ALWAYS HERE, NEVER IN COL 24
 
 STRICT RULES:
 
