@@ -230,13 +230,21 @@ with st.expander("Click an institute to generate a research prompt"):
             with cols[i % 5]:
                 if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
                     prompt = f"""You are a web research agent with live browsing access.
+
 Your ONLY job: find every student club, committee, cell,
+
 association, and organization at {inst} and output a table.
+
 NO explanations. NO excuses. NO asking for more info.
+
 If a field is not found, leave it blank. Start the table immediately.
+
 ════════════════════════════════
+
 STEP 1 — SEARCH (do this silently)
+
 ════════════════════════════════
+
 Search the web for ALL of the following one by one:
 
 "{inst} student clubs"
@@ -258,6 +266,7 @@ Search the web for ALL of the following one by one:
 "{inst} clubs site:linkedin.com"
 "{inst} annual report filetype:pdf"
 "{inst} NAAC report filetype:pdf"
+
 Also directly visit:
 Official college website homepage
 [college website]/clubs
@@ -265,9 +274,13 @@ Official college website homepage
 [college website]/student-activities
 [college website]/nss
 [college website]/ncc
+
 ════════════════════════════════
+
 STEP 2 — OUTPUT TABLE (immediately after searching)
+
 ════════════════════════════════
+
 Output one row per club. All 25 columns, every row, no exceptions.
 
 | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
@@ -276,7 +289,19 @@ COLUMN RULES:
 GroupMemberID → always set to 6
 SchoolID → always set to {school_id}
 ClubID → leave blank
-SchoolClubID → generate a short unique code per club (e.g. INST001, INST002…)
+SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
+
+INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
+
+Examples:
+
+→ "Christian College of Engineering and Technology" → CCET001, CCET002, CCET003…
+
+→ "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
+
+→ "Indian Institute of Technology Bombay" → IITB001, IITB002…
+
+→ "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
 ClubName → official full name of the club
 ClubSchoolName → common short name or abbreviation
 ClubDescription → one sentence describing the club's purpose
@@ -292,17 +317,21 @@ PrimarySponsorID → leave blank
 PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
 ClubBudget → leave blank
 ClubPresidentID → leave blank
-ClubPresidentName → only if fou nd; never invent
+ClubPresidentName → only if found; never invent
 ClubPresidentPRN → only if found; never invent
 ClubMentorID → leave blank
 ClubMentorName → only if found; never invent
 DataCollectedByID → leave blank
-DataCollectedByName → always set to {intern}
+DataCollectedByName → always set to {Intern}
 
 STRICT RULES:
+
 ✗ Never invent names, emails, phone numbers, or URLs
+
 ✗ Never write "BLANK" — just leave the cell empty
+
 ✗ Never truncate the table
+
 ✓ Blank cells are fine and expected
 After the table write:
 
