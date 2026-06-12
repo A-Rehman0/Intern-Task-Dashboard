@@ -320,7 +320,7 @@ Column 21 — ClubPresidentPRN → only if found; never invent
 Column 22 — ClubMentorID → leave blank
 Column 23 — ClubMentorName → only if found; never invent
 Column 24 — DataCollectedByID → leave blank
-Column 25 — DataCollectedByName → always set to {Intern} — THIS MUST GO IN COLUMN 25 ONLY, NOT IN COLUMN 24
+Column 25 — DataCollectedByName → always set to {intern} — THIS MUST GO IN COLUMN 25 ONLY, NOT IN COLUMN 24
 
 STRICT RULES:
 
