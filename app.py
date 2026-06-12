@@ -95,7 +95,7 @@ intern_links = {
     "Devatha Siri":   "https://docs.google.com/spreadsheets/d/1saAd0onz12WhMpnCckIqy2tHdVXHst7SvK7y-Ep0gyM/edit?hl=id&gid=0#gid=0",
     "H. Lahari":      "https://docs.google.com/spreadsheets/d/19Ugy_pFKaPZgzKjEiHHhMmBvKFx-Mjf1ixnbOe0QfA4/edit?gid=0#gid=0",
     "Nasiya": "https://docs.google.com/spreadsheets/d/1kPQSAkEn07XLkSlWXmWTkvuFKdZWWKrwi8f5Yy1_aPA/edit?usp=sharing",
-    "Zahid": "https://docs.google.com/spreadsheets/d/1YZ9R8FcRStXW-VaCP0_D7Zkrqhsj7dYt12E86mFWCmI/edit?usp=sharing",
+    "Zahid": "https://docs.google.com/spreadsheets/d/17VHHSF3oeCxTxUHzrYw77CwJkMt2L_qoUmUR1nk49b0/edit?usp=sharing",
     "Swetha":"https://docs.google.com/spreadsheets/d/1D5nWF-vhN155aZkPfYu2wXGetA4PAdwnjPvpRC5Pom4/edit?usp=sharing",
     "Riya":"https://docs.google.com/spreadsheets/d/1BmGbpYnwOlw6Vjx0voFa4WzIVHvC_-tC5cmuLCXfzck/edit?usp=sharing",
     "Kalyani":"https://docs.google.com/spreadsheets/d/1XgENzr4GJptLUpJTU3qVRITfIaTf1mU5uiy2D7Oxlrw/edit?gid=0#gid=0",
