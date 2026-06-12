@@ -237,7 +237,7 @@ association, and organization at {inst} and output a table.
 
 NO explanations. NO excuses. NO asking for more info.
 
-Start the table immediately.
+If a field is not found, leave it blank. Start the table immediately.
 
 ════════════════════════════════
 
@@ -281,54 +281,58 @@ STEP 2 — OUTPUT TABLE (immediately after searching)
 
 ════════════════════════════════
 
-Output one row per club. Exactly 25 columns in this exact order, every row, no exceptions.
-
-IMPORTANT: Each row must have EXACTLY 25 pipe ( | ) separators. Count them before outputting each row. A blank cell is just nothing between two pipes: | | — never skip a pipe.
-Header (copy exactly):
+Output one row per club. All 25 columns, every row, no exceptions.
 
 | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
-Example row (notice column 24 is empty, column 25 has the intern name):
-
-| 6 | {school_id} | | CCET001 | Club Name | Short Name | Description | Technical | Active | | College Address | | | | | | Sponsor | | | | | | Mentor | | {intern} |
 COLUMN RULES:
 
-Col 1 — GroupMemberID → 6
-Col 2 — SchoolID → {school_id}
-Col 3 — ClubID → (empty)
-Col 4 — SchoolClubID → initials of {inst} (skip: of, and, the, for) + 3-digit counter. e.g. "Christian College of Engineering and Technology" → CCET001, CCET002… | "Government Polytechnic Mungeli" → GPM001, GPM002…
-Col 5 — ClubName → official full name
-Col 6 — ClubSchoolName → short name / abbreviation
-Col 7 — ClubDescription → one sentence about the club
-Col 8 — ClubCategoryID → one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
-Col 9 — ClubStatus → Active (default)
-Col 10 — ClubContactNumber → only if found; else (empty)
-Col 11 — ClubLocation → college name and full address
-Col 12 — ClubWebsite → only if found; else (empty)
-Col 13 — ClubEmail → only if found; else (empty)
-Col 14 — SocialLinks → only if found; else (empty)
-Col 15 — ClubImagePath → (empty)
-Col 16 — PrimarySponsorID → (empty)
-Col 17 — PrimarySponsorName → sponsoring body if known; else (empty)
-Col 18 — ClubBudget → (empty)
-Col 19 — ClubPresidentID → (empty)
-Col 20 — ClubPresidentName → only if found; else (empty)
-Col 21 — ClubPresidentPRN → only if found; else (empty)
-Col 22 — ClubMentorID → (empty)
-Col 23 — ClubMentorName → only if found; else (empty)
-Col 24 — DataCollectedByID → (empty) ← ALWAYS EMPTY, NO VALUE HERE
-Col 25 — DataCollectedByName → {intern} ← ALWAYS HERE, NEVER IN COL 24
+GroupMemberID → always set to 6
+SchoolID → always set to {school_id}
+ClubID → leave blank
+SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
+
+INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
+
+Examples:
+
+→ "Christian College of Engineering and Technology" → CCET001, CCET002, CCET003…
+
+→ "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
+
+→ "Indian Institute of Technology Bombay" → IITB001, IITB002…
+
+→ "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
+ClubName → official full name of the club
+ClubSchoolName → common short name or abbreviation
+ClubDescription → one sentence describing the club's purpose
+ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
+ClubStatus → Active (default unless known otherwise)
+ClubContactNumber → only if found; never invent
+ClubLocation → college name and address
+ClubWebsite → only if found; never invent
+ClubEmail → only if found; never invent
+SocialLinks → only if found; never invent
+ClubImagePath → leave blank
+PrimarySponsorID → leave blank
+PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
+ClubBudget → leave blank
+ClubPresidentID → leave blank
+ClubPresidentName → only if found; never invent
+ClubPresidentPRN → only if found; never invent
+ClubMentorID → leave blank
+ClubMentorName → only if found; never invent
+DataCollectedByID → leave blank
+DataCollectedByName → always set to {intern}
 
 STRICT RULES:
 
 ✗ Never invent names, emails, phone numbers, or URLs
 
-✗ Never write "BLANK" — empty cell = nothing between two pipes | |
+✗ Never write "BLANK" — just leave the cell empty
 
 ✗ Never truncate the table
 
-✗ Never slide a value left into an empty column — keep every pipe in place
-
-✓ Count pipes per row: must always be exactly 25 pipes per data row
+✓ Blank cells are fine and expected
 After the table write:
 
 Total clubs found: [N]
