@@ -84,7 +84,6 @@ today = pd.Timestamp.now(tz="Asia/Kolkata").date()
 df['Date'] = df['Date'].dt.tz_localize(None)
 df = df[df['Date'].dt.date <= today].sort_values("Date")
 df['Day'] = df['Date'].dt.strftime('%A')
-df['Date'] = df['Date'].dt.date
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
 
 
@@ -186,7 +185,9 @@ st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=T
 day_result = intern_df[intern_df['Date'].dt.date == selected_date]
 
 if not day_result.empty:
-    st.dataframe(day_result, use_container_width=True, hide_index=True)
+    display_result = day_result.copy()
+    display_result['Date'] = display_result['Date'].dt.strftime('%Y-%m-%d')
+    st.dataframe(display_result, use_container_width=True, hide_index=True)
 else:
     st.markdown(
         '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
