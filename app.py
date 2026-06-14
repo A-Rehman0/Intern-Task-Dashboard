@@ -66,9 +66,10 @@ st.markdown("""
 MAIN_SHEET = "https://docs.google.com/spreadsheets/d/1zPkZg6lNEnHDySAIHUBAB8xFbZ7dM7MKN-mlSV8AKnY/export?format=csv"
 
 try:
-    df = pd.read_csv(MAIN_SHEET)
-except Exception:
-    st.error("❌ Error loading data. Check the sheet URL or network.")
+    with open("data.pkl", "rb") as f:
+        df = pickle.load(f)
+except Exception as e:
+    st.error(f"❌ Error loading data: {e}")
     st.stop()
 
 df = df.iloc[:, 1:]
