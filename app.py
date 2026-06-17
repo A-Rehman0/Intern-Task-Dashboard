@@ -105,7 +105,7 @@ intern_links = {
     "Saanvi":"https://docs.google.com/spreadsheets/d/1X1hhc0USSr2X-Mg1QDBNosRm8Fygy0nuV0uVWVjISOw/edit?gid=0#gid=0",
     "Zainab":"https://docs.google.com/spreadsheets/d/1WgOGMKu-cEXd2Bl7d2xTtAPd5ZzLF43G6B514RWNlxg/edit?gid=0#gid=0",
     "Abishek":"https://docs.google.com/spreadsheets/d/1NxjGAuZWVqTlCESNrpTwtAicR2UMECblC_neev3TXTY/edit?gid=0#gid=0",
-    "Khushi":"https://docs.google.com/spreadsheets/d/1PAUc_cXPgsStIY9yM0gH54PIjnyebJzum5pIT-OcYf4/edit?gid=0#gid=0",
+    "Khushi":"https://docs.google.com/spreadsheets/d/1tKHaXIawLgRxwsV1PBDcogDGONV64a2AcNrSIZ45kXY/edit?gid=0#gid=0",
 }
 
 def is_valid_link(url):
