@@ -174,6 +174,20 @@ if not is_completed:
                 intern_df['Clubs Collected'] = 0
     else:
         intern_df['Clubs Collected'] = 0
+    # ── TASK TABLE ───────────────────────────────────────────────────────────────
+st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
+
+day_result = intern_df[intern_df['Date'].dt.date == selected_date]
+
+if not day_result.empty:
+    display_result = day_result.copy()
+    display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
+    st.dataframe(display_result, use_container_width=True, hide_index=True)
+else:
+    st.markdown(
+        '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
+        unsafe_allow_html=True
+    )
 else:
     st.markdown(f"""
     <div style="background:#e8f5e9;border:2px solid #2e7d32;color:#1b5e20;
@@ -216,20 +230,7 @@ with k4:
     st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
 
 
-# ── TASK TABLE ───────────────────────────────────────────────────────────────
-st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
 
-day_result = intern_df[intern_df['Date'].dt.date == selected_date]
-
-if not day_result.empty:
-    display_result = day_result.copy()
-    display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
-    st.dataframe(display_result, use_container_width=True, hide_index=True)
-else:
-    st.markdown(
-        '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
-        unsafe_allow_html=True
-    )
 
 
 # ── ACTION BUTTONS ───────────────────────────────────────────────────────────
