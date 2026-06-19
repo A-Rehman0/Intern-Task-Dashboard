@@ -111,7 +111,7 @@ intern_status = {
     "AT": "Active",
     "Rahul": "Active",
     "Harshada Magar": "Active",
-    "Sreeja M": "Active",
+    "Sreeja M": "Completed",
     "Devatha Siri": "Active",
     "H. Lahari": "Active",
     "Nasiya": "Active",
