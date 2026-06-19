@@ -112,7 +112,7 @@ intern_completion_date = {
     "AT": None,
     "Rahul": None,
     "Harshada Magar": None,
-    "Sreeja M": None,
+    "Sreeja M": "Completed",
     "Devatha Siri": None,
     "H. Lahari": None,
     "Nasiya": None,
