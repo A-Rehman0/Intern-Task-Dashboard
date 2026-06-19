@@ -107,7 +107,24 @@ intern_links = {
     "Abishek":"https://docs.google.com/spreadsheets/d/1NxjGAuZWVqTlCESNrpTwtAicR2UMECblC_neev3TXTY/edit?gid=0#gid=0",
     "Khushi":"https://docs.google.com/spreadsheets/d/1tKHaXIawLgRxwsV1PBDcogDGONV64a2AcNrSIZ45kXY/edit?gid=0#gid=0",
 }
-
+intern_status = {
+    "AT": "Active",
+    "Rahul": "Active",
+    "Harshada Magar": "Active",
+    "Sreeja M": "Active",
+    "Devatha Siri": "Active",
+    "H. Lahari": "Active",
+    "Nasiya": "Active",
+    "Zahid": "Active",
+    "Swetha": "Active",
+    "Riya": "Active",
+    "Kalyani": "Active",
+    "Saanvi": "Active",
+    "Zainab": "Active",
+    "Abishek": "Active",
+    "Khushi": "Active",
+}
+# 👉 To mark someone's internship complete, just change their value to "Completed"
 def is_valid_link(url):
     return url and "xxxxx" not in url and "yyyyy" not in url
 
@@ -123,6 +140,7 @@ def sheet_csv_url(link):
 st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
 f1, f2 = st.columns([2, 2])
 
+
 with f1:
     intern = st.selectbox(
         "Select Intern",
@@ -132,26 +150,39 @@ with f1:
 
 with f2:
     selected_date = st.date_input("Select Date", value=today)
+status_label = intern_status.get(intern.strip(), "Active")
+badge_color = "#2e7d32" if status_label == "Completed" else "#0d47a1"
+st.markdown(f'<span style="background:{badge_color};color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">{status_label}</span>', unsafe_allow_html=True)
 
 intern_df = df[df['Intern Name'] == intern].sort_values('Date')
+is_completed = intern_status.get(intern.strip(), "Active") == "Completed"
 
+if not is_completed:
 # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
-if is_valid_link(intern_links.get(intern.strip(), "")):
-    csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
-    if csv_url:
-        try:
-            _idf = pd.read_csv(csv_url)
-            _idf['SchoolID'] = _idf['SchoolID'].astype(str).str.strip()
-            clubs_count = _idf.groupby('SchoolID').size().reset_index(name='Clubs Collected')
-            intern_df = intern_df.copy()
-            intern_df['SchoolID'] = intern_df['SchoolID'].astype(str).str.strip()
-            intern_df = intern_df.merge(clubs_count, on='SchoolID', how='left')
-            intern_df['Clubs Collected'] = intern_df['Clubs Collected'].fillna(0).astype(int)
-        except Exception:
-            intern_df['Clubs Collected'] = 0
+    if is_valid_link(intern_links.get(intern.strip(), "")):
+        csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
+        if csv_url:
+            try:
+                _idf = pd.read_csv(csv_url)
+                _idf['SchoolID'] = _idf['SchoolID'].astype(str).str.strip()
+                clubs_count = _idf.groupby('SchoolID').size().reset_index(name='Clubs Collected')
+                intern_df = intern_df.copy()
+                intern_df['SchoolID'] = intern_df['SchoolID'].astype(str).str.strip()
+                intern_df = intern_df.merge(clubs_count, on='SchoolID', how='left')
+                intern_df['Clubs Collected'] = intern_df['Clubs Collected'].fillna(0).astype(int)
+            except Exception:
+                intern_df['Clubs Collected'] = 0
+    else:
+        intern_df['Clubs Collected'] = 0
 else:
-    intern_df['Clubs Collected'] = 0
-
+    st.markdown(f"""
+    <div style="background:#e8f5e9;border:2px solid #2e7d32;color:#1b5e20;
+                padding:40px;border-radius:14px;text-align:center;margin-top:20px;">
+        <div style="font-size:48px;margin-bottom:10px;">✅</div>
+        <div style="font-size:22px;font-weight:800;">Internship Completed</div>
+        <div style="font-size:14px;margin-top:6px;">{intern}'s internship has been marked as completed.</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ── CLUB COUNT ───────────────────────────────────────────────────────────────
 sheet_task_count = 0
