@@ -125,6 +125,7 @@ intern_completion_date = {
     "Abishek": None,
     "Khushi": None,
 }
+intern_status = {k: ("Completed" if v == "Completed" else "Active") for k, v in intern_completion_date.items()}
 # 👉 To mark someone's internship completed, set their value to a date string, e.g. "2026-06-30"
 # Before that date → dashboard works exactly as before
 # On/after that date → shows "Internship Completed" status instead
