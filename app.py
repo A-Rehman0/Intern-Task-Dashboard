@@ -168,7 +168,7 @@ if completion_str:
 
 # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
 if not is_completed:
-is_completed = intern_status.get(intern.strip(), "Active") == "Completed"
+    is_completed = intern_status.get(intern.strip(), "Active") == "Completed"
 
 if not is_completed:
 # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
