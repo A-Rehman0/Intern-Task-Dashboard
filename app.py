@@ -163,7 +163,9 @@ intern_df = df[df['Intern Name'] == intern].sort_values('Date')
 
 completion_str = intern_completion_date.get(intern.strip())
 is_completed = False
-if completion_str:
+if completion_str == "Completed":
+    is_completed = True
+elif completion_str:
     completion_date = pd.to_datetime(completion_str).date()
     is_completed = selected_date >= completion_date
 
