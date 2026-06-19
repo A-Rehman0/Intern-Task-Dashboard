@@ -403,7 +403,7 @@ Clubs with incomplete data: [N]
 " style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
 """, height=280)
 
-else:
+if is_completed:
     st.markdown(f"""
     <div style="background:#e8f5e9;border:2px solid #2e7d32;color:#1b5e20;
                 padding:40px;border-radius:14px;text-align:center;margin-top:20px;">
