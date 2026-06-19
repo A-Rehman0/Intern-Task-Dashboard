@@ -170,8 +170,8 @@ if completion_str:
 if not is_completed:
     is_completed = intern_status.get(intern.strip(), "Active") == "Completed"
 
-if not is_completed:
 # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
+if not is_completed:
     if is_valid_link(intern_links.get(intern.strip(), "")):
         csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
         if csv_url:
