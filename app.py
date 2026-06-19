@@ -174,20 +174,54 @@ if not is_completed:
                 intern_df['Clubs Collected'] = 0
     else:
         intern_df['Clubs Collected'] = 0
+    
+    
+    # ── CLUB COUNT ───────────────────────────────────────────────────────────────
+    sheet_task_count = 0
+    sheet_url = intern_links.get(intern.strip(), "")
+    
+    if is_valid_link(sheet_url):
+        csv_url = sheet_csv_url(sheet_url)
+        if csv_url:
+            try:
+                intern_sheet_df = pd.read_csv(csv_url)
+                sheet_task_count = len(intern_sheet_df)
+            except Exception:
+                sheet_task_count = 0
+    
+    
+    # ── KPIs ─────────────────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
+    
+    task_count  = len(intern_df)
+    today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
+    active_days = intern_df['Date'].dt.date.nunique()
+    
+    k1, k2, k3, k4 = st.columns(4)
+    with k1:
+        st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
+    with k2:
+        st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
+    with k3:
+        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
+    with k4:
+        st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
+    
+    
     # ── TASK TABLE ───────────────────────────────────────────────────────────────
-st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
-
-day_result = intern_df[intern_df['Date'].dt.date == selected_date]
-
-if not day_result.empty:
-    display_result = day_result.copy()
-    display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
-    st.dataframe(display_result, use_container_width=True, hide_index=True)
-else:
-    st.markdown(
-        '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
+    
+    day_result = intern_df[intern_df['Date'].dt.date == selected_date]
+    
+    if not day_result.empty:
+        display_result = day_result.copy()
+        display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
+        st.dataframe(display_result, use_container_width=True, hide_index=True)
+    else:
+        st.markdown(
+            '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
+            unsafe_allow_html=True
+        )
 else:
     st.markdown(f"""
     <div style="background:#e8f5e9;border:2px solid #2e7d32;color:#1b5e20;
@@ -197,41 +231,6 @@ else:
         <div style="font-size:14px;margin-top:6px;">{intern}'s internship has been marked as completed.</div>
     </div>
     """, unsafe_allow_html=True)
-
-# ── CLUB COUNT ───────────────────────────────────────────────────────────────
-sheet_task_count = 0
-sheet_url = intern_links.get(intern.strip(), "")
-
-if is_valid_link(sheet_url):
-    csv_url = sheet_csv_url(sheet_url)
-    if csv_url:
-        try:
-            intern_sheet_df = pd.read_csv(csv_url)
-            sheet_task_count = len(intern_sheet_df)
-        except Exception:
-            sheet_task_count = 0
-
-
-# ── KPIs ─────────────────────────────────────────────────────────────────────
-st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
-
-task_count  = len(intern_df)
-today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
-active_days = intern_df['Date'].dt.date.nunique()
-
-k1, k2, k3, k4 = st.columns(4)
-with k1:
-    st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
-with k2:
-    st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
-with k3:
-    st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
-with k4:
-    st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
-
-
-
-
 
 # ── ACTION BUTTONS ───────────────────────────────────────────────────────────
 st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
