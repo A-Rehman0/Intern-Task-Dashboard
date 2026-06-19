@@ -107,23 +107,26 @@ intern_links = {
     "Abishek":"https://docs.google.com/spreadsheets/d/1NxjGAuZWVqTlCESNrpTwtAicR2UMECblC_neev3TXTY/edit?gid=0#gid=0",
     "Khushi":"https://docs.google.com/spreadsheets/d/1tKHaXIawLgRxwsV1PBDcogDGONV64a2AcNrSIZ45kXY/edit?gid=0#gid=0",
 }
-intern_status = {
-    "AT": "Active",
-    "Rahul": "Active",
-    "Harshada Magar": "Active",
-    "Sreeja M": "Completed",
-    "Devatha Siri": "Active",
-    "H. Lahari": "Active",
-    "Nasiya": "Active",
-    "Zahid": "Active",
-    "Swetha": "Active",
-    "Riya": "Active",
-    "Kalyani": "Active",
-    "Saanvi": "Active",
-    "Zainab": "Active",
-    "Abishek": "Active",
-    "Khushi": "Active",
+intern_completion_date = {
+    "AT": None,
+    "Rahul": None,
+    "Harshada Magar": None,
+    "Sreeja M": None,
+    "Devatha Siri": None,
+    "H. Lahari": None,
+    "Nasiya": None,
+    "Zahid": None,
+    "Swetha": None,
+    "Riya": None,
+    "Kalyani": None,
+    "Saanvi": None,
+    "Zainab": None,
+    "Abishek": None,
+    "Khushi": None,
 }
+# 👉 To mark someone's internship completed, set their value to a date string, e.g. "2026-06-30"
+# Before that date → dashboard works exactly as before
+# On/after that date → shows "Internship Completed" status instead
 # 👉 To mark someone's internship complete, just change their value to "Completed"
 def is_valid_link(url):
     return url and "xxxxx" not in url and "yyyyy" not in url
@@ -155,8 +158,12 @@ badge_color = "#2e7d32" if status_label == "Completed" else "#0d47a1"
 st.markdown(f'<span style="background:{badge_color};color:#fff;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;">{status_label}</span>', unsafe_allow_html=True)
 
 intern_df = df[df['Intern Name'] == intern].sort_values('Date')
-is_completed = intern_status.get(intern.strip(), "Active") == "Completed"
-
+completion_str = intern_completion_date.get(intern.strip())
+is_completed = False
+if completion_str:
+    completion_date = pd.to_datetime(completion_str).date()
+    is_completed = selected_date >= completion_date
+    
 if not is_completed:
 # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
     if is_valid_link(intern_links.get(intern.strip(), "")):
@@ -174,7 +181,7 @@ if not is_completed:
                 intern_df['Clubs Collected'] = 0
     else:
         intern_df['Clubs Collected'] = 0
-    
+
     
     # ── CLUB COUNT ───────────────────────────────────────────────────────────────
     sheet_task_count = 0
@@ -222,175 +229,175 @@ if not is_completed:
             '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
             unsafe_allow_html=True
         )
+
+
+    # ── ACTION BUTTONS ───────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        if is_valid_link(sheet_url):
+                st.link_button("📊 Open Your Data Sheet", sheet_url, use_container_width=True)
+        else:
+            st.markdown('<div class="no-sheet">⚠️ Spreadsheet Not Submitted</div>', unsafe_allow_html=True)
+    with c2:
+        st.link_button("📝 Mark Attendance", "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform", use_container_width=True)
+    
+    
+    # ── INTERN SHEET DATA ────────────────────────────────────────────────────────
+    if is_valid_link(sheet_url):
+        csv_url = sheet_csv_url(sheet_url)
+        if csv_url:
+            st.markdown('<div class="sh">📂 &nbsp;Collected Data</div>', unsafe_allow_html=True)
+            with st.expander(f"📄 View {intern}'s Sheet"):
+                try:
+                    intern_sheet_df = pd.read_csv(csv_url)
+                    st.dataframe(intern_sheet_df, use_container_width=True, hide_index=True)
+                except Exception:
+                    st.error("Unable to load sheet data.")
+    
+    
+    # ── PROMPT BUILDER ───────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
+    
+    institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
+    with st.expander("Click an institute to generate a research prompt"):
+        if not institutes:
+            st.warning("No institute names found for the selected date.")
+        else:
+            cols = st.columns(min(len(institutes), 5))
+            for i, (inst, school_id) in enumerate(institutes):
+                with cols[i % 5]:
+                    if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
+                        prompt = f"""You are a web research agent with live browsing access.
+    
+    Your ONLY job: find every student club, committee, cell,
+    
+    association, and organization at {inst} and output a table.
+    
+    NO explanations. NO excuses. NO asking for more info.
+    
+    If a field is not found, leave it blank. Start the table immediately.
+    
+    ════════════════════════════════
+    
+    STEP 1 — SEARCH (do this silently)
+    
+    ════════════════════════════════
+    
+    Search the web for ALL of the following one by one:
+    
+    "{inst} student clubs"
+    "{inst} student organizations"
+    "{inst} technical clubs"
+    "{inst} cultural clubs"
+    "{inst} NSS NCC"
+    "{inst} IEEE ISTE CSI ACM chapter"
+    "{inst} entrepreneurship cell innovation cell"
+    "{inst} coding club robotics club"
+    "{inst} dance music drama club"
+    "{inst} photography literary club"
+    "{inst} placement committee student council"
+    "{inst} women development cell"
+    "{inst} environment club"
+    "{inst} fest committee"
+    "{inst} committees cells"
+    "{inst} clubs site:instagram.com"
+    "{inst} clubs site:linkedin.com"
+    "{inst} annual report filetype:pdf"
+    "{inst} NAAC report filetype:pdf"
+    
+    Also directly visit:
+    Official college website homepage
+    [college website]/clubs
+    [college website]/committees
+    [college website]/student-activities
+    [college website]/nss
+    [college website]/ncc
+    
+    ════════════════════════════════
+    
+    STEP 2 — OUTPUT TABLE (immediately after searching)
+    
+    ════════════════════════════════
+    
+    Output one row per club. All 25 columns, every row, no exceptions.
+    
+    | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
+    COLUMN RULES:
+    
+    GroupMemberID → always set to 6
+    SchoolID → always set to {school_id}
+    ClubID → leave blank
+    SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
+    
+    INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
+    
+    Examples:
+    
+    → "Christian College of Engineering and Technology" → CCET001, CCET002, CCET003…
+    
+    → "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
+    
+    → "Indian Institute of Technology Bombay" → IITB001, IITB002…
+    
+    → "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
+    ClubName → official full name of the club
+    ClubSchoolName → common short name or abbreviation
+    ClubDescription → one sentence describing the club's purpose
+    ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
+    ClubStatus → Active (default unless known otherwise)
+    ClubContactNumber → only if found; never invent
+    ClubLocation → college name and address
+    ClubWebsite → only if found; never invent
+    ClubEmail → only if found; never invent
+    SocialLinks → only if found; never invent
+    ClubImagePath → leave blank
+    PrimarySponsorID → leave blank
+    PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
+    ClubBudget → leave blank
+    ClubPresidentID → leave blank
+    ClubPresidentName → only if found; never invent
+    ClubPresidentPRN → only if found; never invent
+    ClubMentorID → leave blank
+    ClubMentorName → only if found; never invent
+    DataCollectedByID → leave blank
+    DataCollectedByName → always set to {intern}
+    
+    STRICT RULES:
+    
+    ✗ Never invent names, emails, phone numbers, or URLs
+    
+    ✗ Never write "BLANK" — just leave the cell empty
+    
+    ✗ Never truncate the table
+    
+    ✓ Blank cells are fine and expected
+    After the table write:
+    
+    Total clubs found: [N]
+    Sources visited: [list]
+    Clubs with incomplete data: [N]
+    """
+                        st.components.v1.html(f"""
+    <textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
+    <button onclick="
+      navigator.clipboard.writeText(document.getElementById('prompt-box').value);
+      this.textContent='✅ Copied!';
+      this.style.background='#2e7d32';
+      setTimeout(()=>{{this.textContent='📋 Copy Prompt';this.style.background='#0d47a1'}},2000)
+    " style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
+    """, height=280)
 else:
     st.markdown(f"""
     <div style="background:#e8f5e9;border:2px solid #2e7d32;color:#1b5e20;
                 padding:40px;border-radius:14px;text-align:center;margin-top:20px;">
         <div style="font-size:48px;margin-bottom:10px;">✅</div>
         <div style="font-size:22px;font-weight:800;">Internship Completed</div>
-        <div style="font-size:14px;margin-top:6px;">{intern}'s internship has been marked as completed.</div>
+        <div style="font-size:14px;margin-top:6px;">{intern}'s internship was completed on {pd.to_datetime(completion_str).strftime('%d-%b-%Y')}.</div>
     </div>
     """, unsafe_allow_html=True)
-
-# ── ACTION BUTTONS ───────────────────────────────────────────────────────────
-st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
-
-c1, c2 = st.columns(2)
-with c1:
-    if is_valid_link(sheet_url):
-            st.link_button("📊 Open Your Data Sheet", sheet_url, use_container_width=True)
-    else:
-        st.markdown('<div class="no-sheet">⚠️ Spreadsheet Not Submitted</div>', unsafe_allow_html=True)
-with c2:
-    st.link_button("📝 Mark Attendance", "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform", use_container_width=True)
-
-
-# ── INTERN SHEET DATA ────────────────────────────────────────────────────────
-if is_valid_link(sheet_url):
-    csv_url = sheet_csv_url(sheet_url)
-    if csv_url:
-        st.markdown('<div class="sh">📂 &nbsp;Collected Data</div>', unsafe_allow_html=True)
-        with st.expander(f"📄 View {intern}'s Sheet"):
-            try:
-                intern_sheet_df = pd.read_csv(csv_url)
-                st.dataframe(intern_sheet_df, use_container_width=True, hide_index=True)
-            except Exception:
-                st.error("Unable to load sheet data.")
-
-
-# ── PROMPT BUILDER ───────────────────────────────────────────────────────────
-st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
-
-institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
-with st.expander("Click an institute to generate a research prompt"):
-    if not institutes:
-        st.warning("No institute names found for the selected date.")
-    else:
-        cols = st.columns(min(len(institutes), 5))
-        for i, (inst, school_id) in enumerate(institutes):
-            with cols[i % 5]:
-                if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
-                    prompt = f"""You are a web research agent with live browsing access.
-
-Your ONLY job: find every student club, committee, cell,
-
-association, and organization at {inst} and output a table.
-
-NO explanations. NO excuses. NO asking for more info.
-
-If a field is not found, leave it blank. Start the table immediately.
-
-════════════════════════════════
-
-STEP 1 — SEARCH (do this silently)
-
-════════════════════════════════
-
-Search the web for ALL of the following one by one:
-
-"{inst} student clubs"
-"{inst} student organizations"
-"{inst} technical clubs"
-"{inst} cultural clubs"
-"{inst} NSS NCC"
-"{inst} IEEE ISTE CSI ACM chapter"
-"{inst} entrepreneurship cell innovation cell"
-"{inst} coding club robotics club"
-"{inst} dance music drama club"
-"{inst} photography literary club"
-"{inst} placement committee student council"
-"{inst} women development cell"
-"{inst} environment club"
-"{inst} fest committee"
-"{inst} committees cells"
-"{inst} clubs site:instagram.com"
-"{inst} clubs site:linkedin.com"
-"{inst} annual report filetype:pdf"
-"{inst} NAAC report filetype:pdf"
-
-Also directly visit:
-Official college website homepage
-[college website]/clubs
-[college website]/committees
-[college website]/student-activities
-[college website]/nss
-[college website]/ncc
-
-════════════════════════════════
-
-STEP 2 — OUTPUT TABLE (immediately after searching)
-
-════════════════════════════════
-
-Output one row per club. All 25 columns, every row, no exceptions.
-
-| GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
-COLUMN RULES:
-
-GroupMemberID → always set to 6
-SchoolID → always set to {school_id}
-ClubID → leave blank
-SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
-
-INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
-
-Examples:
-
-→ "Christian College of Engineering and Technology" → CCET001, CCET002, CCET003…
-
-→ "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
-
-→ "Indian Institute of Technology Bombay" → IITB001, IITB002…
-
-→ "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
-ClubName → official full name of the club
-ClubSchoolName → common short name or abbreviation
-ClubDescription → one sentence describing the club's purpose
-ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
-ClubStatus → Active (default unless known otherwise)
-ClubContactNumber → only if found; never invent
-ClubLocation → college name and address
-ClubWebsite → only if found; never invent
-ClubEmail → only if found; never invent
-SocialLinks → only if found; never invent
-ClubImagePath → leave blank
-PrimarySponsorID → leave blank
-PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
-ClubBudget → leave blank
-ClubPresidentID → leave blank
-ClubPresidentName → only if found; never invent
-ClubPresidentPRN → only if found; never invent
-ClubMentorID → leave blank
-ClubMentorName → only if found; never invent
-DataCollectedByID → leave blank
-DataCollectedByName → always set to {intern}
-
-STRICT RULES:
-
-✗ Never invent names, emails, phone numbers, or URLs
-
-✗ Never write "BLANK" — just leave the cell empty
-
-✗ Never truncate the table
-
-✓ Blank cells are fine and expected
-After the table write:
-
-Total clubs found: [N]
-Sources visited: [list]
-Clubs with incomplete data: [N]
-"""
-                    st.components.v1.html(f"""
-<textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
-<button onclick="
-  navigator.clipboard.writeText(document.getElementById('prompt-box').value);
-  this.textContent='✅ Copied!';
-  this.style.background='#2e7d32';
-  setTimeout(()=>{{this.textContent='📋 Copy Prompt';this.style.background='#0d47a1'}},2000)
-" style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
-""", height=280)
-
-
+    
 # ── FOOTER NOTE ──────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="footer-note">
