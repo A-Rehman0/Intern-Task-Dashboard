@@ -379,15 +379,16 @@ if not is_completed:
     Sources visited: [list]
     Clubs with incomplete data: [N]
     """
-                        st.components.v1.html(f"""
-    <textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
-    <button onclick="
-      navigator.clipboard.writeText(document.getElementById('prompt-box').value);
-      this.textContent='✅ Copied!';
-      this.style.background='#2e7d32';
-      setTimeout(()=>{{this.textContent='📋 Copy Prompt';this.style.background='#0d47a1'}},2000)
-    " style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
-    """, height=280)
+                    st.components.v1.html(f"""
+<textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
+<button onclick="
+  navigator.clipboard.writeText(document.getElementById('prompt-box').value);
+  this.textContent='✅ Copied!';
+  this.style.background='#2e7d32';
+  setTimeout(()=>{{this.textContent='📋 Copy Prompt';this.style.background='#0d47a1'}},2000)
+" style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
+""", height=280)
+
 else:
     st.markdown(f"""
     <div style="background:#e8f5e9;border:2px solid #2e7d32;color:#1b5e20;
