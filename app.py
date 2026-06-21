@@ -118,6 +118,24 @@ def sheet_csv_url(link):
     except Exception:
         return None
 
+intern_ids = {
+    "AT":             1,
+    "Rahul":          2,
+    "Harshada Magar": 3,
+    "Sreeja M":       4,
+    "Devatha Siri":   5,
+    "H. Lahari":      6,
+    "Nasiya":         7,
+    "Zahid":          8,
+    "Swetha":         9,
+    "Riya":           10,
+    "Kalyani":        11,
+    "Saanvi":         12,
+    "Zainab":         13,
+    "Abishek":        14,
+    "Khushi":         15,
+}
+
 
 # ── FILTERS ──────────────────────────────────────────────────────────────────
 st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
@@ -226,7 +244,7 @@ if is_valid_link(sheet_url):
             except Exception:
                 st.error("Unable to load sheet data.")
 
-
+intern_id = intern_ids.get(intern.strip(), "")
 # ── PROMPT BUILDER ───────────────────────────────────────────────────────────
 st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
 
@@ -331,7 +349,7 @@ ClubPresidentName → only if found; never invent
 ClubPresidentPRN → only if found; never invent
 ClubMentorID → leave blank
 ClubMentorName → only if found; never invent
-DataCollectedByID → leave blank
+DataCollectedByID → always set to {intern_id}
 DataCollectedByName → always set to {intern}
 
 STRICT RULES:
