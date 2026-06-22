@@ -131,8 +131,8 @@ intern_ids = {
     "Riya":           3489117,
     "Kalyani":        3489111,
     "Saanvi":         3489118,
-    "Zainab":         13,
-    "Abishek":        14,
+    "Zainab":         3489797,
+    "Abishek":        3489176,
     "Khushi":         15,
 }
 
