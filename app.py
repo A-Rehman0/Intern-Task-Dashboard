@@ -136,6 +136,7 @@ intern_ids = {
     "Zainab":         3489797,
     "Abishek":        3489176,
     "Khushi":         15,
+    "Vidyanand":      ""   ,
 }
 
 
