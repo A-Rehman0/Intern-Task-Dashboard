@@ -274,7 +274,7 @@ association, and organization at {inst} and output a table.
 
 NO explanations. NO excuses. NO asking for more info.
 
-If a field is not found, leave it blank. Start the table immediately.
+If a field is not found after exhaustive search, leave it blank. Start the table immediately.
 
 ════════════════════════════════
 
@@ -312,6 +312,26 @@ Official college website homepage
 [college website]/nss
 [college website]/ncc
 
+────────────────────────────────
+STEP 1B — MANDATORY CONTACT/EMAIL/LINK SEARCH (per club)
+────────────────────────────────
+
+For EVERY club identified in Step 1, before writing its row, run an additional targeted search pass to find its ClubContactNumber, ClubEmail, and ClubWebsite (including social media page counted as a website/link). Do not skip this pass even if Step 1 already surfaced a name for the club.
+
+For each club, search:
+"[Club Name] {inst} contact"
+"[Club Name] {inst} email"
+"[Club Name] {inst} Instagram OR LinkedIn OR website"
+site:instagram.com "[Club Name]" {inst}
+site:linkedin.com "[Club Name]" {inst}
+
+Also check:
+- The club's listing on [college website]/clubs or /committees (often has a contact block)
+- The college's official social media bio/link tree for club sub-pages
+- Any fest or department page that lists club coordinators' contact details
+
+These three fields (ClubContactNumber, ClubEmail, ClubWebsite) are REQUIRED fields — do not treat them as optional. Every club row must show a genuine, verified value in these three columns whenever such information exists anywhere online. Only leave them blank if, after this dedicated search pass, no such information could be found anywhere. Never guess, construct, or infer a plausible-looking number, email, or URL — an invented value is worse than a blank one.
+
 ════════════════════════════════
 
 STEP 2 — OUTPUT TABLE (immediately after searching)
@@ -321,6 +341,7 @@ STEP 2 — OUTPUT TABLE (immediately after searching)
 Output one row per club. All 25 columns, every row, no exceptions.
 
 | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
+
 COLUMN RULES:
 
 GroupMemberID → always set to 6
@@ -339,15 +360,16 @@ Examples:
 → "Indian Institute of Technology Bombay" → IITB001, IITB002…
 
 → "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
+
 ClubName → official full name of the club
 ClubSchoolName → common short name or abbreviation
 ClubDescription → one sentence describing the club's purpose
 ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
 ClubStatus → Active (default unless known otherwise)
-ClubContactNumber → only if found; never invent
+ClubContactNumber → MANDATORY — search exhaustively per Step 1B; only found real values, never invent; leave blank only if truly unfindable
 ClubLocation → college name and address
-ClubWebsite → only if found; never invent
-ClubEmail → only if found; never invent
+ClubWebsite → MANDATORY — search exhaustively per Step 1B; only found real URLs (official page or social media), never invent; leave blank only if truly unfindable
+ClubEmail → MANDATORY — search exhaustively per Step 1B; only found real emails, never invent; leave blank only if truly unfindable
 SocialLinks → only if found; never invent
 ClubImagePath → leave blank
 PrimarySponsorID → leave blank
@@ -363,18 +385,18 @@ DataCollectedByName → always set to {intern}
 
 STRICT RULES:
 
-✗ Never invent names, emails, phone numbers, or URLs
-
+✗ Never invent names, emails, phone numbers, or URLs — even to satisfy a mandatory field
 ✗ Never write "BLANK" — just leave the cell empty
-
 ✗ Never truncate the table
+✗ Never skip the Step 1B search pass for any club, including ones found late in Step 1
+✓ Blank cells for ClubContactNumber/ClubEmail/ClubWebsite are acceptable ONLY after the mandatory search pass turns up nothing
 
-✓ Blank cells are fine and expected
 After the table write:
 
 Total clubs found: [N]
 Sources visited: [list]
 Clubs with incomplete data: [N]
+Clubs missing contact/email/website after mandatory search: [N]
 """
                     st.components.v1.html(f"""
 <textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
