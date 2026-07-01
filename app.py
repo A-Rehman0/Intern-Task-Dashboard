@@ -313,26 +313,27 @@ Official college website homepage
 [college website]/ncc
 
 ────────────────────────────────
-STEP 1B — MANDATORY FIELD SEARCH (per club)
+STEP 1B — MANDATORY CONTACT/EMAIL/LEADERSHIP SEARCH (per club)
 ────────────────────────────────
 
-For EVERY club identified in Step 1, before writing its row, run an additional targeted search pass to find its ClubContactNumber, ClubEmail, ClubWebsite, and ClubPresidentName. Do not skip this pass even if Step 1 already surfaced a name for the club.
+For EVERY club identified in Step 1, before writing its row, run an additional targeted search pass to find its ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, and ClubPresidentContact. Do not skip this pass even if Step 1 already surfaced a name for the club.
 
 For each club, search:
 "[Club Name] {inst} contact"
 "[Club Name] {inst} email"
-"[Club Name] {inst} president" OR "[Club Name] {inst} club head" OR "[Club Name] {inst} coordinator"
+"[Club Name] {inst} president OR convenor OR coordinator"
+"[Club Name] {inst} president contact"
 "[Club Name] {inst} Instagram OR LinkedIn OR website"
 site:instagram.com "[Club Name]" {inst}
 site:linkedin.com "[Club Name]" {inst}
 
 Also check:
-- The club's listing on [college website]/clubs or /committees (often has a contact block and office-bearer list)
+- The club's listing on [college website]/clubs or /committees (often has a contact block)
 - The college's official social media bio/link tree for club sub-pages
-- Any fest or department page that lists club coordinators, presidents, or contact details
-- Club Instagram/LinkedIn "About" or pinned posts, which often name the current president/head
+- Any fest or department page that lists club coordinators' or presidents' contact details
+- Official club/society leadership pages, "office bearers" or "team" pages
 
-These four fields — ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName — are REQUIRED fields, not optional. Every club row must show a genuine, verified value in these columns whenever such information exists anywhere online. Only leave a field blank if, after this dedicated search pass, no such information could be found anywhere. Never guess, construct, or infer a plausible-looking number, email, URL, or person's name — an invented value is worse than a blank one.
+These five fields — ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, ClubPresidentContact — are REQUIRED fields — do not treat them as optional. Every club row must show a genuine, verified value in these columns whenever such information exists anywhere online. Only leave them blank if, after this dedicated search pass, no such information could be found anywhere. Never guess, construct, or infer a plausible-looking number, email, name, or URL — an invented value is worse than a blank one.
 
 ════════════════════════════════
 
@@ -340,9 +341,9 @@ STEP 2 — OUTPUT TABLE (immediately after searching)
 
 ════════════════════════════════
 
-Output one row per club. All 25 columns, every row, no exceptions.
+Output one row per club. All 26 columns, every row, no exceptions.
 
-| GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
+| GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubPresidentContact | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
 
 COLUMN RULES:
 
@@ -380,6 +381,7 @@ ClubBudget → leave blank
 ClubPresidentID → leave blank
 ClubPresidentName → MANDATORY — search exhaustively per Step 1B; only found real names, never invent; leave blank only if truly unfindable
 ClubPresidentPRN → only if found; never invent
+ClubPresidentContact → MANDATORY — search exhaustively per Step 1B; only found real phone numbers or emails, never invent; leave blank only if truly unfindable
 ClubMentorID → leave blank
 ClubMentorName → only if found; never invent
 DataCollectedByID → always set to {intern_ids}
@@ -391,14 +393,14 @@ STRICT RULES:
 ✗ Never write "BLANK" — just leave the cell empty
 ✗ Never truncate the table
 ✗ Never skip the Step 1B search pass for any club, including ones found late in Step 1
-✓ Blank cells for ClubContactNumber/ClubEmail/ClubWebsite/ClubPresidentName are acceptable ONLY after the mandatory search pass turns up nothing
+✓ Blank cells for ClubContactNumber/ClubEmail/ClubWebsite/ClubPresidentName/ClubPresidentContact are acceptable ONLY after the mandatory search pass turns up nothing
 
 After the table write:
 
 Total clubs found: [N]
 Sources visited: [list]
 Clubs with incomplete data: [N]
-Clubs missing one or more mandatory fields (contact/email/website/president) after search: [N]
+Clubs missing contact/email/website/president info after mandatory search: [N]
 """
                     st.components.v1.html(f"""
 <textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
