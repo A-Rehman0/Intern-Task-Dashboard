@@ -109,7 +109,8 @@ intern_links = {
     "Vidyanand":"https://docs.google.com/spreadsheets/d/1d1Zm0FqO06502POWty34O1okxAJA-FgpvPpThqALDuc/edit?gid=0#gid=0",
     "Saheeb":"https://docs.google.com/spreadsheets/d/1OdQaurem2Mmch7DWzgdTHnrEP_BVPgOaXTWkiHVdyCY/edit?gid=0#gid=0",
     "Afrah":"https://docs.google.com/spreadsheets/d/1xQVxMyCt0O1CQNy4VwZJqZW3WNznwrD2MyB2aPLxHsM/edit?usp=sharing_eip_se_dm&ts=6a435747",
-    "Vishvesh":"https://docs.google.com/spreadsheets/d/1yY6mCyf1xvJ9qr0JGk-tAGd4O0asjLMXA3fHNSw7bSU/edit?gid=0#gid=0"
+    "Vishvesh":"https://docs.google.com/spreadsheets/d/1yY6mCyf1xvJ9qr0JGk-tAGd4O0asjLMXA3fHNSw7bSU/edit?gid=0#gid=0",
+    "Anshika":"https://docs.google.com/spreadsheets/d/1JMRDaUc9wDskwYQ__vNKeMoEcbICXwxzfA82Y2Zysl4/edit?gid=0#gid=0",
     
 }
 
@@ -138,11 +139,12 @@ intern_ids = {
     "Saanvi":         3489118,
     "Zainab":         3489797,
     "Abishek":        3489176,
-    "Khushi":         15,
-    "Vidyanand":      ""   ,
+    "Khushi":"",
+    "Vidyanand":""   ,
     "Saheeb":"",
     "Afrah":"",
     "Vishvesh":"",
+    "Anshika":"",
 }
 
 
