@@ -3,6 +3,10 @@ import pandas as pd
 from datetime import datetime
 import pickle
 
+@st.cache_data(ttl=300)
+def load_sheet_csv(url):
+    return pd.read_csv(url)
+
 # ── PAGE CONFIG ──────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Blue Planet Dashboard", layout="wide")
 
@@ -11,7 +15,31 @@ st.markdown("""
 <style>
 #MainMenu,footer,header{visibility:hidden;}
 .block-container{padding:0 2rem 3rem !important;margin-top:0 !important;background:#eef3fb;max-width:100% !important;}
-
+.stTabs{margin-top:-20px;}
+.stTabs [data-baseweb="tab-list"]{gap:0px;margin-bottom:0 !important;padding-bottom:0 !important;}
+.stTabs [data-baseweb="tab"]{height:16px;padding:0 16px;background:#fff;border-radius:8px 8px 0 0;}
+.stTabs [data-baseweb="tab-panel"]{padding-top:0px !important;}
+.stTabs [data-baseweb="tab-list"]{gap:4px;margin-bottom:0 !important;padding-bottom:0 !important;background:transparent;}
+.stTabs [data-baseweb="tab"]{
+    height:36px;
+    padding:0 22px;
+    background:#dce8f9;
+    color:#0d47a1;
+    font-weight:700;
+    font-size:14px;
+    border-radius:10px 10px 0 0;
+    border:1px solid #b0c8f0;
+    border-bottom:none;
+}
+.stTabs [data-baseweb="tab"]:hover{background:#c5d8f7;}
+.stTabs [aria-selected="true"]{
+    background:linear-gradient(135deg, #0C4A6E, #06B6D4) !important;
+    color:#fff !important;
+    border-color:#0d47a1 !important;
+}
+.stTabs [data-baseweb="tab-highlight"]{display:none;}
+.stTabs [data-baseweb="tab-border"]{display:none;}
+.stTabs [data-baseweb="tab-panel"]{padding-top:0 !important;}           
 .topbar{
     background:linear-gradient(135deg, #0C4A6E, #06B6D4) !important;
     padding:14px 28px;
@@ -21,6 +49,13 @@ st.markdown("""
     margin-bottom:24px;
     border-radius:0 0 14px 14px;
 }
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:10px;}
+.link-card{background:#fff;border:1.5px solid #dce8f9;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(13,71,161,.06);transition:transform .15s,box-shadow .15s;}
+.link-card:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(13,71,161,.14);}
+.link-card .icon{font-size:26px;margin-bottom:10px;}
+.link-card .title{font-weight:800;color:#0d47a1;font-size:15px;margin-bottom:14px;}
+.link-card a{display:block;text-align:center;background:linear-gradient(135deg,#0C4A6E,#06B6D4);color:#fff !important;text-decoration:none;font-size:13px;font-weight:700;padding:9px 0;border-radius:8px;}
+.link-card a:hover{filter:brightness(1.12);}
 .topbar h2{margin:0;font-size:33px;font-weight:800;color:#fff;}
 .topbar p{margin:2px 0 0;font-size:12px;color:#90caf9;text-transform:uppercase;letter-spacing:.05em;}
 .topbar-badge{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
@@ -146,279 +181,405 @@ intern_ids = {
     "Vishvesh":"",
     "Anshika":"",
 }
+tab1, tab2, tab3,tab4 = st.tabs(["📊 Dashboard","🔗 Links","Analysis Task", "ℹ️ Guide"])
 
+with tab1:
 
 # ── FILTERS ──────────────────────────────────────────────────────────────────
-st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
-f1, f2 = st.columns([2, 2])
+    st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
+    f1, f2 = st.columns([2, 2])
 
-with f1:
-    intern = st.selectbox(
-        "Select Intern",
-        sorted(df['Intern Name'].unique()),
-        label_visibility="visible"
-    )
+    with f1:
+        intern = st.selectbox(
+            "Select Intern",
+            sorted(df['Intern Name'].unique()),
+            label_visibility="visible"
+        )
 
-with f2:
-    selected_date = st.date_input("Select Date", value=today)
+    with f2:
+        selected_date = st.date_input("Select Date", value=today)
 
-intern_df = df[df['Intern Name'] == intern].sort_values('Date')
+    intern_df = df[df['Intern Name'] == intern].sort_values('Date')
 
-# ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
-if is_valid_link(intern_links.get(intern.strip(), "")):
-    csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
-    if csv_url:
-        try:
-            _idf = pd.read_csv(csv_url)
-            _idf['SchoolID'] = _idf['SchoolID'].astype(str).str.strip()
-            clubs_count = _idf.groupby('SchoolID').size().reset_index(name='Clubs Collected')
-            intern_df = intern_df.copy()
-            intern_df['SchoolID'] = intern_df['SchoolID'].astype(str).str.strip()
-            intern_df = intern_df.merge(clubs_count, on='SchoolID', how='left')
-            intern_df['Clubs Collected'] = intern_df['Clubs Collected'].fillna(0).astype(int)
-        except Exception:
-            intern_df['Clubs Collected'] = 0
-else:
-    intern_df['Clubs Collected'] = 0
-
-
-# ── CLUB COUNT ───────────────────────────────────────────────────────────────
-sheet_task_count = 0
-sheet_url = intern_links.get(intern.strip(), "")
-
-if is_valid_link(sheet_url):
-    csv_url = sheet_csv_url(sheet_url)
-    if csv_url:
-        try:
-            intern_sheet_df = pd.read_csv(csv_url)
-            sheet_task_count = len(intern_sheet_df)
-        except Exception:
-            sheet_task_count = 0
+    # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
+    if is_valid_link(intern_links.get(intern.strip(), "")):
+        csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
+        if csv_url:
+            try:
+                _idf = load_sheet_csv(csv_url)
+                _idf['SchoolID'] = _idf['SchoolID'].astype(str).str.strip()
+                clubs_count = _idf.groupby('SchoolID').size().reset_index(name='Clubs Collected')
+                intern_df = intern_df.copy()
+                intern_df['SchoolID'] = intern_df['SchoolID'].astype(str).str.strip()
+                intern_df = intern_df.merge(clubs_count, on='SchoolID', how='left')
+                intern_df['Clubs Collected'] = intern_df['Clubs Collected'].fillna(0).astype(int)
+            except Exception:
+                intern_df['Clubs Collected'] = 0
+    else:
+        intern_df['Clubs Collected'] = 0
 
 
-# ── KPIs ─────────────────────────────────────────────────────────────────────
-st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
+    # ── CLUB COUNT ───────────────────────────────────────────────────────────────
+    sheet_task_count = 0
+    sheet_url = intern_links.get(intern.strip(), "")
 
-task_count  = len(intern_df)
-today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
-active_days = intern_df['Date'].dt.date.nunique()
-
-k1, k2, k3, k4 = st.columns(4)
-with k1:
-    st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
-with k2:
-    st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
-with k3:
-    st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
-with k4:
-    st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
+    if is_valid_link(sheet_url):
+        csv_url = sheet_csv_url(sheet_url)
+        if csv_url:
+            try:
+                intern_sheet_df = load_sheet_csv(csv_url)
+                sheet_task_count = len(intern_sheet_df)
+            except Exception:
+                sheet_task_count = 0
 
 
-# ── TASK TABLE ───────────────────────────────────────────────────────────────
-st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
+    # ── KPIs ─────────────────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
 
-day_result = intern_df[intern_df['Date'].dt.date == selected_date]
+    task_count  = len(intern_df)
+    today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
+    active_days = intern_df['Date'].dt.date.nunique()
 
-if not day_result.empty:
-    display_result = day_result.copy()
-    display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
-    st.dataframe(display_result, use_container_width=True, hide_index=True)
-else:
+    k1, k2, k3, k4 = st.columns(4)
+    with k1:
+        st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
+    with k2:
+        st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
+    with k3:
+        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
+    with k4:
+        st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
+
+
+    # ── TASK TABLE ───────────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
+
+    day_result = intern_df[intern_df['Date'].dt.date == selected_date]
+
+    if not day_result.empty:
+        display_result = day_result.copy()
+        display_result['Date'] = display_result['Date'].dt.strftime('%d-%b-%Y')
+        st.dataframe(display_result, use_container_width=True, hide_index=True)
+    else:
+        st.markdown(
+            '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
+            unsafe_allow_html=True
+        )
+
+
+    # ── ACTION BUTTONS ───────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
+
+    c1, c2 = st.columns(2)
+    with c1:
+        if is_valid_link(sheet_url):
+                st.link_button("📊 Open Your Data Sheet", sheet_url, use_container_width=True)
+        else:
+            st.markdown('<div class="no-sheet">⚠️ Spreadsheet Not Submitted</div>', unsafe_allow_html=True)
+    with c2:
+        st.link_button("📝 Mark Attendance", "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform", use_container_width=True)
+
+
+    # ── INTERN SHEET DATA ────────────────────────────────────────────────────────
+    if is_valid_link(sheet_url):
+        csv_url = sheet_csv_url(sheet_url)
+        if csv_url:
+            st.markdown('<div class="sh">📂 &nbsp;Collected Data</div>', unsafe_allow_html=True)
+            with st.expander(f"📄 View {intern}'s Sheet"):
+                try:
+                    intern_sheet_df = pd.read_csv(csv_url)
+                    st.dataframe(intern_sheet_df, use_container_width=True, hide_index=True)
+                except Exception:
+                    st.error("Unable to load sheet data.")
+
+    intern_id = intern_ids.get(intern.strip(), "")
+    # ── PROMPT BUILDER ───────────────────────────────────────────────────────────
+    st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
+
+    institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
+    with st.expander("Click an institute to generate a research prompt"):
+        if not institutes:
+            st.warning("No institute names found for the selected date.")
+        else:
+            cols = st.columns(min(len(institutes), 5))
+            for i, (inst, school_id) in enumerate(institutes):
+                with cols[i % 5]:
+                    if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
+                        prompt = f"""You are a web research agent with live browsing access.
+
+    Your ONLY job: find every student club, committee, cell,
+
+    association, and organization at {inst} and output a table.
+
+    NO explanations. NO excuses. NO asking for more info.
+
+    If a field is not found after exhaustive search, leave it blank. Start the table immediately.
+
+    ════════════════════════════════
+
+    STEP 1 — SEARCH (do this silently)
+
+    ════════════════════════════════
+
+    Search the web for ALL of the following one by one:
+
+    "{inst} student clubs"
+    "{inst} student organizations"
+    "{inst} technical clubs"
+    "{inst} cultural clubs"
+    "{inst} NSS NCC"
+    "{inst} IEEE ISTE CSI ACM chapter"
+    "{inst} entrepreneurship cell innovation cell"
+    "{inst} coding club robotics club"
+    "{inst} dance music drama club"
+    "{inst} photography literary club"
+    "{inst} placement committee student council"
+    "{inst} women development cell"
+    "{inst} environment club"
+    "{inst} fest committee"
+    "{inst} committees cells"
+    "{inst} clubs site:instagram.com"
+    "{inst} clubs site:linkedin.com"
+    "{inst} annual report filetype:pdf"
+    "{inst} NAAC report filetype:pdf"
+
+    Also directly visit:
+    Official college website homepage
+    [college website]/clubs
+    [college website]/committees
+    [college website]/student-activities
+    [college website]/nss
+    [college website]/ncc
+
+    ────────────────────────────────
+    STEP 1B — MANDATORY CONTACT/EMAIL/LEADERSHIP SEARCH (per club)
+    ────────────────────────────────
+
+    For EVERY club identified in Step 1, before writing its row, run an additional targeted search pass to find its ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, and ClubPresidentContact. Do not skip this pass even if Step 1 already surfaced a name for the club.
+
+    For each club, search:
+    "[Club Name] {inst} contact"
+    "[Club Name] {inst} email"
+    "[Club Name] {inst} president OR convenor OR coordinator"
+    "[Club Name] {inst} president contact"
+    "[Club Name] {inst} Instagram OR LinkedIn OR website"
+    site:instagram.com "[Club Name]" {inst}
+    site:linkedin.com "[Club Name]" {inst}
+
+    Also check:
+    - The club's listing on [college website]/clubs or /committees (often has a contact block)
+    - The college's official social media bio/link tree for club sub-pages
+    - Any fest or department page that lists club coordinators' or presidents' contact details
+    - Official club/society leadership pages, "office bearers" or "team" pages
+
+    These five fields — ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, ClubPresidentContact — are REQUIRED fields — do not treat them as optional. Every club row must show a genuine, verified value in these columns whenever such information exists anywhere online. Only leave them blank if, after this dedicated search pass, no such information could be found anywhere. Never guess, construct, or infer a plausible-looking number, email, name, or URL — an invented value is worse than a blank one.
+
+    ════════════════════════════════
+
+    STEP 2 — OUTPUT TABLE (immediately after searching)
+
+    ════════════════════════════════
+
+    Output one row per club. All 26 columns, every row, no exceptions.
+
+    | GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubPresidentContact | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
+
+    COLUMN RULES:
+
+    GroupMemberID → always set to 6
+    SchoolID → always set to {school_id}
+    ClubID → leave blank
+    SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
+
+    INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
+
+    Examples:
+
+    → "Christian College of Engineering and Technology" → CCET001, CCET002, CCET003…
+
+    → "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
+
+    → "Indian Institute of Technology Bombay" → IITB001, IITB002…
+
+    → "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
+
+    ClubName → official full name of the club
+    ClubSchoolName → common short name or abbreviation
+    ClubDescription → one sentence describing the club's purpose
+    ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
+    ClubStatus → Active (default unless known otherwise)
+    ClubContactNumber → MANDATORY — search exhaustively per Step 1B; only found real values, never invent; leave blank only if truly unfindable
+    ClubLocation → college name and address
+    ClubWebsite → MANDATORY — search exhaustively per Step 1B; only found real URLs (official page or social media), never invent; leave blank only if truly unfindable
+    ClubEmail → MANDATORY — search exhaustively per Step 1B; only found real emails, never invent; leave blank only if truly unfindable
+    SocialLinks → only if found; never invent
+    ClubImagePath → leave blank
+    PrimarySponsorID → leave blank
+    PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
+    ClubBudget → leave blank
+    ClubPresidentID → leave blank
+    ClubPresidentName → MANDATORY — search exhaustively per Step 1B; only found real names, never invent; leave blank only if truly unfindable
+    ClubPresidentPRN → only if found; never invent
+    ClubPresidentContact → MANDATORY — search exhaustively per Step 1B; only found real phone numbers or emails, never invent; leave blank only if truly unfindable
+    ClubMentorID → leave blank
+    ClubMentorName → only if found; never invent
+    DataCollectedByID → always set to {intern_ids}
+    DataCollectedByName → always set to {intern}
+
+    STRICT RULES:
+
+    ✗ Never invent names, emails, phone numbers, or URLs — even to satisfy a mandatory field
+    ✗ Never write "BLANK" — just leave the cell empty
+    ✗ Never truncate the table
+    ✗ Never skip the Step 1B search pass for any club, including ones found late in Step 1
+    ✓ Blank cells for ClubContactNumber/ClubEmail/ClubWebsite/ClubPresidentName/ClubPresidentContact are acceptable ONLY after the mandatory search pass turns up nothing
+
+    After the table write:
+
+    Total clubs found: [N]
+    Sources visited: [list]
+    Clubs with incomplete data: [N]
+    Clubs missing contact/email/website/president info after mandatory search: [N]
+    """
+                        st.components.v1.html(f"""
+    <textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
+    <button onclick="
+    navigator.clipboard.writeText(document.getElementById('prompt-box').value);
+    this.textContent='✅ Copied!';
+    this.style.background='#2e7d32';
+    setTimeout(()=>{{this.textContent='📋 Copy Prompt';this.style.background='#0d47a1'}},2000)
+    " style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
+    """, height=280)
+
+
+    # ── FOOTER NOTE ──────────────────────────────────────────────────────────────
+    st.markdown("""
+    <div class="footer-note">
+        <span>✔ After completing tasks, report to Team Leader</span>
+        <span>✔ Share updates in communication group for HR tracking</span>
+    </div>
+    """, unsafe_allow_html=True)
+
+with tab2:
     st.markdown(
-        '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
+        '<div class="sh">🔗 &nbsp;Important Links</div>',
         unsafe_allow_html=True
     )
 
+    important_links = [
+        {
+            "title": "Startup Wolrd",
+            "icon": "",
+            "url": "https://startupworld.in/"
+        },
+        {
+            "title": "Smart-Cookie",
+            "icon": "",
+            "url": "https://smartcookie.in/"
+        },
+        {
+            "title": "Continous Job Network(CJN)",
+            "icon": "",
+            "url": "https://cjnnow.com/"
+        },
+      
+    ]
 
-# ── ACTION BUTTONS ───────────────────────────────────────────────────────────
-st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
+    cards_html = '<div class="link-grid">'
 
-c1, c2 = st.columns(2)
-with c1:
-    if is_valid_link(sheet_url):
-            st.link_button("📊 Open Your Data Sheet", sheet_url, use_container_width=True)
-    else:
-        st.markdown('<div class="no-sheet">⚠️ Spreadsheet Not Submitted</div>', unsafe_allow_html=True)
-with c2:
-    st.link_button("📝 Mark Attendance", "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform", use_container_width=True)
+    cards_html = '<div class="link-grid">'
 
+    for item in important_links:
+        cards_html += (
+            f'<div class="link-card">'
+            f'<div class="icon">{item["icon"]}</div>'
+            f'<div class="title">{item["title"]}</div>'
+            f'<a href="{item["url"]}" target="_blank">Open Link ↗</a>'
+            f'</div>'
+        )
 
-# ── INTERN SHEET DATA ────────────────────────────────────────────────────────
-if is_valid_link(sheet_url):
-    csv_url = sheet_csv_url(sheet_url)
-    if csv_url:
-        st.markdown('<div class="sh">📂 &nbsp;Collected Data</div>', unsafe_allow_html=True)
-        with st.expander(f"📄 View {intern}'s Sheet"):
-            try:
-                intern_sheet_df = pd.read_csv(csv_url)
-                st.dataframe(intern_sheet_df, use_container_width=True, hide_index=True)
-            except Exception:
-                st.error("Unable to load sheet data.")
+    cards_html += "</div>"
 
-intern_id = intern_ids.get(intern.strip(), "")
-# ── PROMPT BUILDER ───────────────────────────────────────────────────────────
-st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
+    st.markdown(cards_html, unsafe_allow_html=True)
+    st.markdown(
+        '<div class="sh">🔗 &nbsp;Meeting Links</div>',
+        unsafe_allow_html=True
+    )
 
-institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
-with st.expander("Click an institute to generate a research prompt"):
-    if not institutes:
-        st.warning("No institute names found for the selected date.")
-    else:
-        cols = st.columns(min(len(institutes), 5))
-        for i, (inst, school_id) in enumerate(institutes):
-            with cols[i % 5]:
-                if st.button(f"🏫 {inst}", key=f"pb_{i}", use_container_width=True):
-                    prompt = f"""You are a web research agent with live browsing access.
+    important_links = [
+        {
+            "title": "JRS",
+            "icon": "",
+            "url": "https://meet.google.com/exu-yrsk-jrs"
+        },
+        {
+            "title": "PIX",
+            "icon": "",
+            "url": "https://meet.google.com/wap-gkof-pix"
+        },
+       
+      
+    ]
 
-Your ONLY job: find every student club, committee, cell,
+    cards_html = '<div class="link-grid">'
 
-association, and organization at {inst} and output a table.
+    cards_html = '<div class="link-grid">'
 
-NO explanations. NO excuses. NO asking for more info.
+    for item in important_links:
+        cards_html += (
+            f'<div class="link-card">'
+            f'<div class="icon">{item["icon"]}</div>'
+            f'<div class="title">{item["title"]}</div>'
+            f'<a href="{item["url"]}" target="_blank">Open Link ↗</a>'
+            f'</div>'
+        )
 
-If a field is not found after exhaustive search, leave it blank. Start the table immediately.
+    cards_html += "</div>"
+    st.markdown(cards_html, unsafe_allow_html=True)
+    st.markdown(
+        '<div class="sh">🔗 &nbsp;Other Links</div>',
+        unsafe_allow_html=True
+    )
 
-════════════════════════════════
+    important_links = [
+        {
+            "title": "Club Email Send",
+            "icon": "",
+            "url": "https://autoemail.smartcookie.in/"
+        },
+       
+       
+      
+    ]
 
-STEP 1 — SEARCH (do this silently)
+    cards_html = '<div class="link-grid">'
 
-════════════════════════════════
+    cards_html = '<div class="link-grid">'
 
-Search the web for ALL of the following one by one:
+    for item in important_links:
+        cards_html += (
+            f'<div class="link-card">'
+            f'<div class="icon">{item["icon"]}</div>'
+            f'<div class="title">{item["title"]}</div>'
+            f'<a href="{item["url"]}" target="_blank">Open Link ↗</a>'
+            f'</div>'
+        )
 
-"{inst} student clubs"
-"{inst} student organizations"
-"{inst} technical clubs"
-"{inst} cultural clubs"
-"{inst} NSS NCC"
-"{inst} IEEE ISTE CSI ACM chapter"
-"{inst} entrepreneurship cell innovation cell"
-"{inst} coding club robotics club"
-"{inst} dance music drama club"
-"{inst} photography literary club"
-"{inst} placement committee student council"
-"{inst} women development cell"
-"{inst} environment club"
-"{inst} fest committee"
-"{inst} committees cells"
-"{inst} clubs site:instagram.com"
-"{inst} clubs site:linkedin.com"
-"{inst} annual report filetype:pdf"
-"{inst} NAAC report filetype:pdf"
+    cards_html += "</div>"
 
-Also directly visit:
-Official college website homepage
-[college website]/clubs
-[college website]/committees
-[college website]/student-activities
-[college website]/nss
-[college website]/ncc
-
-────────────────────────────────
-STEP 1B — MANDATORY CONTACT/EMAIL/LEADERSHIP SEARCH (per club)
-────────────────────────────────
-
-For EVERY club identified in Step 1, before writing its row, run an additional targeted search pass to find its ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, and ClubPresidentContact. Do not skip this pass even if Step 1 already surfaced a name for the club.
-
-For each club, search:
-"[Club Name] {inst} contact"
-"[Club Name] {inst} email"
-"[Club Name] {inst} president OR convenor OR coordinator"
-"[Club Name] {inst} president contact"
-"[Club Name] {inst} Instagram OR LinkedIn OR website"
-site:instagram.com "[Club Name]" {inst}
-site:linkedin.com "[Club Name]" {inst}
-
-Also check:
-- The club's listing on [college website]/clubs or /committees (often has a contact block)
-- The college's official social media bio/link tree for club sub-pages
-- Any fest or department page that lists club coordinators' or presidents' contact details
-- Official club/society leadership pages, "office bearers" or "team" pages
-
-These five fields — ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, ClubPresidentContact — are REQUIRED fields — do not treat them as optional. Every club row must show a genuine, verified value in these columns whenever such information exists anywhere online. Only leave them blank if, after this dedicated search pass, no such information could be found anywhere. Never guess, construct, or infer a plausible-looking number, email, name, or URL — an invented value is worse than a blank one.
-
-════════════════════════════════
-
-STEP 2 — OUTPUT TABLE (immediately after searching)
-
-════════════════════════════════
-
-Output one row per club. All 26 columns, every row, no exceptions.
-
-| GroupMemberID | SchoolID | ClubID | SchoolClubID | ClubName | ClubSchoolName | ClubDescription | ClubCategoryID | ClubStatus | ClubContactNumber | ClubLocation | ClubWebsite | ClubEmail | SocialLinks | ClubImagePath | PrimarySponsorID | PrimarySponsorName | ClubBudget | ClubPresidentID | ClubPresidentName | ClubPresidentPRN | ClubPresidentContact | ClubMentorID | ClubMentorName | DataCollectedByID | DataCollectedByName |
-
-COLUMN RULES:
-
-GroupMemberID → always set to 6
-SchoolID → always set to {school_id}
-ClubID → leave blank
-SchoolClubID → generate using the initials of {inst} + a 3-digit sequential number padded with zeros.
-
-INITIALS RULE: Take the first letter of each significant word in the college name (skip common words like "of", "and", "the", "for"). Then append 001, 002, 003… for each club.
-
-Examples:
-
-→ "Christian College of Engineering and Technology" → CCET001, CCET002, CCET003…
-
-→ "Government Polytechnic Mungeli" → GPM001, GPM002, GPM003…
-
-→ "Indian Institute of Technology Bombay" → IITB001, IITB002…
-
-→ "Dr. Ambedkar Institute of Technology" → DAIT001, DAIT002…
-
-ClubName → official full name of the club
-ClubSchoolName → common short name or abbreviation
-ClubDescription → one sentence describing the club's purpose
-ClubCategoryID → use one of: Technical, Cultural, Social, Sports, Literary, Entrepreneurship, Professional, Other
-ClubStatus → Active (default unless known otherwise)
-ClubContactNumber → MANDATORY — search exhaustively per Step 1B; only found real values, never invent; leave blank only if truly unfindable
-ClubLocation → college name and address
-ClubWebsite → MANDATORY — search exhaustively per Step 1B; only found real URLs (official page or social media), never invent; leave blank only if truly unfindable
-ClubEmail → MANDATORY — search exhaustively per Step 1B; only found real emails, never invent; leave blank only if truly unfindable
-SocialLinks → only if found; never invent
-ClubImagePath → leave blank
-PrimarySponsorID → leave blank
-PrimarySponsorName → sponsoring body if known (e.g. Ministry of Youth Affairs, IEEE, AICTE)
-ClubBudget → leave blank
-ClubPresidentID → leave blank
-ClubPresidentName → MANDATORY — search exhaustively per Step 1B; only found real names, never invent; leave blank only if truly unfindable
-ClubPresidentPRN → only if found; never invent
-ClubPresidentContact → MANDATORY — search exhaustively per Step 1B; only found real phone numbers or emails, never invent; leave blank only if truly unfindable
-ClubMentorID → leave blank
-ClubMentorName → only if found; never invent
-DataCollectedByID → always set to {intern_ids}
-DataCollectedByName → always set to {intern}
-
-STRICT RULES:
-
-✗ Never invent names, emails, phone numbers, or URLs — even to satisfy a mandatory field
-✗ Never write "BLANK" — just leave the cell empty
-✗ Never truncate the table
-✗ Never skip the Step 1B search pass for any club, including ones found late in Step 1
-✓ Blank cells for ClubContactNumber/ClubEmail/ClubWebsite/ClubPresidentName/ClubPresidentContact are acceptable ONLY after the mandatory search pass turns up nothing
-
-After the table write:
-
-Total clubs found: [N]
-Sources visited: [list]
-Clubs with incomplete data: [N]
-Clubs missing contact/email/website/president info after mandatory search: [N]
-"""
-                    st.components.v1.html(f"""
-<textarea id="prompt-box" style="width:100%;height:200px;font-family:monospace;font-size:12px;padding:10px;border:1px solid #b0c8f0;border-radius:10px;resize:vertical;background:#f8faff;color:#1a1a2e">{prompt}</textarea>
-<button onclick="
-  navigator.clipboard.writeText(document.getElementById('prompt-box').value);
-  this.textContent='✅ Copied!';
-  this.style.background='#2e7d32';
-  setTimeout(()=>{{this.textContent='📋 Copy Prompt';this.style.background='#0d47a1'}},2000)
-" style="margin-top:8px;width:100%;padding:10px;background:#0d47a1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">📋 Copy Prompt</button>
-""", height=280)
+    st.markdown(cards_html, unsafe_allow_html=True)
+    
+with tab3:
+    st.markdown("")
+    st.markdown(f'<div class="kpi blue"><div class="kpi-val">{"TBA"}</div><div class="kpi-lbl"></div></div>', unsafe_allow_html=True)
 
 
-# ── FOOTER NOTE ──────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="footer-note">
-    <span>✔ After completing tasks, report to Team Leader</span>
-    <span>✔ Share updates in communication group for HR tracking</span>
-</div>
-""", unsafe_allow_html=True)
+with tab4:
+    st.markdown("""
+    ### How to use this dashboard
+    - Select an intern and date in **Filters** to view their tasks
+    - **Overview** shows total tasks, today's tasks, clubs collected, and active days
+    - **Task Details** lists tasks for the selected date
+    - **Quick Actions** opens the intern's sheet or attendance form
+    - **Prompt Builder** generates a research prompt per institute
+    """)
