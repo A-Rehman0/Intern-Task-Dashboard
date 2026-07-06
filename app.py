@@ -109,7 +109,7 @@ except Exception as e:
     st.stop()
 
 df = df.iloc[:, 1:]
-df = df.drop(columns=["Google Maps","Google Maps Link"])
+df.drop(columns=["Google Maps", "Google Maps Link"], errors="ignore", inplace=True)
 
 
 if 'Date' not in df.columns or 'Intern Name' not in df.columns:
