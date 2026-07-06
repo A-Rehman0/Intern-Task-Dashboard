@@ -109,6 +109,8 @@ except Exception as e:
     st.stop()
 
 df = df.iloc[:, 1:]
+df = df.drop(columns=["Google Maps","Google Maps Link"])
+
 
 if 'Date' not in df.columns or 'Intern Name' not in df.columns:
     st.error("Missing required columns: 'Date' or 'Intern Name'")
