@@ -82,7 +82,7 @@ div[data-baseweb="select"]>div{background:#fff !important;border:1.5px solid #b0
 div[data-baseweb="select"]:focus-within>div{border-color:#0d47a1 !important;box-shadow:0 0 0 3px rgba(13,71,161,.1) !important;}
 
 .no-sheet{background:#fce4ec;border:1.5px solid #f48fb1;color:#880e4f;padding:13px 18px;border-radius:10px;font-weight:700;text-align:center;}
-.empty-state{background:#fff8e1;border:1.5px solid #ffe082;color:#bf360c;padding:14px;border-radius:10px;font-weight:700;text-align:center;}
+.empty-state{background:#fff8e1;border:1.5px solid #ffe082;color:#bf360c;padding:14px;border-radius:10px;font-weight:700;text-align:center;height:100px}
 .footer-note{margin-top:20px;padding:11px 16px;border-radius:10px;background:#dce8f9;color:#0d47a1;font-size:12px;font-weight:600;display:flex;gap:20px;}
 [data-testid="stExpander"]{border:1.5px solid #0d47a1 !important;border-radius:10px !important;}</style>
 """, unsafe_allow_html=True)
@@ -183,7 +183,7 @@ intern_ids = {
     "Vishvesh":"",
     "Anshika":"",
 }
-tab1, tab2, tab3,tab4 = st.tabs(["📊 Dashboard","🔗 Links","Analysis Task", "ℹ️ Guide"])
+tab1, tab2, tab3,tab4,tab5 = st.tabs(["📊 Dashboard","🔗 Links","Email Format","Analysis Task", "ℹ️ Guide"])
 
 with tab1:
 
@@ -223,6 +223,8 @@ with tab1:
 
     # ── CLUB COUNT ───────────────────────────────────────────────────────────────
     sheet_task_count = 0
+    distinct_contacts = 0
+    distinct_emails = 0
     sheet_url = intern_links.get(intern.strip(), "")
 
     if is_valid_link(sheet_url):
@@ -231,9 +233,12 @@ with tab1:
             try:
                 intern_sheet_df = load_sheet_csv(csv_url)
                 sheet_task_count = len(intern_sheet_df)
+                if 'ClubContactNumber' in intern_sheet_df.columns:
+                    distinct_contacts = intern_sheet_df['ClubContactNumber'].dropna().astype(str).str.strip().replace('', pd.NA).dropna().nunique()
+                if 'ClubEmail' in intern_sheet_df.columns:
+                    distinct_emails = intern_sheet_df['ClubEmail'].dropna().astype(str).str.strip().replace('', pd.NA).dropna().nunique()
             except Exception:
                 sheet_task_count = 0
-
 
     # ── KPIs ─────────────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
@@ -242,7 +247,7 @@ with tab1:
     today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
     active_days = intern_df['Date'].dt.date.nunique()
 
-    k1, k2, k3, k4 = st.columns(4)
+    k1, k2, k3, k4, k5, k6 = st.columns(6)
     with k1:
         st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
     with k2:
@@ -251,7 +256,10 @@ with tab1:
         st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
     with k4:
         st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
-
+    with k5:
+        st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts}</div><div class="kpi-lbl">Distinct Contacts</div></div>', unsafe_allow_html=True)
+    with k6:
+        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails</div></div>', unsafe_allow_html=True)
 
     # ── TASK TABLE ───────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
@@ -264,7 +272,7 @@ with tab1:
         st.dataframe(display_result, use_container_width=True, hide_index=True)
     else:
         st.markdown(
-            '<div class="empty-state">⚠️ No tasks found for the selected date</div>',
+            '<div class="empty-state">⚠️ Task: Club contact details and email are missing. Kindly collect them </div>',
             unsafe_allow_html=True
         )
 
@@ -571,12 +579,177 @@ with tab2:
 
     st.markdown(cards_html, unsafe_allow_html=True)
     
-with tab3:
+with tab4:
     st.markdown("")
     st.markdown(f'<div class="kpi blue"><div class="kpi-val">{"TBA"}</div><div class="kpi-lbl"></div></div>', unsafe_allow_html=True)
 
+with tab3:
+    st.markdown("")
+    text1 = "admin@smartcookie.in"
 
-with tab4:
+    st.markdown(
+    f"""
+    <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:#0d47a1;text-transform:uppercase;letter-spacing:.08em;">
+        Send From
+    </div>
+
+    <div style="
+        padding:10px;
+        border:1px solid #b0c8f0;
+        border-radius:10px;
+        background:#f8faff;
+        font-family:'Serif';
+        font-size:14px;
+        margin-top:0;
+    ">
+        {text1}
+    </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    
+    
+    text2 ="Club Outreach India"
+    # st.markdown("")
+    st.markdown(
+    f"""
+    <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:#0d47a1;text-transform:uppercase;letter-spacing:.08em;">
+        Campaign name
+    </div>
+
+    <div style="
+        padding:10px;
+        border:1px solid #b0c8f0;
+        border-radius:10px;
+        background:#f8faff;
+        font-family:'Serif';
+        font-size:14px;
+        margin-top:0;
+    ">
+        {text2}
+    </div>
+    """,
+        unsafe_allow_html=True,
+    )
+    text3 =""
+    FONT = "Georgia, serif"
+
+# ---------- Subject ----------
+    st.markdown(
+        f"""
+        <div style="width:100%; box-sizing:border-box; margin-top:7px; font-family:{FONT} !important;">
+            <div style="
+                font-family:{FONT} !important;
+                font-weight:800;
+                font-size:14px;
+                color:#0d47a1;
+                text-transform:uppercase;
+                letter-spacing:.08em;
+                margin:0 0 6px 0;
+            ">Subject</div>
+            <div style="
+                box-sizing:border-box;
+                width:100%;
+                padding:10px;
+                border:1px solid #b0c8f0;
+                border-radius:10px;
+                background:#f8faff;
+                font-family:{FONT} !important;
+                font-size:14px;
+                color:#1a1a2e;
+            "><span style="font-family:{FONT} !important;">{text3}</span></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    text4 = """Not Finalized Yet"""
+
+    # ---------- Campaign name ----------
+    st.components.v1.html(
+        f"""
+        <html>
+        <head>
+        <style>
+            * {{
+                box-sizing:border-box;
+                font-family:{FONT} !important;
+            }}
+            html, body {{
+                margin:0;
+                padding:0;
+                width:100%;
+                font-family:{FONT} !important;
+            }}
+            .wrap {{
+                width:100%;
+                margin-top:7px;
+            }}
+            .label {{
+                font-family:{FONT} !important;
+                font-weight:800;
+                font-size:14px;
+                color:#0d47a1;
+                text-transform:uppercase;
+                letter-spacing:.08em;
+                margin:0 0 6px 0;
+            }}
+            textarea {{
+                font-family:{FONT} !important;
+                box-sizing:border-box;
+                width:100%;
+                padding:10px;
+                border:1px solid #b0c8f0;
+                border-radius:10px;
+                background:#f8faff;
+                font-size:14px;
+                color:#1a1a2e;
+                height:220px;
+                resize:vertical;
+                display:block;
+            }}
+            button {{
+                font-family:{FONT} !important;
+                width:100%;
+                box-sizing:border-box;
+                margin-top:8px;
+                padding:10px;
+                background:#0d47a1;
+                color:white;
+                border:none;
+                border-radius:8px;
+                font-size:14px;
+                font-weight:700;
+                cursor:pointer;
+            }}
+        </style>
+        </head>
+        <body>
+        <div class="wrap">
+            <div class="label">Body</div>
+            <textarea id="prompt-box" readonly>{text4}</textarea>
+            <button onclick="
+                navigator.clipboard.writeText(document.getElementById('prompt-box').value);
+                this.textContent='✅ Copied!';
+                this.style.background='#2e7d32';
+                setTimeout(() => {{
+                    this.textContent='📋 Copy Prompt';
+                    this.style.background='#0d47a1';
+                }}, 2000);
+            ">📋 Copy Body</button>
+        </div>
+        </body>
+        </html>
+        """,
+        height=400,
+    )
+        
+    
+
+
+
+
+with tab5:
     st.markdown("""
     ### How to use this dashboard
     - Select an intern and date in **Filters** to view their tasks
