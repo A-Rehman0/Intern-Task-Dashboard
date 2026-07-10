@@ -585,6 +585,30 @@ with tab4:
 
 with tab3:
     st.markdown("")
+
+    sender_names =  ["Tade A Rehman",
+    "Harshada Magar",
+    "Zahid Khan",
+    "P. R. Nasiya",
+    "Appireddipally Swetha",
+    "Riya Chand",
+    "Kalyani Pawar",
+    "Saanvi Gothe",
+    "Abishek Sharma",
+    "Zainab Rahman",
+    "Khushi Singh",
+    "Vidyanand Prasad",
+    "Afrah Ashraf",
+    "Vishvesh Kashyap",
+    "Anshika Verma",
+]  # 👈 add/edit names in this list
+    
+    st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
+
+    sender_name = st.selectbox("Select Sender Name", sender_names)
+
+    
+
     text1 = "admin@smartcookie.in"
 
     st.markdown(
@@ -631,7 +655,7 @@ with tab3:
     """,
         unsafe_allow_html=True,
     )
-    text3 =""
+    text3 ="Invitation to Explore Student Club Collaboration with Avi Kulkarni – Smart Cookie & CJN"
     FONT = "Georgia, serif"
 
 # ---------- Subject ----------
@@ -663,7 +687,168 @@ with tab3:
         unsafe_allow_html=True,
     )
 
-    text4 = """Not Finalized Yet"""
+    text4 = f"""<body style="margin:0; padding:0; background-color:#eef1f5; font-family:Arial, Helvetica, sans-serif;">
+
+<!-- Preheader (hidden preview text) -->
+<div style="display:none; max-height:0; overflow:hidden; opacity:0;">
+Mr. Avi Kulkarni would like to schedule a short call to explore collaboration opportunities with your club.
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#eef1f5; padding:32px 16px;">
+<tr>
+<td align="center">
+
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(15,32,67,0.08);">
+
+  <!-- Header / letterhead -->
+  <tr>
+    <td style="background-color:#0f2043; padding:28px 40px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+          <td style="font-family:Arial, Helvetica, sans-serif; color:#ffffff; font-size:20px; font-weight:bold; letter-spacing:0.3px;">
+            Smart Rewards Inc.
+          </td>
+          <td align="right" style="font-family:Arial, Helvetica, sans-serif; color:#9fb0cc; font-size:12px; letter-spacing:1px; text-transform:uppercase;">
+            Campus Outreach
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- Accent line -->
+  <tr>
+    <td style="height:4px; background-color:#c98a3e; line-height:0; font-size:0;">&nbsp;</td>
+  </tr>
+
+  <!-- Body -->
+  <tr>
+    <td style="padding:36px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.65;">
+
+      <p style="margin:0 0 18px 0;">Dear <strong>{{club_name}}</strong> Team,</p>
+
+      <p style="margin:0 0 18px 0;">Greetings from Smart Rewards Inc.</p>
+
+      <p style="margin:0 0 18px 0;">
+        My name is <strong>{{intern_name}}</strong>, and I am part of the Campus Outreach Team at Smart Rewards Inc.
+      </p>
+
+      <p style="margin:0 0 18px 0;">
+        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Rewards Inc., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
+      </p>
+
+      <p style="margin:0 0 26px 0;">
+        Mr. Kulkarni would appreciate the opportunity to have a brief <strong>20–30 minute conference call</strong> with you to learn more about your student club and discuss possible collaboration in the areas of internships, entrepreneurship, AI, career development, innovation, and industry engagement.
+      </p>
+
+      <p style="margin:0 0 14px 0;">To introduce our work, here is brief information on two of our initiatives:</p>
+
+    </td>
+  </tr>
+
+  <!-- Initiative cards -->
+  <tr>
+    <td style="padding:0 40px 8px 40px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;">
+        <tr>
+          <td style="padding:16px 18px; background-color:#f5f7fb; border-left:3px solid #0f2043; border-radius:6px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#0f2043; font-weight:bold; padding-bottom:4px;">
+                  <a href="https://smartcookie.com" target="_blank" style="color:#0f2043; text-decoration:none;">Smart Cookie</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#4b5876; line-height:1.55;">
+                  A student engagement platform that recognizes participation in academic, extracurricular, leadership, volunteering, innovation, and skill-development activities through a structured rewards ecosystem.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr><td style="height:14px; line-height:14px; font-size:0;">&nbsp;</td></tr>
+        <tr>
+          <td style="padding:16px 18px; background-color:#f5f7fb; border-left:3px solid #c98a3e; border-radius:6px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#0f2043; font-weight:bold; padding-bottom:4px;">
+                  <a href="https://cjnnow.com/" target="_blank" style="color:#0f2043; text-decoration:none;">CJN — Continuous Job Network</a>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#4b5876; line-height:1.55;">
+                  An AI-powered platform designed to continuously connect students with internships, employers, startup opportunities, career guidance, skill-development resources, and industry insights.
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- Continued body -->
+  <tr>
+    <td style="padding:24px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.65;">
+      <p style="margin:0 0 18px 0;">
+        We believe your students could benefit from exposure to these initiatives, and we would welcome the opportunity to explore how we might work together with your club and institution.
+      </p>
+      <p style="margin:0 0 8px 0;">
+        If convenient, could you kindly suggest a few suitable time slots for a conference call with Mr. Kulkarni during the coming week? I will coordinate the meeting at your convenience.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td style="height:24px; line-height:0; font-size:0;">&nbsp;</td>
+  </tr>
+
+  <!-- Divider -->
+  <tr>
+    <td style="padding:0 40px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        <tr><td style="border-top:1px solid #e4e8f0; line-height:0; font-size:0;">&nbsp;</td></tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- Sign-off -->
+  <tr>
+    <td style="padding:24px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.6;">
+      <p style="margin:0;">Thank you for your time and consideration. We look forward to the opportunity to connect with you.</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td style="padding:20px 40px 36px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.6;">
+      <p style="margin:0;">Warm regards,</p>
+      <p style="margin:12px 0 0 0; font-weight:bold; color:#0f2043;">{{intern_name}}</p>
+      <p style="margin:2px 0 14px 0; color:#4b5876; font-size:13px;">Campus Outreach Team, Smart Rewards Inc.</p>
+
+      <p style="margin:0; color:#8b95ab; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">On behalf of</p>
+      <p style="margin:4px 0 0 0; font-weight:bold; color:#0f2043; font-size:14px;">
+        Avi Kulkarni <span style="font-weight:normal; color:#4b5876; font-size:13px;">— Founder</span>
+      </p>
+      <p style="margin:2px 0 0 0; font-size:13px;">
+        <a href="mailto:avi@smartrewardsinc.com" style="color:#0f2043; text-decoration:none;">avi@smartrewardsinc.com</a>
+      </p>
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="background-color:#f5f7fb; padding:18px 40px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#8b95ab;">
+      Smart Rewards Inc. &nbsp;•&nbsp; Bridging Education and Employment
+    </td>
+  </tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+ """
 
     # ---------- Campaign name ----------
     st.components.v1.html(
@@ -742,7 +927,7 @@ with tab3:
         </html>
         """,
         height=400,
-    )
+    ) 
         
     
 
