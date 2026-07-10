@@ -704,7 +704,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="font-family:Arial, Helvetica, sans-serif; color:#ffffff; font-size:20px; font-weight:bold; letter-spacing:0.3px;">
-            Smart Rewards Inc.
+            Smart Cookie Inc.
           </td>
           <td align="right" style="font-family:Arial, Helvetica, sans-serif; color:#9fb0cc; font-size:12px; letter-spacing:1px; text-transform:uppercase;">
             Campus Outreach
@@ -725,14 +725,14 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 
       <p style="margin:0 0 18px 0;">Dear <strong>{{club_name}}</strong> Team,</p>
 
-      <p style="margin:0 0 18px 0;">Greetings from Smart Rewards Inc.</p>
+      <p style="margin:0 0 18px 0;">Greetings from Smart Cookie Inc.</p>
 
       <p style="margin:0 0 18px 0;">
-        My name is <strong>{{intern_name}}</strong>, and I am part of the Campus Outreach Team at Smart Rewards Inc.
+        My name is <strong>{{intern_name}}</strong>, and I am part of the Campus Outreach Team at Smart Cookie Inc.
       </p>
 
       <p style="margin:0 0 18px 0;">
-        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Rewards Inc., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
+        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Cookie Inc., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
       </p>
 
       <p style="margin:0 0 26px 0;">
@@ -820,7 +820,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
     <td style="padding:20px 40px 36px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.6;">
       <p style="margin:0;">Warm regards,</p>
       <p style="margin:12px 0 0 0; font-weight:bold; color:#0f2043;">{{intern_name}}</p>
-      <p style="margin:2px 0 14px 0; color:#4b5876; font-size:13px;">Campus Outreach Team, Smart Rewards Inc.</p>
+      <p style="margin:2px 0 14px 0; color:#4b5876; font-size:13px;">Campus Outreach Team, Smart Cookie Inc.</p>
 
       <p style="margin:0; color:#8b95ab; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">On behalf of</p>
       <p style="margin:4px 0 0 0; font-weight:bold; color:#0f2043; font-size:14px;">
