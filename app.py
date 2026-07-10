@@ -603,13 +603,11 @@ with tab3:
     "Anshika Verma",
 ]  # 👈 add/edit names in this list
     
-    st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
-
-    sender_name = st.selectbox("Select Sender Name", sender_names)
+    
 
     
 
-    text1 = "admin@smartcookie.in"
+    text1 = "aictefdc360@smartcookie.in (default)"
 
     st.markdown(
     f"""
@@ -848,7 +846,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 </table>
 
 </body>
- """
+</p>"""
 
     # ---------- Campaign name ----------
     st.components.v1.html(
@@ -929,10 +927,6 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
         height=400,
     ) 
         
-    
-
-
-
 
 with tab5:
     st.markdown("""
