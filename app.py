@@ -846,7 +846,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 </table>
 
 </body>
-</p>"""
+"""
 
     # ---------- Campaign name ----------
     st.components.v1.html(
