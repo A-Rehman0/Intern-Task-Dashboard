@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import pickle
-
+import os
 @st.cache_data(ttl=300)
 def load_sheet_csv(url):
     return pd.read_csv(url)
@@ -257,9 +257,9 @@ with tab1:
     with k4:
         st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
     with k5:
-        st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts}</div><div class="kpi-lbl">Distinct Contacts</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts} </div><div class="kpi-lbl">Distinct Contacts ({(distinct_contacts / sheet_task_count) * 100:.2f}%)</div></div>', unsafe_allow_html=True)
     with k6:
-        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({(distinct_emails / sheet_task_count) * 100:.2f}%)</div></div>', unsafe_allow_html=True)
 
     # ── TASK TABLE ───────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
@@ -685,6 +685,9 @@ with tab3:
         unsafe_allow_html=True,
     )
 
+    c="""{{club_name}}"""
+    s="""{{intern_name}}"""
+
     text4 = f"""<body style="margin:0; padding:0; background-color:#eef1f5; font-family:Arial, Helvetica, sans-serif;">
 
 <!-- Preheader (hidden preview text) -->
@@ -704,7 +707,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <td style="font-family:Arial, Helvetica, sans-serif; color:#ffffff; font-size:20px; font-weight:bold; letter-spacing:0.3px;">
-            Smart Cookie Inc.
+            Smart Rewards Inc.
           </td>
           <td align="right" style="font-family:Arial, Helvetica, sans-serif; color:#9fb0cc; font-size:12px; letter-spacing:1px; text-transform:uppercase;">
             Campus Outreach
@@ -723,16 +726,16 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
   <tr>
     <td style="padding:36px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.65;">
 
-      <p style="margin:0 0 18px 0;">Dear <strong>{{club_name}}</strong> Team,</p>
+      <p style="margin:0 0 18px 0;">Dear <strong>{c}</strong> Team,</p>
 
-      <p style="margin:0 0 18px 0;">Greetings from Smart Cookie Inc.</p>
+      <p style="margin:0 0 18px 0;">Greetings from Smart Rewards Inc.</p>
 
       <p style="margin:0 0 18px 0;">
-        My name is <strong>{{intern_name}}</strong>, and I am part of the Campus Outreach Team at Smart Cookie Inc.
+        My name is <strong>{s}</strong>, and I am part of the Campus Outreach Team at Smart Rewards Inc.
       </p>
 
       <p style="margin:0 0 18px 0;">
-        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Cookie Inc., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
+        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Rewards Inc., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
       </p>
 
       <p style="margin:0 0 26px 0;">
@@ -819,8 +822,8 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
   <tr>
     <td style="padding:20px 40px 36px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.6;">
       <p style="margin:0;">Warm regards,</p>
-      <p style="margin:12px 0 0 0; font-weight:bold; color:#0f2043;">{{intern_name}}</p>
-      <p style="margin:2px 0 14px 0; color:#4b5876; font-size:13px;">Campus Outreach Team, Smart Cookie Inc.</p>
+      <p style="margin:12px 0 0 0; font-weight:bold; color:#0f2043;">{s}</p>
+      <p style="margin:2px 0 14px 0; color:#4b5876; font-size:13px;">Campus Outreach Team, Smart Rewards Inc.</p>
 
       <p style="margin:0; color:#8b95ab; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">On behalf of</p>
       <p style="margin:4px 0 0 0; font-weight:bold; color:#0f2043; font-size:14px;">
@@ -924,9 +927,29 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
         </body>
         </html>
         """,
-        height=400,
+        height=300,
     ) 
-        
+
+    st.markdown('<div class="sh" style="margin-top:-10px">📥 &nbsp;Attachments</div>', unsafe_allow_html=True)
+
+    downloads = [
+        ("📄", "Smartcookie PDF", "SmartCookie_Writeup_20251209_RK1.pdf", "application/pdf"),
+        ("📄", "CJN PDF", "CJN_AI_WriteUp_20251209_RK2.pdf", "application/pdf"),
+        ("🖼️", "Smartcookie Flow Chart Image", "SmartcookieFlowchart.jpg", "image/jpeg"),
+        ("🎬", "CJN Video", "VID-20260711-WA0002.mp4", "video/mp4"),
+    ]
+    cols = st.columns(len(downloads))
+    for col, (icon, label, path, mime) in zip(cols, downloads):
+        with col:
+            if os.path.exists(path):
+                with open(path, "rb") as f:
+                    st.download_button(f"{icon} {label}", f, file_name=path, mime=mime, use_container_width=True)
+            else:
+                st.markdown(f'<div class="no-sheet">⚠️ {label} missing</div>', unsafe_allow_html=True)
+    
+
+
+
 
 with tab5:
     st.markdown("""
