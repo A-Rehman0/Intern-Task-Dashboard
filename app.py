@@ -930,22 +930,35 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
         height=300,
     ) 
 
-    st.markdown('<div class="sh" style="margin-top:-10px">📥 &nbsp;Attachments</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sh">📥 &nbsp;Attachments</div>', unsafe_allow_html=True)
 
-    downloads = [
+    st.markdown("""
+    <style>
+    div.stDownloadButton button{width:100%;text-align:center;padding:13px 20px !important;border-radius:10px !important;font-size:15px !important;font-weight:700 !important;color:#fff !important;background:#0d47a1 !important;border:none !important;transition:filter .18s,transform .15s !important;}
+    div.stDownloadButton button:hover{filter:brightness(1.12) !important;transform:translateY(-1px) !important;color:#fff !important;}
+    </style>
+    """, unsafe_allow_html=True)
+
+    files = [
         ("📄", "Smartcookie PDF", "SmartCookie_Writeup_20251209_RK1.pdf", "application/pdf"),
         ("📄", "CJN PDF", "CJN_AI_WriteUp_20251209_RK2.pdf", "application/pdf"),
         ("🖼️", "Smartcookie Flow Chart Image", "SmartcookieFlowchart.jpg", "image/jpeg"),
-        ("🎬", "CJN Video", "VID-20260711-WA0002.mp4", "video/mp4"),
     ]
-    cols = st.columns(len(downloads))
-    for col, (icon, label, path, mime) in zip(cols, downloads):
+    links = [
+        ("🎬", "CJN Video", "https://drive.google.com/file/d/16guetxkYPvsA4hvYhSpKSis7dZyvNF57/view"),
+    ]
+
+    cols = st.columns(len(files) + len(links))
+    for col, (icon, label, path, mime) in zip(cols, files):
         with col:
             if os.path.exists(path):
                 with open(path, "rb") as f:
                     st.download_button(f"{icon} {label}", f, file_name=path, mime=mime, use_container_width=True)
             else:
                 st.markdown(f'<div class="no-sheet">⚠️ {label} missing</div>', unsafe_allow_html=True)
+    for col, (icon, label, url) in zip(cols[len(files):], links):
+        with col:
+            st.link_button(f"{icon} {label}", url, use_container_width=True)
     
 
 
