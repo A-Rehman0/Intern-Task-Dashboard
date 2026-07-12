@@ -756,7 +756,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
                 <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#0f2043; font-weight:bold; padding-bottom:4px;">
-                  <a href="https://smartcookie.com" target="_blank" style="color:#0f2043; text-decoration:none;">Smart Cookie</a>
+                  <a href="https://smartcookie.in/" target="_blank" style="color:#0f2043; text-decoration:none;">Smart Cookie</a>
                 </td>
               </tr>
               <tr>
