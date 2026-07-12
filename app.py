@@ -13,8 +13,7 @@ st.set_page_config(page_title="Blue Planet Dashboard", layout="wide")
 # ── GLOBAL CSS ───────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-MainMenu,footer,header{visibility:hidden;}
-
+#MainMenu,footer,header{visibility:hidden;}
 .block-container{padding:0 2rem 3rem !important;margin-top:0 !important;background:#eef3fb;max-width:100% !important;}
 .stTabs{margin-top:-20px;}
 .stTabs [data-baseweb="tab-list"]{gap:0px;margin-bottom:0 !important;padding-bottom:0 !important;}
@@ -121,8 +120,7 @@ df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
 df = df.dropna(subset=['Date'])
 
 today = pd.Timestamp.now(tz="Asia/Kolkata").date()
-if df['Date'].dt.tz is not None:
-    df['Date'] = df['Date'].dt.tz_localize(None)
+df['Date'] = df['Date'].dt.tz_localize(None)
 df = df[df['Date'].dt.date <= today].sort_values("Date")
 df['Day'] = df['Date'].dt.strftime('%A')
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
@@ -258,13 +256,12 @@ with tab1:
         st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
     with k4:
         st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
-    contacts_pct = (distinct_contacts / sheet_task_count * 100) if sheet_task_count else 0
-    emails_pct = (distinct_emails / sheet_task_count * 100) if sheet_task_count else 0
     with k5:
-        st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts} </div><div class="kpi-lbl">Distinct Contacts ({contacts_pct:.2f}%)</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts} </div><div class="kpi-lbl">Distinct Contacts ({(distinct_contacts / sheet_task_count) * 100:.2f}%)</div></div>', unsafe_allow_html=True)
     with k6:
-        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({emails_pct:.2f}%)</div></div>', unsafe_allow_html=True)
-#     # ── TASK TABLE ───────────────────────────────────────────────────────────────
+        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({(distinct_emails / sheet_task_count) * 100:.2f}%)</div></div>', unsafe_allow_html=True)
+
+    # ── TASK TABLE ───────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
 
     day_result = intern_df[intern_df['Date'].dt.date == selected_date]
@@ -309,11 +306,7 @@ with tab1:
     # ── PROMPT BUILDER ───────────────────────────────────────────────────────────
     st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
 
-    required_cols = {'Institute Name', 'SchoolID'}
-if not day_result.empty and required_cols.issubset(day_result.columns):
-    institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist()
-else:
-    institutes = []
+    institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
     with st.expander("Click an institute to generate a research prompt"):
         if not institutes:
             st.warning("No institute names found for the selected date.")
