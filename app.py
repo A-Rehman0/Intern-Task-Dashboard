@@ -308,7 +308,11 @@ with k6:
     # ── PROMPT BUILDER ───────────────────────────────────────────────────────────
     st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
 
-    institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
+    required_cols = {'Institute Name', 'SchoolID'}
+if not day_result.empty and required_cols.issubset(day_result.columns):
+    institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist()
+else:
+    institutes = []
     with st.expander("Click an institute to generate a research prompt"):
         if not institutes:
             st.warning("No institute names found for the selected date.")
