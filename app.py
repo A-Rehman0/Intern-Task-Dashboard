@@ -13,7 +13,7 @@ st.set_page_config(page_title="Blue Planet Dashboard", layout="wide")
 # ── GLOBAL CSS ───────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-# MainMenu,footer,header{visibility:hidden;}
+
 .block-container{padding:0 2rem 3rem !important;margin-top:0 !important;background:#eef3fb;max-width:100% !important;}
 .stTabs{margin-top:-20px;}
 .stTabs [data-baseweb="tab-list"]{gap:0px;margin-bottom:0 !important;padding-bottom:0 !important;}
