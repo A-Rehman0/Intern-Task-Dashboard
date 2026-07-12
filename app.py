@@ -248,22 +248,22 @@ with tab1:
     today_tasks = len(intern_df[intern_df['Date'].dt.date == today])
     active_days = intern_df['Date'].dt.date.nunique()
 
-    k1, k2, k3, k4, k5, k6 = st.columns(6)
-    with k1:
-        st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
-    with k2:
-        st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
-    with k3:
-        st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
-    with k4:
-        st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
-    contacts_pct = (distinct_contacts / sheet_task_count * 100) if sheet_task_count else 0
-emails_pct = (distinct_emails / sheet_task_count * 100) if sheet_task_count else 0
-with k5:
-    st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts} </div><div class="kpi-lbl">Distinct Contacts ({contacts_pct:.2f}%)</div></div>', unsafe_allow_html=True)
-with k6:
-    st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({emails_pct:.2f}%)</div></div>', unsafe_allow_html=True)
-    # ── TASK TABLE ───────────────────────────────────────────────────────────────
+#     k1, k2, k3, k4, k5, k6 = st.columns(6)
+#     with k1:
+#         st.markdown(f'<div class="kpi blue"><div class="kpi-val">{task_count}</div><div class="kpi-lbl">Total Tasks</div></div>', unsafe_allow_html=True)
+#     with k2:
+#         st.markdown(f'<div class="kpi green"><div class="kpi-val">{today_tasks}</div><div class="kpi-lbl">Today\'s Tasks</div></div>', unsafe_allow_html=True)
+#     with k3:
+#         st.markdown(f'<div class="kpi purple"><div class="kpi-val">{sheet_task_count}</div><div class="kpi-lbl">Total Clubs Collected</div></div>', unsafe_allow_html=True)
+#     with k4:
+#         st.markdown(f'<div class="kpi amber"><div class="kpi-val">{active_days}</div><div class="kpi-lbl">Active Days</div></div>', unsafe_allow_html=True)
+#     contacts_pct = (distinct_contacts / sheet_task_count * 100) if sheet_task_count else 0
+# emails_pct = (distinct_emails / sheet_task_count * 100) if sheet_task_count else 0
+# with k5:
+#     st.markdown(f'<div class="kpi green"><div class="kpi-val">{distinct_contacts} </div><div class="kpi-lbl">Distinct Contacts ({contacts_pct:.2f}%)</div></div>', unsafe_allow_html=True)
+# with k6:
+#     st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({emails_pct:.2f}%)</div></div>', unsafe_allow_html=True)
+#     # ── TASK TABLE ───────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
 
     day_result = intern_df[intern_df['Date'].dt.date == selected_date]
