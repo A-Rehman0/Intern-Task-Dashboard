@@ -790,7 +790,7 @@ with tab3:
     c="""{{club_name}}"""
     s="""{{intern_name}}"""
 
-    text4 = f"""<body style="margin:0; padding:0; background-color:#eef1f5; font-family:Arial, Helvetica, sans-serif;">
+    text4 = f"""<body style="margin:0; padding:0; background-color:#eef1f5; font-family:'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;">
 
 <!-- Preheader (hidden preview text) -->
 <div style="display:none; max-height:0; overflow:hidden; opacity:0;">
