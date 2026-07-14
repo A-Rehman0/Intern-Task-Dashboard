@@ -3,6 +3,8 @@ import pandas as pd
 from datetime import datetime
 import pickle
 import os
+import folium
+from streamlit_folium import st_folium
 @st.cache_data(ttl=300)
 def load_sheet_csv(url):
     return pd.read_csv(url)
@@ -680,10 +682,126 @@ with tab2:
     cards_html += "</div>"
 
     st.markdown(cards_html, unsafe_allow_html=True)
+import re
+import pydeck as pdk
     
+# import re 
+
 with tab4:
-    st.markdown("")
-    st.markdown(f'<div class="kpi blue"><div class="kpi-val">{"TBA"}</div><div class="kpi-lbl"></div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="sh">🗺️ &nbsp;Location Analysis</div>', unsafe_allow_html=True)
+
+    # Add more interns here: "Name": (sheet_url, sheet_tab_name)
+    location_sheets = {
+        "Harshada": ("https://docs.google.com/spreadsheets/d/1gWNeGKM505eOz87wGod13-JBBR7azJt5haa69WxOiCk/edit", "Harshada"),
+        "Riya": ("https://docs.google.com/spreadsheets/d/1-l7ZuZuNcP81XPZewwU70L-8cRVzYtNrNN4RF1FjSnU/edit", "Riya"),
+    }
+
+    loc_intern = st.selectbox("Select Intern", list(location_sheets.keys()), key="loc_intern")
+    sheet_url, sheet_name = location_sheets[loc_intern]
+
+    @st.cache_data(ttl=300)
+    def load_sheet(url, sheet_name):
+        sid = re.search(r"/d/([a-zA-Z0-9-_]+)", url).group(1)
+        return pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sid}/gviz/tq?tqx=out:csv&sheet={sheet_name}")
+
+    df4 = load_sheet(sheet_url, sheet_name)
+
+    if {"Sum of Latitude", "Sum of Longitude"}.issubset(df4.columns):
+        df4["lat"] = pd.to_numeric(df4["Sum of Latitude"], errors="coerce")
+        df4["lon"] = pd.to_numeric(df4["Sum of Longitude"], errors="coerce")
+    else:
+        def extract_lat_lon(url):
+            if pd.isna(url):
+                return None, None
+            url = str(url)
+
+            if "goo.gl" in url or "maps.app" in url:
+                try:
+                    import requests
+                    resp = requests.get(url, allow_redirects=True, timeout=5)
+                    url = resp.url
+                except Exception:
+                    pass
+
+            m = re.search(r"!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)", url)
+            if m:
+                return float(m.group(1)), float(m.group(2))
+
+            m = re.search(r"@(-?\d+\.\d+),(-?\d+\.\d+)", url)
+            if m:
+                return float(m.group(1)), float(m.group(2))
+
+            return None, None
+
+        df4[["lat", "lon"]] = df4["Google Maps Link"].apply(lambda x: pd.Series(extract_lat_lon(x)))
+
+    df4 = df4.dropna(subset=["lat", "lon"])
+
+    if df4.empty:
+        st.warning(f"⚠️ No valid location data found for **{loc_intern}**. Check the sheet name/columns.")
+        st.stop()
+
+    # ── TASK / INSTRUCTIONS PANEL (replaces KPI metrics) ──────────────────────
+    st.markdown('<div class="sh">🧭 &nbsp;Dashboard Structure to Replicate</div>', unsafe_allow_html=True)
+
+    spec_html = (
+'<div class="link-card" style="animation:none;opacity:1;padding:24px 28px;">'
+'<div class="title" style="font-size:17px;margin-bottom:16px;">🏫 Club Dashboard — Build Spec</div>'
+'<div style="font-size:13.5px;color:#37474f;line-height:1.7;">'
+
+'<b style="color:#0d47a1;">Title:</b> "Club Dashboard" (top-left, bold heading)<br><br>'
+
+'<b style="color:#0d47a1;">Row 1 — Filter + 5 KPI Cards (top of page):</b>'
+'<ul style="margin-top:6px;">'
+'<li>Dropdown filter: <b>College Name</b> (with "All" option)</li>'
+'<li>Card 1: Total Colleges (count)</li>'
+'<li>Card 2: Total States (count)</li>'
+'<li>Card 3: Total Clubs (count)</li>'
+'<li>Card 4: Total Emails (count)</li>'
+'<li>Card 5: Total Contacts (count)</li>'
+'</ul>'
+
+'<b style="color:#0d47a1;">Row 2 — 3 panels:</b>'
+'<ol style="margin-top:6px;">'
+'<li><b>Map visual</b> (left, largest): plots colleges by City/Latitude/Longitude, color-coded by city</li>'
+'<li><b>Table</b> (middle): Top 10 Sponsors — columns: Sponsor Name, Count, with a Total row</li>'
+'<li><b>2 stacked Gauge charts</b> (right):'
+'<ul>'
+'<li>Gauge A: Avg clubs per college (with min/max range)</li>'
+'<li>Gauge B: % Clubs with Contact &amp; Email (with min/max range)</li>'
+'</ul>'
+'</li>'
+'</ol>'
+
+'<b style="color:#0d47a1;">Row 3 — 3 panels:</b>'
+'<ol style="margin-top:6px;">'
+'<li><b>Vertical bar chart</b> (left): Club count by individual Club Name (ranked, descending)</li>'
+'<li><b>Horizontal bar chart</b> (middle): Club count by Club Category</li>'
+'<li><b>Table</b> (right): Category-wise breakdown — columns: Category, Total Club Count, with a Total row</li>'
+'</ol>'
+
+'</div>'
+'</div>'
+    )
+
+    st.markdown(spec_html, unsafe_allow_html=True)
+
+    cols = [c for c in ["College Name", "City", "District", "State", "lat", "lon"] if c in df4.columns]
+    st.subheader("College Details")
+    st.dataframe(df4[cols], use_container_width=True, hide_index=True)
+
+    st.subheader("📍 College Locations")
+    m = folium.Map(location=[df4["lat"].mean(), df4["lon"].mean()], zoom_start=6, tiles="OpenStreetMap")
+    for _, row in df4.iterrows():
+        popup = f"<b>{row['College Name']}</b><br>City: {row.get('City','')}<br>District: {row.get('District','')}<br>State: {row.get('State','')}"
+        folium.Marker([row["lat"], row["lon"]], popup=popup, tooltip=row["College Name"],
+                      icon=folium.Icon(color="red", icon="glyphicon-education", prefix="glyphicon")).add_to(m)
+    st_folium(m, width=None, height=650)
+
+    with st.expander("🔍 Debug Coordinates"):
+        st.dataframe(df4[["College Name", "lat", "lon"]], use_container_width=True, hide_index=True)
+
+
 
 with tab3:
     st.markdown("")
