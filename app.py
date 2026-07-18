@@ -9,26 +9,26 @@ from streamlit_folium import st_folium
 def load_sheet_csv(url):
     return pd.read_csv(url)
 
-  #── PAGE CONFIG #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
+# ── PAGE CONFIG ──────────────────────────────────────────────────────────────
 st.set_page_config(page_title="Blue Planet Dashboard", layout="wide")
 
-  #── GLOBAL CSS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+# ── GLOBAL CSS ───────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');           
-MainMenu,footer,header{visibility:hidden;}
-.block-container{padding:0 2rem 3rem !important;margin-top:0 !important;background:eef3fb;max-width:100% !important;}
+#MainMenu,footer,header{visibility:hidden;}
+.block-container{padding:0 2rem 3rem !important;margin-top:0 !important;background:#eef3fb;max-width:100% !important;}
 .stTabs{margin-top:-20px;}
 .stTabs [data-baseweb="tab-list"]{gap:6px !important;margin-bottom:0 !important;padding-bottom:0 !important;background:transparent;}
 .stTabs [data-baseweb="tab"]{
     height:38px !important;
     padding:10px 24px !important;
-    background:dce8f9 !important;
-    color:0d47a1 !important;
+    background:#dce8f9 !important;
+    color:#0d47a1 !important;
     font-weight:700 !important;
     font-size:14px !important;
     border-radius:12px 12px 0 0 !important;
-    border:1px solid b0c8f0 !important;
+    border:1px solid #b0c8f0 !important;
     border-bottom:none !important;
     display:flex !important;
     align-items:center !important;
@@ -37,25 +37,25 @@ MainMenu,footer,header{visibility:hidden;}
 
 /* Custom Scrollbar - Thicker & More Visible */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: e2e8f0; border-radius: 10px; }
+::-webkit-scrollbar-track { background: #e2e8f0; border-radius: 10px; }
 ::-webkit-scrollbar-thumb { 
-    background: linear-gradient(180deg, 0C4A6E, 06B6D4); 
+    background: linear-gradient(180deg, #0C4A6E, #06B6D4); 
     border-radius: 10px; 
-    border: 2px solid e2e8f0;
+    border: 2px solid #e2e8f0;
 }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, 06B6D4, 0C4A6E); }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #06B6D4, #0C4A6E); }
 
 .stTabs [data-baseweb="tab-panel"]{padding-top:8px !important;}
-.stTabs [data-baseweb="tab"]:hover{background:c5d8f7 !important;transform:translateY(-3px);box-shadow:0 6px 15px rgba(12,74,110,.1);}
+.stTabs [data-baseweb="tab"]:hover{background:#c5d8f7 !important;transform:translateY(-3px);box-shadow:0 6px 15px rgba(12,74,110,.1);}
 .stTabs [aria-selected="true"]{
-    background:linear-gradient(135deg, 0C4A6E, 06B6D4) !important;
-    color:fff !important;
-    border-color:0d47a1 !important;
+    background:linear-gradient(135deg, #0C4A6E, #06B6D4) !important;
+    color:#fff !important;
+    border-color:#0d47a1 !important;
     box-shadow:0 6px 20px rgba(6,182,212,0.4) !important;
     transform:translateY(-3px);
 }
 
-/* #── Animations #── */
+/* ── Animations ── */
 @keyframes fadeInUp {
     0% { opacity: 0; transform: translate3d(0, 30px, 0) scale(0.98); }
     100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
@@ -90,15 +90,15 @@ MainMenu,footer,header{visibility:hidden;}
 
 /* Sidebar Dark Theme */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, 020617 0%, 0f172a 100%) !important;
-    border-right: 2px solid 06B6D4 !important;
+    background: linear-gradient(180deg, #020617 0%, #0f172a 100%) !important;
+    border-right: 2px solid #06B6D4 !important;
     box-shadow: 4px 0 20px rgba(0,0,0,0.3);
 }
 section[data-testid="stSidebar"] .stMarkdown, section[data-testid="stSidebar"] label {
-    color: e2e8f0 !important;
+    color: #e2e8f0 !important;
 }
 section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
-    color: ffffff !important;
+    color: #ffffff !important;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
@@ -109,10 +109,10 @@ section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.7), transparent);
     animation: shimmer 3s infinite;
 }
-.topbar h2 { margin: 0; font-size: 30px; font-weight: 800; color: fff; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-.topbar p { margin: 4px 0 0; font-size: 13px; color: e0f2fe; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.topbar h2 { margin: 0; font-size: 30px; font-weight: 800; color: #fff; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+.topbar p { margin: 4px 0 0; font-size: 13px; color: #e0f2fe; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
 .topbar-live { 
-    margin-left: auto; text-align: right; color: fff; 
+    margin-left: auto; text-align: right; color: #fff; 
     background: rgba(255,255,255,0.15); padding: 12px 20px; border-radius: 12px; 
     backdrop-filter: blur(8px); 
     border: 1px solid rgba(255,255,255,0.3);
@@ -126,7 +126,7 @@ section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
 .stTabs [data-baseweb="tab-panel"]{padding-top:0 !important;}           
 
 .topbar{
-    background:linear-gradient(135deg, 0C4A6E, 06B6D4) !important;
+    background:linear-gradient(135deg, #0C4A6E, #06B6D4) !important;
     background-size:300% 300%;
     animation:gradientShift 10s ease infinite;
     padding:14px 28px;
@@ -136,63 +136,63 @@ section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
     margin-bottom:24px;
     border-radius:0 0 14px 14px;
     box-shadow:0 10px 30px rgba(12,74,110,0.3);
-    border-bottom:4px solid 06B6D4;
+    border-bottom:4px solid #06B6D4;
     position:relative;
     overflow:hidden;
 }
 
 .link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:10px;}
-.link-card{background:fff;border:1.5px solid dce8f9;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(13,71,161,.06);transition:all 0.3s ease;animation:fadeInUp 0.6s ease-out forwards;opacity:0;position:relative;overflow:hidden;}
-.link-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(6,182,212,0.12);border-color:06B6D4;}
+.link-card{background:#fff;border:1.5px solid #dce8f9;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(13,71,161,.06);transition:all 0.3s ease;animation:fadeInUp 0.6s ease-out forwards;opacity:0;position:relative;overflow:hidden;}
+.link-card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(6,182,212,0.12);border-color:#06B6D4;}
 .link-card .icon{font-size:26px;margin-bottom:10px;display:inline-block;animation:float 3s ease-in-out infinite;}
-.link-card .title{font-weight:800;color:0d47a1;font-size:15px;margin-bottom:14px;}
-.link-card a{display:block;text-align:center;background:linear-gradient(135deg,0C4A6E,06B6D4);color:fff !important;text-decoration:none;font-size:13px;font-weight:700;padding:9px 0;border-radius:8px;transition:all 0.3s ease;box-shadow:0 4px 10px rgba(12,74,110,0.2);border:1px solid rgba(255,255,255,0.1);}
+.link-card .title{font-weight:800;color:#0d47a1;font-size:15px;margin-bottom:14px;}
+.link-card a{display:block;text-align:center;background:linear-gradient(135deg,#0C4A6E,#06B6D4);color:#fff !important;text-decoration:none;font-size:13px;font-weight:700;padding:9px 0;border-radius:8px;transition:all 0.3s ease;box-shadow:0 4px 10px rgba(12,74,110,0.2);border:1px solid rgba(255,255,255,0.1);}
 .link-card a:hover{filter:brightness(1.12);transform:translateY(-2px);box-shadow:0 6px 15px rgba(6,182,212,0.4);}
 
-.topbar h2{margin:0;font-size:33px;font-weight:800;color:fff;}
-.topbar p{margin:2px 0 0;font-size:12px;color:90caf9;text-transform:uppercase;letter-spacing:.05em;}
-.topbar-badge{margin-left:auto;background:rgba(255,255,255,.15);color:fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
+.topbar h2{margin:0;font-size:33px;font-weight:800;color:#fff;}
+.topbar p{margin:2px 0 0;font-size:12px;color:#90caf9;text-transform:uppercase;letter-spacing:.05em;}
+.topbar-badge{margin-left:auto;background:rgba(255,255,255,.15);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;}
 
-.sh{font-size:13px;font-weight:800;color:0d47a1;text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px;padding:0 0 8px;border-bottom:2px solid c5d8f7;}
+.sh{font-size:13px;font-weight:800;color:#0d47a1;text-transform:uppercase;letter-spacing:.08em;margin:22px 0 10px;padding:0 0 8px;border-bottom:2px solid #c5d8f7;}
 
-.kpi{background:fff;border-radius:14px;padding:22px 18px;text-align:center;border:1px solid dce8f9;border-top:4px solid 0d47a1;box-shadow:0 2px 8px rgba(13,71,161,.06);transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow 0.3s ease,border-color 0.3s ease;position:relative;overflow:hidden;}
+.kpi{background:#fff;border-radius:14px;padding:22px 18px;text-align:center;border:1px solid #dce8f9;border-top:4px solid #0d47a1;box-shadow:0 2px 8px rgba(13,71,161,.06);transition:transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275),box-shadow 0.3s ease,border-color 0.3s ease;position:relative;overflow:hidden;}
 .kpi::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg,transparent,rgba(255,255,255,0.4),transparent);transform:translateX(-100%);transition:transform 0.6s ease;pointer-events:none;}
-.kpi:hover{transform:translateY(-8px);box-shadow:0 15px 30px rgba(12,74,110,0.15);border-color:06B6D4;}
+.kpi:hover{transform:translateY(-8px);box-shadow:0 15px 30px rgba(12,74,110,0.15);border-color:#06B6D4;}
 .kpi:hover::after{transform:translateX(100%);}
-.kpi-val{font-size:42px;font-weight:900;line-height:1;color:0d47a1;margin-bottom:6px;}
-.kpi-lbl{font-size:11px;font-weight:700;color:78909c;text-transform:uppercase;letter-spacing:.07em;}
-.kpi.green{border-top-color:2e7d32;} .kpi.green .kpi-val{color:2e7d32;}
-.kpi.green:hover{box-shadow:0 15px 30px rgba(46,125,50,0.15);border-color:2e7d32;}
-.kpi.purple{border-top-color:6a1b9a;} .kpi.purple .kpi-val{color:6a1b9a;}
-.kpi.purple:hover{box-shadow:0 15px 30px rgba(106,27,154,0.15);border-color:6a1b9a;}
-.kpi.amber{border-top-color:bf360c;} .kpi.amber .kpi-val{color:bf360c;}
-.kpi.amber:hover{box-shadow:0 15px 30px rgba(191,54,12,0.15);border-color:bf360c;}
+.kpi-val{font-size:42px;font-weight:900;line-height:1;color:#0d47a1;margin-bottom:6px;}
+.kpi-lbl{font-size:11px;font-weight:700;color:#78909c;text-transform:uppercase;letter-spacing:.07em;}
+.kpi.green{border-top-color:#2e7d32;} .kpi.green .kpi-val{color:#2e7d32;}
+.kpi.green:hover{box-shadow:0 15px 30px rgba(46,125,50,0.15);border-color:#2e7d32;}
+.kpi.purple{border-top-color:#6a1b9a;} .kpi.purple .kpi-val{color:#6a1b9a;}
+.kpi.purple:hover{box-shadow:0 15px 30px rgba(106,27,154,0.15);border-color:#6a1b9a;}
+.kpi.amber{border-top-color:#bf360c;} .kpi.amber .kpi-val{color:#bf360c;}
+.kpi.amber:hover{box-shadow:0 15px 30px rgba(191,54,12,0.15);border-color:#bf360c;}
 
-div.stLinkButton a{display:block;width:100%;text-align:center;padding:13px 20px !important;border-radius:10px !important;font-size:15px !important;font-weight:700 !important;text-decoration:none !important;color:fff !important;background:0d47a1 !important;border:none !important;transition:filter .18s,transform .15s !important;}
-div.stLinkButton a:hover{filter:brightness(1.12) !important;transform:translateY(-1px) !important;color:fff !important;}
-[data-testid="column"]:last-child div.stLinkButton a{background:2e7d32 !important;}
+div.stLinkButton a{display:block;width:100%;text-align:center;padding:13px 20px !important;border-radius:10px !important;font-size:15px !important;font-weight:700 !important;text-decoration:none !important;color:#fff !important;background:#0d47a1 !important;border:none !important;transition:filter .18s,transform .15s !important;}
+div.stLinkButton a:hover{filter:brightness(1.12) !important;transform:translateY(-1px) !important;color:#fff !important;}
+[data-testid="column"]:last-child div.stLinkButton a{background:#2e7d32 !important;}
 
-[data-testid="stDataFrame"]{border-radius:12px;overflow:hidden;border:1.5px solid b0c8f0 !important;animation:fadeInUp 0.8s ease-out forwards;opacity:0;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
-[data-testid="stDataFrameContainer"] th{background:dce8f9 !important;color:0d47a1 !important;font-weight:800 !important;font-size:12px !important;padding:10px 12px !important;border-bottom:2px solid 90b4e8 !important;}
-[data-testid="stDataFrameContainer"] td{font-size:13px !important;padding:9px 12px !important;border-bottom:1px solid edf2fb !important;}
-[data-testid="stDataFrameContainer"] tr:nth-child(even) td{background:f5f8fe !important;}
+[data-testid="stDataFrame"]{border-radius:12px;overflow:hidden;border:1.5px solid #b0c8f0 !important;animation:fadeInUp 0.8s ease-out forwards;opacity:0;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+[data-testid="stDataFrameContainer"] th{background:#dce8f9 !important;color:#0d47a1 !important;font-weight:800 !important;font-size:12px !important;padding:10px 12px !important;border-bottom:2px solid #90b4e8 !important;}
+[data-testid="stDataFrameContainer"] td{font-size:13px !important;padding:9px 12px !important;border-bottom:1px solid #edf2fb !important;}
+[data-testid="stDataFrameContainer"] tr:nth-child(even) td{background:#f5f8fe !important;}
 
-div[data-baseweb="select"]>div{background:fff !important;border:1.5px solid b0c8f0 !important;border-radius:10px !important;min-height:44px !important;box-shadow:none !important;}
-div[data-baseweb="select"]:focus-within>div{border-color:0d47a1 !important;box-shadow:0 0 0 3px rgba(13,71,161,.1) !important;}
+div[data-baseweb="select"]>div{background:#fff !important;border:1.5px solid #b0c8f0 !important;border-radius:10px !important;min-height:44px !important;box-shadow:none !important;}
+div[data-baseweb="select"]:focus-within>div{border-color:#0d47a1 !important;box-shadow:0 0 0 3px rgba(13,71,161,.1) !important;}
 
-.no-sheet{background:fce4ec;border:1.5px solid f48fb1;color:880e4f;padding:13px 18px;border-radius:10px;font-weight:700;text-align:center;}
-.empty-state{background:fff8e1;border:1.5px solid ffe082;color:bf360c;padding:14px;border-radius:10px;font-weight:700;text-align:center;height:100px;animation:fadeInUp 0.5s ease-out;box-shadow:0 4px 15px rgba(252,211,77,0.2);}
-.footer-note{margin-top:20px;padding:11px 16px;border-radius:10px;background:dce8f9;color:0d47a1;font-size:12px;font-weight:600;display:flex;gap:20px;}
-[data-testid="stExpander"]{border:1.5px solid 0d47a1 !important;border-radius:10px !important;}
+.no-sheet{background:#fce4ec;border:1.5px solid #f48fb1;color:#880e4f;padding:13px 18px;border-radius:10px;font-weight:700;text-align:center;}
+.empty-state{background:#fff8e1;border:1.5px solid #ffe082;color:#bf360c;padding:14px;border-radius:10px;font-weight:700;text-align:center;height:100px;animation:fadeInUp 0.5s ease-out;box-shadow:0 4px 15px rgba(252,211,77,0.2);}
+.footer-note{margin-top:20px;padding:11px 16px;border-radius:10px;background:#dce8f9;color:#0d47a1;font-size:12px;font-weight:600;display:flex;gap:20px;}
+[data-testid="stExpander"]{border:1.5px solid #0d47a1 !important;border-radius:10px !important;}
 
 /* Toast - Glowing Pulse */
-.toast{position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,0C4A6E,06B6D4);color:white;padding:18px 26px;border-radius:12px;box-shadow:0 10px 25px rgba(12,74,110,0.3);z-index:9999;transform:translateX(120%);transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);font-weight:600;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,0.2);animation:pulseGlow 2.5s infinite;}
+.toast{position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,#0C4A6E,#06B6D4);color:white;padding:18px 26px;border-radius:12px;box-shadow:0 10px 25px rgba(12,74,110,0.3);z-index:9999;transform:translateX(120%);transition:transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275);font-weight:600;display:flex;align-items:center;gap:12px;border:1px solid rgba(255,255,255,0.2);animation:pulseGlow 2.5s infinite;}
 .toast.show{transform:translateX(0);}
 </style>
 """, unsafe_allow_html=True)
 
 
- #── TOPBAR #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+# ── TOPBAR ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="topbar">
     <span class="topbar-icon"></span>
@@ -202,7 +202,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
- #── LOAD DATA #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
+# ── LOAD DATA ────────────────────────────────────────────────────────────────
 MAIN_SHEET = "https://docs.google.com/spreadsheets/d/1zPkZg6lNEnHDySAIHUBAB8xFbZ7dM7MKN-mlSV8AKnY/export?format=csv"
 
 try:
@@ -230,28 +230,28 @@ df['Day'] = df['Date'].dt.strftime('%A')
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
 
 
- #── INTERN SHEET LINKS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+# ── INTERN SHEET LINKS ───────────────────────────────────────────────────────
 intern_links = {
     "AT":             "https://docs.google.com/spreadsheets/d/xxxxx",
     "Rahul":          "https://docs.google.com/spreadsheets/d/yyyyy",
     "Harshada Magar": "https://docs.google.com/spreadsheets/d/14m3yRqwbPmHpWmgYxP9RnudDsHPgA3ki0vKeZLUyYwU/edit?usp=sharing",
     "Sreeja M":       "https://docs.google.com/spreadsheets/d/1xOBQkgZMIYjQuHNTttOW1CTLn86j4fRzS7znODu0WHE/edit?usp=sharing",
-    "Devatha Siri":   "https://docs.google.com/spreadsheets/d/1saAd0onz12WhMpnCckIqy2tHdVXHst7SvK7y-Ep0gyM/edit?hl=id&gid=0gid=0",
-    "H. Lahari":      "https://docs.google.com/spreadsheets/d/19Ugy_pFKaPZgzKjEiHHhMmBvKFx-Mjf1ixnbOe0QfA4/edit?gid=0gid=0",
+    "Devatha Siri":   "https://docs.google.com/spreadsheets/d/1saAd0onz12WhMpnCckIqy2tHdVXHst7SvK7y-Ep0gyM/edit?hl=id&gid=0#gid=0",
+    "H. Lahari":      "https://docs.google.com/spreadsheets/d/19Ugy_pFKaPZgzKjEiHHhMmBvKFx-Mjf1ixnbOe0QfA4/edit?gid=0#gid=0",
     "Nasiya": "https://docs.google.com/spreadsheets/d/1kPQSAkEn07XLkSlWXmWTkvuFKdZWWKrwi8f5Yy1_aPA/edit?usp=sharing",
     "Zahid": "https://docs.google.com/spreadsheets/d/17VHHSF3oeCxTxUHzrYw77CwJkMt2L_qoUmUR1nk49b0/edit?usp=sharing",
     "Swetha":"https://docs.google.com/spreadsheets/d/1D5nWF-vhN155aZkPfYu2wXGetA4PAdwnjPvpRC5Pom4/edit?usp=sharing",
     "Riya":"https://docs.google.com/spreadsheets/d/1BmGbpYnwOlw6Vjx0voFa4WzIVHvC_-tC5cmuLCXfzck/edit?usp=sharing",
-    "Kalyani":"https://docs.google.com/spreadsheets/d/1XgENzr4GJptLUpJTU3qVRITfIaTf1mU5uiy2D7Oxlrw/edit?gid=0gid=0",
-    "Saanvi":"https://docs.google.com/spreadsheets/d/1X1hhc0USSr2X-Mg1QDBNosRm8Fygy0nuV0uVWVjISOw/edit?gid=0gid=0",
-    "Zainab":"https://docs.google.com/spreadsheets/d/1WgOGMKu-cEXd2Bl7d2xTtAPd5ZzLF43G6B514RWNlxg/edit?gid=0gid=0",
-    "Abishek":"https://docs.google.com/spreadsheets/d/1NxjGAuZWVqTlCESNrpTwtAicR2UMECblC_neev3TXTY/edit?gid=0gid=0",
-    "Khushi":"https://docs.google.com/spreadsheets/d/1tKHaXIawLgRxwsV1PBDcogDGONV64a2AcNrSIZ45kXY/edit?gid=0gid=0",
-    "Vidyanand":"https://docs.google.com/spreadsheets/d/1d1Zm0FqO06502POWty34O1okxAJA-FgpvPpThqALDuc/edit?gid=0gid=0",
-    "Saheeb":"https://docs.google.com/spreadsheets/d/1OdQaurem2Mmch7DWzgdTHnrEP_BVPgOaXTWkiHVdyCY/edit?gid=0gid=0",
+    "Kalyani":"https://docs.google.com/spreadsheets/d/1XgENzr4GJptLUpJTU3qVRITfIaTf1mU5uiy2D7Oxlrw/edit?gid=0#gid=0",
+    "Saanvi":"https://docs.google.com/spreadsheets/d/1X1hhc0USSr2X-Mg1QDBNosRm8Fygy0nuV0uVWVjISOw/edit?gid=0#gid=0",
+    "Zainab":"https://docs.google.com/spreadsheets/d/1WgOGMKu-cEXd2Bl7d2xTtAPd5ZzLF43G6B514RWNlxg/edit?gid=0#gid=0",
+    "Abishek":"https://docs.google.com/spreadsheets/d/1NxjGAuZWVqTlCESNrpTwtAicR2UMECblC_neev3TXTY/edit?gid=0#gid=0",
+    "Khushi":"https://docs.google.com/spreadsheets/d/1tKHaXIawLgRxwsV1PBDcogDGONV64a2AcNrSIZ45kXY/edit?gid=0#gid=0",
+    "Vidyanand":"https://docs.google.com/spreadsheets/d/1d1Zm0FqO06502POWty34O1okxAJA-FgpvPpThqALDuc/edit?gid=0#gid=0",
+    "Saheeb":"https://docs.google.com/spreadsheets/d/1OdQaurem2Mmch7DWzgdTHnrEP_BVPgOaXTWkiHVdyCY/edit?gid=0#gid=0",
     "Afrah":"https://docs.google.com/spreadsheets/d/1xQVxMyCt0O1CQNy4VwZJqZW3WNznwrD2MyB2aPLxHsM/edit?usp=sharing_eip_se_dm&ts=6a435747",
-    "Vishvesh":"https://docs.google.com/spreadsheets/d/1yY6mCyf1xvJ9qr0JGk-tAGd4O0asjLMXA3fHNSw7bSU/edit?gid=0gid=0",
-    "Anshika":"https://docs.google.com/spreadsheets/d/1qYQ0k7fr5ft30k9Thq1bWL0OZGN_qWXVwgDOxhC74Rg/edit?gid=0gid=0",
+    "Vishvesh":"https://docs.google.com/spreadsheets/d/1yY6mCyf1xvJ9qr0JGk-tAGd4O0asjLMXA3fHNSw7bSU/edit?gid=0#gid=0",
+    "Anshika":"https://docs.google.com/spreadsheets/d/1qYQ0k7fr5ft30k9Thq1bWL0OZGN_qWXVwgDOxhC74Rg/edit?gid=0#gid=0",
     
 }
 
@@ -291,7 +291,7 @@ tab1, tab2, tab3,tab4,tab5 = st.tabs(["📊 Dashboard","🔗 Links","Email Forma
 
 with tab1:
 
- #── FILTERS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
+# ── FILTERS ──────────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
     f1, f2 = st.columns([2, 2])
 
@@ -307,7 +307,7 @@ with tab1:
 
     intern_df = df[df['Intern Name'] == intern].sort_values('Date')
 
-     #── MERGE CLUBS COUNT INTO TASK TABLE #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
+    # ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
     if is_valid_link(intern_links.get(intern.strip(), "")):
         csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
         if csv_url:
@@ -325,7 +325,7 @@ with tab1:
         intern_df['Clubs Collected'] = 0
 
 
-     #── CLUB COUNT #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+    # ── CLUB COUNT ───────────────────────────────────────────────────────────────
     sheet_task_count = 0
     distinct_contacts = 0
     distinct_emails = 0
@@ -344,7 +344,7 @@ with tab1:
             except Exception:
                 sheet_task_count = 0
 
-     #── KPIs #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+    # ── KPIs ─────────────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
 
     task_count  = len(intern_df)
@@ -365,7 +365,7 @@ with tab1:
     with k6:
         st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({(distinct_emails / sheet_task_count) * 100:.2f}%)</div></div>', unsafe_allow_html=True)
 
-     #── TASK TABLE #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+    # ── TASK TABLE ───────────────────────────────────────────────────────────────
     st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
 
     day_result = intern_df[intern_df['Date'].dt.date == selected_date]
@@ -381,7 +381,7 @@ with tab1:
         )
 
 
-     #── ACTION BUTTONS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
+    # ── ACTION BUTTONS ───────────────────────────────────────────────────────────
     st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
 
     c1, c2 = st.columns(2)
@@ -394,7 +394,7 @@ with tab1:
         st.link_button("📝 Mark Attendance", "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform", use_container_width=True)
 
 
-     #── INTERN SHEET DATA #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
+    # ── INTERN SHEET DATA ────────────────────────────────────────────────────────
     if is_valid_link(sheet_url):
         csv_url = sheet_csv_url(sheet_url)
         if csv_url:
@@ -684,6 +684,9 @@ with tab2:
     st.markdown(cards_html, unsafe_allow_html=True)
 import re
 import pydeck as pdk
+    
+# import re 
+
 with tab4:
     st.markdown('<div class="sh">🗺️ &nbsp;Location Analysis</div>', unsafe_allow_html=True)
 
@@ -738,17 +741,17 @@ with tab4:
         st.warning(f"⚠️ No valid location data found for **{loc_intern}**. Check the sheet name/columns.")
         st.stop()
 
-     #── TASK / INSTRUCTIONS PANEL (replaces KPI metrics) #──#──#──#──#──#──#──#──#──#──#──
+    # ── TASK / INSTRUCTIONS PANEL (replaces KPI metrics) ──────────────────────
     st.markdown('<div class="sh">🧭 &nbsp;Dashboard Structure to Replicate</div>', unsafe_allow_html=True)
 
     spec_html = (
 '<div class="link-card" style="animation:none;opacity:1;padding:24px 28px;">'
 '<div class="title" style="font-size:17px;margin-bottom:16px;">🏫 Club Dashboard — Build Spec</div>'
-'<div style="font-size:13.5px;color:37474f;line-height:1.7;">'
+'<div style="font-size:13.5px;color:#37474f;line-height:1.7;">'
 
-'<b style="color:0d47a1;">Title:</b> "Club Dashboard" (top-left, bold heading)<br><br>'
+'<b style="color:#0d47a1;">Title:</b> "Club Dashboard" (top-left, bold heading)<br><br>'
 
-'<b style="color:0d47a1;">Row 1 — Filter + 5 KPI Cards (top of page):</b>'
+'<b style="color:#0d47a1;">Row 1 — Filter + 5 KPI Cards (top of page):</b>'
 '<ul style="margin-top:6px;">'
 '<li>Dropdown filter: <b>College Name</b> (with "All" option)</li>'
 '<li>Card 1: Total Colleges (count)</li>'
@@ -758,7 +761,7 @@ with tab4:
 '<li>Card 5: Total Contacts (count)</li>'
 '</ul>'
 
-'<b style="color:0d47a1;">Row 2 — 3 panels:</b>'
+'<b style="color:#0d47a1;">Row 2 — 3 panels:</b>'
 '<ol style="margin-top:6px;">'
 '<li><b>Map visual</b> (left, largest): plots colleges by City/Latitude/Longitude, color-coded by city</li>'
 '<li><b>Table</b> (middle): Top 10 Sponsors — columns: Sponsor Name, Count, with a Total row</li>'
@@ -770,7 +773,7 @@ with tab4:
 '</li>'
 '</ol>'
 
-'<b style="color:0d47a1;">Row 3 — 3 panels:</b>'
+'<b style="color:#0d47a1;">Row 3 — 3 panels:</b>'
 '<ol style="margin-top:6px;">'
 '<li><b>Vertical bar chart</b> (left): Club count by individual Club Name (ranked, descending)</li>'
 '<li><b>Horizontal bar chart</b> (middle): Club count by Club Category</li>'
@@ -818,8 +821,7 @@ with tab3:
     "Afrah Ashraf",
     "Vishvesh Kashyap",
     "Anshika Verma",
-    ] 
-#   👈 add/edit names in this list
+]  # 👈 add/edit names in this list
     
     
 
@@ -829,15 +831,15 @@ with tab3:
 
     st.markdown(
     f"""
-    <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:0d47a1;text-transform:uppercase;letter-spacing:.08em;">
+    <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:#0d47a1;text-transform:uppercase;letter-spacing:.08em;">
         Send From
     </div>
 
     <div style="
         padding:10px;
-        border:1px solid b0c8f0;
+        border:1px solid #b0c8f0;
         border-radius:10px;
-        background:f8faff;
+        background:#f8faff;
         font-family:'Serif';
         font-size:14px;
         margin-top:0;
@@ -850,18 +852,18 @@ with tab3:
     
     
     text2 ="Club Outreach India"
-    st.markdown("")
+    # st.markdown("")
     st.markdown(
     f"""
-    <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:0d47a1;text-transform:uppercase;letter-spacing:.08em;">
+    <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:#0d47a1;text-transform:uppercase;letter-spacing:.08em;">
         Campaign name
     </div>
 
     <div style="
         padding:10px;
-        border:1px solid b0c8f0;
+        border:1px solid #b0c8f0;
         border-radius:10px;
-        background:f8faff;
+        background:#f8faff;
         font-family:'Serif';
         font-size:14px;
         margin-top:0;
@@ -874,7 +876,7 @@ with tab3:
     text3 ="Invitation to Explore Student Club Collaboration with Avi Kulkarni – Smart Cookie & CJN"
     FONT = "Georgia, serif"
 
-#  ---------- Subject ----------
+# ---------- Subject ----------
     st.markdown(
         f"""
         <div style="width:100%; box-sizing:border-box; margin-top:7px; font-family:{FONT} !important;">
@@ -882,7 +884,7 @@ with tab3:
                 font-family:{FONT} !important;
                 font-weight:800;
                 font-size:14px;
-                color:0d47a1;
+                color:#0d47a1;
                 text-transform:uppercase;
                 letter-spacing:.08em;
                 margin:0 0 6px 0;
@@ -891,12 +893,12 @@ with tab3:
                 box-sizing:border-box;
                 width:100%;
                 padding:10px;
-                border:1px solid b0c8f0;
+                border:1px solid #b0c8f0;
                 border-radius:10px;
-                background:f8faff;
+                background:#f8faff;
                 font-family:{FONT} !important;
                 font-size:14px;
-                color:1a1a2e;
+                color:#1a1a2e;
             "><span style="font-family:{FONT} !important;">{text3}</span></div>
         </div>
         """,
@@ -906,28 +908,28 @@ with tab3:
     c="""{{club_name}}"""
     s="""{{intern_name}}"""
 
-    text4 = f"""<body style="margin:0; padding:0; background-color:eef1f5; font-family:'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;">
+    text4 = f"""<body style="margin:0; padding:0; background-color:#eef1f5; font-family:'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;">
 
 <!-- Preheader (hidden preview text) -->
 <div style="display:none; max-height:0; overflow:hidden; opacity:0;">
 Mr. Avi Kulkarni would like to schedule a short call to explore collaboration opportunities with your club.
 </div>
 
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:eef1f5; padding:32px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#eef1f5; padding:32px 16px;">
 <tr>
 <td align="center">
 
-<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:ffffff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(15,32,67,0.08);">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%; background-color:#ffffff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(15,32,67,0.08);">
 
   <!-- Header / letterhead -->
   <tr>
-    <td style="background-color:0f2043; padding:28px 40px;">
+    <td style="background-color:#0f2043; padding:28px 40px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         <tr>
-          <td style="font-family:Arial, Helvetica, sans-serif; color:ffffff; font-size:20px; font-weight:bold; letter-spacing:0.3px;">
-            Smart Cooke
+          <td style="font-family:Arial, Helvetica, sans-serif; color:#ffffff; font-size:20px; font-weight:bold; letter-spacing:0.3px;">
+            Smart Rewards Inc.
           </td>
-          <td align="right" style="font-family:Arial, Helvetica, sans-serif; color:9fb0cc; font-size:12px; letter-spacing:1px; text-transform:uppercase;">
+          <td align="right" style="font-family:Arial, Helvetica, sans-serif; color:#9fb0cc; font-size:12px; letter-spacing:1px; text-transform:uppercase;">
             Campus Outreach
           </td>
         </tr>
@@ -937,23 +939,23 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 
   <!-- Accent line -->
   <tr>
-    <td style="height:4px; background-color:c98a3e; line-height:0; font-size:0;">&nbsp;</td>
+    <td style="height:4px; background-color:#c98a3e; line-height:0; font-size:0;">&nbsp;</td>
   </tr>
 
   <!-- Body -->
   <tr>
-    <td style="padding:36px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:26324a; font-size:14px; line-height:1.65;">
+    <td style="padding:36px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.65;">
 
       <p style="margin:0 0 18px 0;">Dear <strong>{c}</strong> Team,</p>
 
-      <p style="margin:0 0 18px 0;">Greetings from Cookie</p>
+      <p style="margin:0 0 18px 0;">Greetings from Smart Rewards Inc.</p>
 
       <p style="margin:0 0 18px 0;">
-        My name is <strong>{s}</strong>, and I am part of the Campus Outreach Team at Smart Cookie
+        My name is <strong>{s}</strong>, and I am part of the Campus Outreach Team at Smart Rewards Inc.
       </p>
 
       <p style="margin:0 0 18px 0;">
-        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Cookie., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
+        I am writing on behalf of <strong>Mr. Avi Kulkarni</strong>, Founder of Smart Rewards Inc., who has been working with educational institutions, students, startups, and industry leaders to create opportunities that bridge the gap between education and employment.
       </p>
 
       <p style="margin:0 0 26px 0;">
@@ -970,15 +972,15 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
     <td style="padding:0 40px 8px 40px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:separate;">
         <tr>
-          <td style="padding:16px 18px; background-color:f5f7fb; border-left:3px solid 0f2043; border-radius:6px;">
+          <td style="padding:16px 18px; background-color:#f5f7fb; border-left:3px solid #0f2043; border-radius:6px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:0f2043; font-weight:bold; padding-bottom:4px;">
-                  <a href="https://smartcookie.in/" target="_blank" style="color:0f2043; text-decoration:none;">Smart Cookie</a>
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#0f2043; font-weight:bold; padding-bottom:4px;">
+                  <a href="https://smartcookie.in/" target="_blank" style="color:#0f2043; text-decoration:none;">Smart Cookie</a>
                 </td>
               </tr>
               <tr>
-                <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:4b5876; line-height:1.55;">
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#4b5876; line-height:1.55;">
                   A student engagement platform that recognizes participation in academic, extracurricular, leadership, volunteering, innovation, and skill-development activities through a structured rewards ecosystem.
                 </td>
               </tr>
@@ -987,15 +989,15 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
         </tr>
         <tr><td style="height:14px; line-height:14px; font-size:0;">&nbsp;</td></tr>
         <tr>
-          <td style="padding:16px 18px; background-color:f5f7fb; border-left:3px solid c98a3e; border-radius:6px;">
+          <td style="padding:16px 18px; background-color:#f5f7fb; border-left:3px solid #c98a3e; border-radius:6px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:0f2043; font-weight:bold; padding-bottom:4px;">
-                  <a href="https://cjnnow.com/" target="_blank" style="color:0f2043; text-decoration:none;">CJN — Continuous Job Network</a>
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:14px; color:#0f2043; font-weight:bold; padding-bottom:4px;">
+                  <a href="https://cjnnow.com/" target="_blank" style="color:#0f2043; text-decoration:none;">CJN — Continuous Job Network</a>
                 </td>
               </tr>
               <tr>
-                <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:4b5876; line-height:1.55;">
+                <td style="font-family:Arial, Helvetica, sans-serif; font-size:13px; color:#4b5876; line-height:1.55;">
                   An AI-powered platform designed to continuously connect students with internships, employers, startup opportunities, career guidance, skill-development resources, and industry insights.
                 </td>
               </tr>
@@ -1008,7 +1010,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 
   <!-- Continued body -->
   <tr>
-    <td style="padding:24px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:26324a; font-size:14px; line-height:1.65;">
+    <td style="padding:24px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.65;">
       <p style="margin:0 0 18px 0;">
         We believe your students could benefit from exposure to these initiatives, and we would welcome the opportunity to explore how we might work together with your club and institution.
       </p>
@@ -1025,38 +1027,38 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
   <tr>
     <td style="padding:0 40px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr><td style="border-top:1px solid e4e8f0; line-height:0; font-size:0;">&nbsp;</td></tr>
+        <tr><td style="border-top:1px solid #e4e8f0; line-height:0; font-size:0;">&nbsp;</td></tr>
       </table>
     </td>
   </tr>
 
   <!-- Sign-off -->
   <tr>
-    <td style="padding:24px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:26324a; font-size:14px; line-height:1.6;">
+    <td style="padding:24px 40px 8px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.6;">
       <p style="margin:0;">Thank you for your time and consideration. We look forward to the opportunity to connect with you.</p>
     </td>
   </tr>
 
   <tr>
-    <td style="padding:20px 40px 36px 40px; font-family:Arial, Helvetica, sans-serif; color:26324a; font-size:14px; line-height:1.6;">
+    <td style="padding:20px 40px 36px 40px; font-family:Arial, Helvetica, sans-serif; color:#26324a; font-size:14px; line-height:1.6;">
       <p style="margin:0;">Warm regards,</p>
-      <p style="margin:12px 0 0 0; font-weight:bold; color:0f2043;">{s}</p>
-      <p style="margin:2px 0 14px 0; color:4b5876; font-size:13px;">Campus Outreach Team, Smart Cookie</p>
+      <p style="margin:12px 0 0 0; font-weight:bold; color:#0f2043;">{s}</p>
+      <p style="margin:2px 0 14px 0; color:#4b5876; font-size:13px;">Campus Outreach Team, Smart Rewards Inc.</p>
 
-      <p style="margin:0; color:8b95ab; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">On behalf of</p>
-      <p style="margin:4px 0 0 0; font-weight:bold; color:0f2043; font-size:14px;">
-        Avi Kulkarni <span style="font-weight:normal; color:4b5876; font-size:13px;">— Founder</span>
+      <p style="margin:0; color:#8b95ab; font-size:11px; text-transform:uppercase; letter-spacing:0.5px;">On behalf of</p>
+      <p style="margin:4px 0 0 0; font-weight:bold; color:#0f2043; font-size:14px;">
+        Avi Kulkarni <span style="font-weight:normal; color:#4b5876; font-size:13px;">— Founder</span>
       </p>
       <p style="margin:2px 0 0 0; font-size:13px;">
-        <a href="mailto:avi@smartrewardsinc.com" style="color:0f2043; text-decoration:none;">avi@smartrewardsinc.com</a>
+        <a href="mailto:avi@smartrewardsinc.com" style="color:#0f2043; text-decoration:none;">avi@smartrewardsinc.com</a>
       </p>
     </td>
   </tr>
 
   <!-- Footer -->
   <tr>
-    <td style="background-color:f5f7fb; padding:18px 40px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:11px; color:8b95ab;">
-      Smart Cookie &nbsp;•&nbsp; Bridging Education and Employment
+    <td style="background-color:#f5f7fb; padding:18px 40px; text-align:center; font-family:Arial, Helvetica, sans-serif; font-size:11px; color:#8b95ab;">
+      Smart Rewards Inc. &nbsp;•&nbsp; Bridging Education and Employment
     </td>
   </tr>
 
@@ -1069,7 +1071,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 </body>
 """
 
-    #  ---------- Campaign name ----------
+    # ---------- Campaign name ----------
     st.components.v1.html(
         f"""
         <html>
@@ -1093,7 +1095,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
                 font-family:{FONT} !important;
                 font-weight:800;
                 font-size:14px;
-                color:0d47a1;
+                color:#0d47a1;
                 text-transform:uppercase;
                 letter-spacing:.08em;
                 margin:0 0 6px 0;
@@ -1103,11 +1105,11 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
                 box-sizing:border-box;
                 width:100%;
                 padding:10px;
-                border:1px solid b0c8f0;
+                border:1px solid #b0c8f0;
                 border-radius:10px;
-                background:f8faff;
+                background:#f8faff;
                 font-size:14px;
-                color:1a1a2e;
+                color:#1a1a2e;
                 height:220px;
                 resize:vertical;
                 display:block;
@@ -1118,7 +1120,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
                 box-sizing:border-box;
                 margin-top:8px;
                 padding:10px;
-                background:0d47a1;
+                background:#0d47a1;
                 color:white;
                 border:none;
                 border-radius:8px;
@@ -1135,10 +1137,10 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
             <button onclick="
                 navigator.clipboard.writeText(document.getElementById('prompt-box').value);
                 this.textContent='✅ Copied!';
-                this.style.background='2e7d32';
+                this.style.background='#2e7d32';
                 setTimeout(() => {{
                     this.textContent='📋 Copy Prompt';
-                    this.style.background='0d47a1';
+                    this.style.background='#0d47a1';
                 }}, 2000);
             ">📋 Copy Body</button>
         </div>
@@ -1152,8 +1154,8 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 
     st.markdown("""
     <style>
-    div.stDownloadButton button{width:100%;text-align:center;padding:13px 20px !important;border-radius:10px !important;font-size:15px !important;font-weight:700 !important;color:fff !important;background:0d47a1 !important;border:none !important;transition:filter .18s,transform .15s !important;}
-    div.stDownloadButton button:hover{filter:brightness(1.12) !important;transform:translateY(-1px) !important;color:fff !important;}
+    div.stDownloadButton button{width:100%;text-align:center;padding:13px 20px !important;border-radius:10px !important;font-size:15px !important;font-weight:700 !important;color:#fff !important;background:#0d47a1 !important;border:none !important;transition:filter .18s,transform .15s !important;}
+    div.stDownloadButton button:hover{filter:brightness(1.12) !important;transform:translateY(-1px) !important;color:#fff !important;}
     </style>
     """, unsafe_allow_html=True)
 
@@ -1184,7 +1186,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 
 with tab5:
     st.markdown("""
-     How to use this dashboard
+    ### How to use this dashboard
     - Select an intern and date in **Filters** to view their tasks
     - **Overview** shows total tasks, today's tasks, clubs collected, and active days
     - **Task Details** lists tasks for the selected date
