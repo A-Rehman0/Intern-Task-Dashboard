@@ -9,10 +9,10 @@ from streamlit_folium import st_folium
 def load_sheet_csv(url):
     return pd.read_csv(url)
 
- ── PAGE CONFIG ──────────────────────────────────────────────────────────────
+  #── PAGE CONFIG #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
 st.set_page_config(page_title="Blue Planet Dashboard", layout="wide")
 
- ── GLOBAL CSS ───────────────────────────────────────────────────────────────
+  #── GLOBAL CSS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');           
@@ -55,7 +55,7 @@ MainMenu,footer,header{visibility:hidden;}
     transform:translateY(-3px);
 }
 
-/* ── Animations ── */
+/* #── Animations #── */
 @keyframes fadeInUp {
     0% { opacity: 0; transform: translate3d(0, 30px, 0) scale(0.98); }
     100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
@@ -192,7 +192,7 @@ div[data-baseweb="select"]:focus-within>div{border-color:0d47a1 !important;box-s
 """, unsafe_allow_html=True)
 
 
- ── TOPBAR ───────────────────────────────────────────────────────────────────
+ #── TOPBAR #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
 st.markdown("""
 <div class="topbar">
     <span class="topbar-icon"></span>
@@ -202,7 +202,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
- ── LOAD DATA ────────────────────────────────────────────────────────────────
+ #── LOAD DATA #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
 MAIN_SHEET = "https://docs.google.com/spreadsheets/d/1zPkZg6lNEnHDySAIHUBAB8xFbZ7dM7MKN-mlSV8AKnY/export?format=csv"
 
 try:
@@ -230,7 +230,7 @@ df['Day'] = df['Date'].dt.strftime('%A')
 df['Intern Name'] = df['Intern Name'].astype(str).str.strip()
 
 
- ── INTERN SHEET LINKS ───────────────────────────────────────────────────────
+ #── INTERN SHEET LINKS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
 intern_links = {
     "AT":             "https://docs.google.com/spreadsheets/d/xxxxx",
     "Rahul":          "https://docs.google.com/spreadsheets/d/yyyyy",
@@ -291,7 +291,7 @@ tab1, tab2, tab3,tab4,tab5 = st.tabs(["📊 Dashboard","🔗 Links","Email Forma
 
 with tab1:
 
- ── FILTERS ──────────────────────────────────────────────────────────────────
+ #── FILTERS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
     st.markdown('<div class="sh">🔍 &nbsp;Filters</div>', unsafe_allow_html=True)
     f1, f2 = st.columns([2, 2])
 
@@ -307,7 +307,7 @@ with tab1:
 
     intern_df = df[df['Intern Name'] == intern].sort_values('Date')
 
-     ── MERGE CLUBS COUNT INTO TASK TABLE ────────────────────────────────────────
+     #── MERGE CLUBS COUNT INTO TASK TABLE #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
     if is_valid_link(intern_links.get(intern.strip(), "")):
         csv_url = sheet_csv_url(intern_links.get(intern.strip(), ""))
         if csv_url:
@@ -325,7 +325,7 @@ with tab1:
         intern_df['Clubs Collected'] = 0
 
 
-     ── CLUB COUNT ───────────────────────────────────────────────────────────────
+     #── CLUB COUNT #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
     sheet_task_count = 0
     distinct_contacts = 0
     distinct_emails = 0
@@ -344,7 +344,7 @@ with tab1:
             except Exception:
                 sheet_task_count = 0
 
-     ── KPIs ─────────────────────────────────────────────────────────────────────
+     #── KPIs #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
     st.markdown('<div class="sh">📊 &nbsp;Overview</div>', unsafe_allow_html=True)
 
     task_count  = len(intern_df)
@@ -365,7 +365,7 @@ with tab1:
     with k6:
         st.markdown(f'<div class="kpi purple"><div class="kpi-val">{distinct_emails}</div><div class="kpi-lbl">Distinct Emails ({(distinct_emails / sheet_task_count) * 100:.2f}%)</div></div>', unsafe_allow_html=True)
 
-     ── TASK TABLE ───────────────────────────────────────────────────────────────
+     #── TASK TABLE #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
     st.markdown('<div class="sh">📋 &nbsp;Task Details</div>', unsafe_allow_html=True)
 
     day_result = intern_df[intern_df['Date'].dt.date == selected_date]
@@ -381,7 +381,7 @@ with tab1:
         )
 
 
-     ── ACTION BUTTONS ───────────────────────────────────────────────────────────
+     #── ACTION BUTTONS #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
     st.markdown('<div class="sh">🔗 &nbsp;Quick Actions</div>', unsafe_allow_html=True)
 
     c1, c2 = st.columns(2)
@@ -394,7 +394,7 @@ with tab1:
         st.link_button("📝 Mark Attendance", "https://docs.google.com/forms/d/e/1FAIpQLScHz7fdRGl0RbMTyh_8N5VH9G0K1LDsszsZRqwHMe9CsXcqlA/viewform", use_container_width=True)
 
 
-     ── INTERN SHEET DATA ────────────────────────────────────────────────────────
+     #── INTERN SHEET DATA #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
     if is_valid_link(sheet_url):
         csv_url = sheet_csv_url(sheet_url)
         if csv_url:
@@ -407,7 +407,7 @@ with tab1:
                     st.error("Unable to load sheet data.")
 
      intern_id = intern_ids.get(intern.strip(), "")
-      ── PROMPT BUILDER ───────────────────────────────────────────────────────────
+      #── PROMPT BUILDER #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
      st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
 
      institutes = day_result[['Institute Name','SchoolID']].dropna(subset=['Institute Name']).drop_duplicates().values.tolist() if not day_result.empty else []
@@ -465,9 +465,9 @@ with tab1:
      [college website]/nss
      [college website]/ncc
 
-     ────────────────────────────────
+     #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
      STEP 1B — MANDATORY CONTACT/EMAIL/LEADERSHIP SEARCH (per club)
-     ────────────────────────────────
+     #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
 
      For EVERY club identified in Step 1, before writing its row, run an additional targeted search pass to find its ClubContactNumber, ClubEmail, ClubWebsite, ClubPresidentName, and ClubPresidentContact. Do not skip this pass even if Step 1 already surfaced a name for the club.
 
@@ -566,7 +566,7 @@ with tab1:
      """, height=280)
 
 
-      ── FOOTER NOTE ──────────────────────────────────────────────────────────────
+      #── FOOTER NOTE #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──
      st.markdown("""
      <div class="footer-note">
          <span>✔ After completing tasks, report to Team Leader</span>
@@ -741,7 +741,7 @@ with tab4:
         st.warning(f"⚠️ No valid location data found for **{loc_intern}**. Check the sheet name/columns.")
         st.stop()
 
-     ── TASK / INSTRUCTIONS PANEL (replaces KPI metrics) ──────────────────────
+     #── TASK / INSTRUCTIONS PANEL (replaces KPI metrics) #──#──#──#──#──#──#──#──#──#──#──
     st.markdown('<div class="sh">🧭 &nbsp;Dashboard Structure to Replicate</div>', unsafe_allow_html=True)
 
     spec_html = (
