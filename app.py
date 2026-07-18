@@ -406,7 +406,7 @@ with tab1:
                 except Exception:
                     st.error("Unable to load sheet data.")
 
- intern_id = intern_ids.get(intern.strip(), "")
+     intern_id = intern_ids.get(intern.strip(), "")
   #── PROMPT BUILDER #──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#──#───
  st.markdown('<div class="sh">🧠 &nbsp;Prompt Builder</div>', unsafe_allow_html=True)
 
