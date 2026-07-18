@@ -687,7 +687,7 @@ import pydeck as pdk
 with tab4:
     st.markdown('<div class="sh">🗺️ &nbsp;Location Analysis</div>', unsafe_allow_html=True)
 
-    Add more interns here: "Name": (sheet_url, sheet_tab_name)
+    # Add more interns here: "Name": (sheet_url, sheet_tab_name)
     location_sheets = {
         "Harshada": ("https://docs.google.com/spreadsheets/d/1gWNeGKM505eOz87wGod13-JBBR7azJt5haa69WxOiCk/edit", "Harshada"),
         "Riya": ("https://docs.google.com/spreadsheets/d/1-l7ZuZuNcP81XPZewwU70L-8cRVzYtNrNN4RF1FjSnU/edit", "Riya"),
@@ -818,7 +818,8 @@ with tab3:
     "Afrah Ashraf",
     "Vishvesh Kashyap",
     "Anshika Verma",
-]   👈 add/edit names in this list
+    ] 
+#   👈 add/edit names in this list
     
     
 
@@ -849,7 +850,7 @@ with tab3:
     
     
     text2 ="Club Outreach India"
-     st.markdown("")
+    st.markdown("")
     st.markdown(
     f"""
     <div style="margin-bottom:4px;font-weight:600;margin-top:7px; margin-left:4px;font-weight:800;color:0d47a1;text-transform:uppercase;letter-spacing:.08em;">
@@ -873,7 +874,7 @@ with tab3:
     text3 ="Invitation to Explore Student Club Collaboration with Avi Kulkarni – Smart Cookie & CJN"
     FONT = "Georgia, serif"
 
- ---------- Subject ----------
+#  ---------- Subject ----------
     st.markdown(
         f"""
         <div style="width:100%; box-sizing:border-box; margin-top:7px; font-family:{FONT} !important;">
@@ -1068,7 +1069,7 @@ Mr. Avi Kulkarni would like to schedule a short call to explore collaboration op
 </body>
 """
 
-     ---------- Campaign name ----------
+    #  ---------- Campaign name ----------
     st.components.v1.html(
         f"""
         <html>
