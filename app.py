@@ -252,6 +252,7 @@ intern_links = {
     "Afrah":"https://docs.google.com/spreadsheets/d/1xQVxMyCt0O1CQNy4VwZJqZW3WNznwrD2MyB2aPLxHsM/edit?usp=sharing_eip_se_dm&ts=6a435747",
     "Vishvesh":"https://docs.google.com/spreadsheets/d/1yY6mCyf1xvJ9qr0JGk-tAGd4O0asjLMXA3fHNSw7bSU/edit?gid=0#gid=0",
     "Anshika":"https://docs.google.com/spreadsheets/d/1qYQ0k7fr5ft30k9Thq1bWL0OZGN_qWXVwgDOxhC74Rg/edit?gid=0#gid=0",
+    "Abhijeet":"https://docs.google.com/spreadsheets/d/1QqbWJLHm0E4OsbdjFf-izCevt7bBhrp1BIj9yI-RJ2E/edit?gid=0#gid=0"
     
 }
 
@@ -283,9 +284,10 @@ intern_ids = {
     "Khushi":"",
     "Vidyanand":""   ,
     "Saheeb":"",
-    "Afrah":"",
+    "Afrah":          3492180,
     "Vishvesh":"",
     "Anshika":"",
+    "Abhijeet":"",
 }
 tab1, tab2, tab3,tab4,tab5 = st.tabs(["📊 Dashboard","🔗 Links","Email Format","Analysis Task", "ℹ️ Guide"])
 
@@ -821,6 +823,7 @@ with tab3:
     "Afrah Ashraf",
     "Vishvesh Kashyap",
     "Anshika Verma",
+    "Abhijeet Chavan",
 ]  # 👈 add/edit names in this list
     
     
