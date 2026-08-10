@@ -254,7 +254,8 @@ intern_links = {
     "Anshika":"https://docs.google.com/spreadsheets/d/1qYQ0k7fr5ft30k9Thq1bWL0OZGN_qWXVwgDOxhC74Rg/edit?gid=0#gid=0",
     "Abhijeet":"https://docs.google.com/spreadsheets/d/1QqbWJLHm0E4OsbdjFf-izCevt7bBhrp1BIj9yI-RJ2E/edit?gid=0#gid=0",
     "Divya":"https://docs.google.com/spreadsheets/d/1T-uU0GTJrtK922x4pwOl11yBUqYfnsejCFeYxl63MaQ/edit?gid=0#gid=0",
-    "Jyoti":"https://docs.google.com/spreadsheets/d/1drc49a0wP47Y5urt_cBh2WADB2Mwzfu5B1I5GXKdnMY/edit?gid=2003372392#gid=2003372392"
+    "Jyoti":"https://docs.google.com/spreadsheets/d/1drc49a0wP47Y5urt_cBh2WADB2Mwzfu5B1I5GXKdnMY/edit?gid=2003372392#gid=2003372392",
+    "Sreekar":"https://docs.google.com/spreadsheets/d/1vqf7SdR5FPkaN-0axbbpgL-KB8D49Sffn8QcoghF-Jo/edit?gid=0#gid=0"
 }
 
 def is_valid_link(url):
@@ -290,7 +291,8 @@ intern_ids = {
     "Anshika":"",
     "Abhijeet":"",
     "Divya":"",
-    "Jyoti":""
+    "Jyoti":"",
+    "Sreekar":""
 }
 tab1, tab2, tab3,tab4,tab5 = st.tabs(["📊 Dashboard","🔗 Links","Email Format","Analysis Task", "ℹ️ Guide"])
 
