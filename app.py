@@ -259,6 +259,7 @@ intern_links = {
     "Tanishq":"https://docs.google.com/spreadsheets/d/124ed3sQIFdefX963p2vi4DXTqzQXjFt9kcqILtMXDcg/edit?usp=sharing",
     "Vignesh":"https://docs.google.com/spreadsheets/d/12p3A5bCqTcHe8u5pxg52jJXA8mroNmT3aKayXv93taU/edit?usp=sharing",
     "Sandeep":"https://docs.google.com/spreadsheets/d/14JVf1aXe8lgAhNfXfrqWq8BlnLSsZ--x/edit?usp=drivesdk&ouid=100251730631287413193&rtpof=true&sd=true",
+    "Danish":"https://docs.google.com/spreadsheets/d/13RWuyh6m91-gxTXgtyKPTmfNl9K7wvYQZOaoc_f1vFM/edit?usp=sharing",
     
 }
 
@@ -301,6 +302,7 @@ intern_ids = {
     "Tanishq":"",
     "Vignesh":"",
     "Sandeep":"",
+    "Danish":"",
 }
 tab1, tab2, tab3,tab4,tab5 = st.tabs(["📊 Dashboard","🔗 Links","Email Format","Analysis Task", "ℹ️ Guide"])
 
